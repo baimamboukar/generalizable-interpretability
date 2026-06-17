@@ -1,0 +1,1518 @@
+{
+  "metadata": {
+    "title": "Reproduction shortlist with validated extension studies",
+    "built_by": "scripts/finalize_extensions.py",
+    "sources": {
+      "selection": "data/interp_selection.json (scripts/select_interp_targets.py)",
+      "extensions": "data/interp_with_extensions.json (web-agent pass)"
+    },
+    "selection_metadata": {
+      "title": "Probes & steering reproduction shortlist",
+      "generated_by": "scripts/select_interp_targets.py",
+      "source_corpus": "data/interp_corpus.json (built by scripts/build_interp_corpus.py)",
+      "objective": "Pick reproduction targets for a clean, scalable pipeline that runs probes — then steering vectors (incl. persona) — across many model families and sizes, reproducing each paper's original result before extending to new models. Probes are prioritized first per mentor guidance.",
+      "max_selected": 20,
+      "selection_funnel": {
+        "corpus": 641,
+        "has_probe_or_steer_signal": 231,
+        "in_llm_context": 168,
+        "after_ssl_eval_filter": 154,
+        "after_modality_filter": 148
+      },
+      "scope_filters": [
+        "Has a probing or steering signal in the source corpus (SAE-only / circuit-only excluded).",
+        "Sits in an LLM/NLP context (drops vision/self-supervised 'linear probing' used as an evaluation protocol).",
+        "Not a self-supervised / vision-transfer eval paper unless it carries a genuine interpretability signal.",
+        "Text modality only — audio / speech / EEG / ECG / biosignal papers are dropped."
+      ],
+      "relevance_score": {
+        "field": "relevance_score (carried from the corpus harvester)",
+        "how": "Each paper is matched against a term taxonomy over title + abstract + keywords. Strong unambiguous terms (e.g. 'steering vector', 'linear probe', 'mechanistic interpretability') weight 3, medium terms 2, weak/context terms 1, with a +1 bonus when a term appears in the title. A paper is kept only if it hits a strong term or an explicit interpretability keyword and totals at least 3."
+      },
+      "composite_score": {
+        "formula": "focus + reproducibility + cross_model + impact + recency + topic, capped at 100",
+        "weights_max_points": {
+          "focus": 30,
+          "reproducibility": 22,
+          "cross_model": 22,
+          "impact": 8,
+          "recency": 4,
+          "topic": 14
+        },
+        "components": {
+          "focus": "Probe/steering alignment from the corpus category scores; probing weighted 1.0 vs steering 0.85 ('probes first').",
+          "reproducibility": "Reusable code to build the pipeline on. {'repo': 22, 'promised': 12, 'unknown': 6} points for repo link / code promised / none detected (from abstract or fields).",
+          "cross_model": "Cross-model readiness: model families (up to 14 pts for >=4 families) plus a gradual parameter-size span (8 pts when max/min >= 4x, e.g. 1B->70B).",
+          "impact": "Citations, log-scaled: 8 * min(log10(cites+1)/2, 1).",
+          "recency": "Publication year: {2026: 4, 2025: 3.5, 2024: 2.5} (older -> 1.5).",
+          "topic": "Safety/alignment incentive: 2 pts per distinct safety/alignment term (<=10) + 4 for persona steering, capped at 14."
+        }
+      },
+      "field_notes": {
+        "families/sizes": "Parsed from the abstract as a cross-model-readiness signal; verify per paper.",
+        "code_status": "repo = link found, promised = code release mentioned, unknown = none detected (absence is not proof there is no repo).",
+        "citations": "Google Scholar count from the conference dump; null when unavailable."
+      },
+      "stats": {
+        "n_selected": 20,
+        "by_focus": {
+          "steering": 13,
+          "probing": 7
+        },
+        "by_venue": {
+          "NeurIPS 2025": 5,
+          "ICML 2025": 3,
+          "ICLR 2025": 3,
+          "ICLR 2026": 3,
+          "AAAI 2025": 2,
+          "EMNLP 2024": 2,
+          "ICML 2024": 1,
+          "NAACL 2025": 1
+        },
+        "by_year": {
+          "2024": 3,
+          "2025": 14,
+          "2026": 3
+        },
+        "code_status": {
+          "promised": 4,
+          "repo": 12,
+          "unknown": 4
+        },
+        "with_safety_signal": 14,
+        "with_persona": 0,
+        "model_families_covered": {
+          "Llama": 5,
+          "Gemma": 2,
+          "Qwen": 2
+        },
+        "with_extracted_sizes": 6,
+        "size_span_b": [
+          0.5,
+          70.0
+        ],
+        "composite_range": [
+          44.3,
+          63.5
+        ]
+      }
+    },
+    "extension_metadata": {
+      "date": "2026-06-17",
+      "sources_used": [
+        "arXiv",
+        "Semantic Scholar",
+        "Google Scholar",
+        "ACL Anthology",
+        "OpenReview",
+        "ResearchGate",
+        "ICML virtual",
+        "GitHub"
+      ]
+    },
+    "link_validation": {
+      "method": "arXiv links checked against the arXiv API (existence + title-match to flag wrong/hallucinated ids); other links checked over HTTP. Extensions whose link resolves to a different paper (title mismatch) are removed.",
+      "extensions_checked": 17,
+      "links_ok": 15,
+      "links_uncertain": 0,
+      "links_broken": 0,
+      "removed_hallucinated": 2,
+      "extensions_kept": 15
+    }
+  },
+  "papers": [
+    {
+      "title": "AxBench: Steering LLMs? Even Simple Baselines Outperform Sparse Autoencoders",
+      "focus": "steering",
+      "category": "sae",
+      "venue": "ICML",
+      "year": 2025,
+      "composite": 63.5,
+      "score_breakdown": {
+        "focus": 30.0,
+        "reproducibility": 12,
+        "cross_model": 11.5,
+        "impact": 4.5,
+        "recency": 3.5,
+        "safety": 2,
+        "persona_bonus": 0
+      },
+      "families": [
+        "Gemma"
+      ],
+      "n_families": 1,
+      "sizes_b": [
+        2.0,
+        9.0
+      ],
+      "size_min_b": 2.0,
+      "size_max_b": 9.0,
+      "code": null,
+      "code_status": "promised",
+      "persona": false,
+      "safety_hits": 1,
+      "citations": 12,
+      "relevance_score": 22.0,
+      "matched_terms": [
+        "\\bSAEs?\\b",
+        "\\bprobe(s)?\\b",
+        "dictionary learning",
+        "interpretab",
+        "linear prob(e|es|ing)",
+        "sparse autoencoder",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)",
+        "steering vector"
+      ],
+      "url": "https://icml.cc/virtual/2025/poster/45658",
+      "pdf": "https://openreview.net/pdf?id=K2CckZjNy0",
+      "authors": [
+        "Zhengxuan Wu",
+        "Aryaman Arora",
+        "Atticus Geiger",
+        "Zheng Wang",
+        "Jing Huang",
+        "Dan Jurafsky",
+        "Christopher D Manning",
+        "Christopher Potts"
+      ],
+      "rank": 1,
+      "extensions": [
+        {
+          "title": "SAEs Are Good for Steering -- If You Select the Right Features",
+          "authors": "Arad et al.",
+          "year": 2025,
+          "venue": "EMNLP 2025",
+          "link": "https://arxiv.org/abs/2505.20063",
+          "type": [
+            "improve"
+          ],
+          "confidence": "high",
+          "evidence": "Directly responds to AxBench's finding that SAEs underperform by proposing output-score feature selection that yields 2-3 times steering improvements, explicitly citing AxBench in its motivation (abstract and intro).",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2505.20063",
+            "arxiv_title": "SAEs Are Good for Steering -- If You Select the Right Features",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        },
+        {
+          "title": "Does higher interpretability imply better utility? A Pairwise Analysis on Sparse Autoencoders",
+          "authors": "Various authors",
+          "year": 2025,
+          "venue": "arXiv preprint",
+          "link": "https://arxiv.org/abs/2510.03659",
+          "type": [
+            "extend"
+          ],
+          "confidence": "high",
+          "evidence": "Cites AxBench and SAEBench to frame its own pairwise analysis of SAE utility vs. interpretability trade-offs, engaging the benchmark's methodology.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2510.03659",
+            "arxiv_title": "Does higher interpretability imply better utility? A Pairwise Analysis on Sparse Autoencoders",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        },
+        {
+          "title": "Enhancing LLM Steering through Sparse Autoencoder-Based Vector Refinement",
+          "authors": "Various authors",
+          "year": 2025,
+          "venue": "arXiv preprint",
+          "link": "https://arxiv.org/abs/2509.23799",
+          "type": [
+            "improve"
+          ],
+          "confidence": "high",
+          "evidence": "Cites AxBench in its references and proposes SAE-based refinement as a direct response to AxBench's negative result on SAE steering performance.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2509.23799",
+            "arxiv_title": "Enhancing LLM Steering through Sparse Autoencoder-Based Vector Refinement",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        }
+      ],
+      "counts": {
+        "reproduce": 0,
+        "extend": 1,
+        "improve": 2,
+        "total": 3
+      },
+      "n_extensions": 3,
+      "search_notes": "Searched arXiv, Semantic Scholar, Google Scholar. AxBench arXiv ID: 2501.17148. Several papers explicitly engage AxBench's benchmark findings. Most extensions arrived after ICML 2025 acceptance."
+    },
+    {
+      "title": "DISCO: Disentangled Communication Steering for Large Language Models",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "NeurIPS",
+      "year": 2025,
+      "composite": 60.2,
+      "score_breakdown": {
+        "focus": 22.7,
+        "reproducibility": 22,
+        "cross_model": 12.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 0,
+        "persona_bonus": 0
+      },
+      "families": [
+        "Gemma",
+        "Llama"
+      ],
+      "n_families": 2,
+      "sizes_b": [
+        8.0,
+        9.0
+      ],
+      "size_min_b": 8.0,
+      "size_max_b": 9.0,
+      "code": "https://github.com/MaxTorop/DISCO.",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 0,
+      "citations": null,
+      "relevance_score": 8.0,
+      "matched_terms": [
+        "representation engineering",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)",
+        "steering vector"
+      ],
+      "url": "https://openreview.net/forum?id=c8AjdgdHnD",
+      "pdf": "",
+      "authors": [
+        "Max Torop",
+        "Aria Masoomi",
+        "Masih Eskandar",
+        "Jennifer Dy"
+      ],
+      "rank": 2,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched OpenReview (NeurIPS 2025 forum id c8AjdgdHnD), arXiv, Google Scholar. No qualifying follow-up papers found; paper appears very recent (NeurIPS 2025) and citation indices have not caught up."
+    },
+    {
+      "title": "Detecting Strategic Deception with Linear Probes",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "ICML",
+      "year": 2025,
+      "composite": 58.2,
+      "score_breakdown": {
+        "focus": 20.0,
+        "reproducibility": 22,
+        "cross_model": 5.5,
+        "impact": 1.2,
+        "recency": 3.5,
+        "safety": 6,
+        "persona_bonus": 0
+      },
+      "families": [
+        "Llama"
+      ],
+      "n_families": 1,
+      "sizes_b": [
+        70.0
+      ],
+      "size_min_b": 70.0,
+      "size_max_b": 70.0,
+      "code": "https://github.com/ApolloResearch/deception-detection.",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 3,
+      "citations": 1,
+      "relevance_score": 8.0,
+      "matched_terms": [
+        "\\bprobe(s)?\\b",
+        "interpretab",
+        "linear prob(e|es|ing)"
+      ],
+      "url": "https://icml.cc/virtual/2025/poster/46082",
+      "pdf": "https://openreview.net/pdf?id=C5Jj3QKQav",
+      "authors": [
+        "Nicholas Goldowsky-Dill",
+        "Bilal Chughtai",
+        "Stefan Heimersheim",
+        "Marius Hobbhahn"
+      ],
+      "rank": 3,
+      "extensions": [
+        {
+          "title": "The Secret Agenda: LLMs Strategically Lie and Our Current Safety Tools Are Blind",
+          "authors": "DeLeeuw et al.",
+          "year": 2025,
+          "venue": "arXiv preprint / AAAI 2026 Workshop AIGOV submission",
+          "link": "https://arxiv.org/abs/2509.20393",
+          "type": [
+            "reproduce",
+            "extend"
+          ],
+          "confidence": "high",
+          "evidence": "Extends the Apollo deception-probe methodology to SAE probes, explicitly reproducing the linear-probe baseline and testing its generality vs. SAE probes, concluding SAEs are 'unlikely to be a magic bullet' in this setting.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2509.20393",
+            "arxiv_title": "The Secret Agenda: LLMs Strategically Lie and Our Current Safety Tools Are Blind",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        }
+      ],
+      "counts": {
+        "reproduce": 1,
+        "extend": 1,
+        "improve": 0,
+        "total": 1
+      },
+      "n_extensions": 1,
+      "search_notes": "Searched arXiv (2502.03407), Semantic Scholar, Apollo Research blog, LessWrong. ICML 2025 poster. Found one direct follow-up via a community literature review gist. arXiv link needs verification against paper availability."
+    },
+    {
+      "title": "Detecting High-Stakes Interactions with Activation Probes",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "NeurIPS",
+      "year": 2025,
+      "composite": 57.5,
+      "score_breakdown": {
+        "focus": 30.0,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 2,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/arrrlex/models-under-pressure",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 1,
+      "citations": null,
+      "relevance_score": 14.0,
+      "matched_terms": [
+        "\\bprobe(s)?\\b",
+        "activation prob(e|es|ing)",
+        "interpretab",
+        "linear prob(e|es|ing)",
+        "mechanistic interpretab"
+      ],
+      "url": "https://openreview.net/forum?id=8YniJnJQ0P",
+      "pdf": "",
+      "authors": [
+        "Alex McKenzie",
+        "Urja Pawar",
+        "Phil Blandfort",
+        "William Bankes",
+        "David Krueger",
+        "Ekdeep Singh Lubana",
+        "Dmitrii Krasheninnikov"
+      ],
+      "rank": 4,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched OpenReview (NeurIPS 2025 forum id 8YniJnJQ0P), arXiv, Google Scholar. Paper is from NeurIPS 2025 and is very recent; no genuine follow-ups found."
+    },
+    {
+      "title": "Improving Instruction-Following in Language Models through Activation Steering",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "ICLR",
+      "year": 2025,
+      "composite": 55.0,
+      "score_breakdown": {
+        "focus": 25.5,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 4.0,
+        "recency": 3.5,
+        "safety": 0,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/microsoft/llm-steer-instruct.",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 0,
+      "citations": 9,
+      "relevance_score": 14.0,
+      "matched_terms": [
+        "activation steering",
+        "interpretab",
+        "mechanistic interpretab",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)",
+        "steering vector"
+      ],
+      "url": "https://iclr.cc/virtual/2025/poster/27819",
+      "pdf": "https://openreview.net/pdf?id=wozhdnRCtw",
+      "authors": [
+        "Alessandro Stolfo",
+        "Vidhisha Balachandran",
+        "Safoora Yousefi",
+        "Eric Horvitz",
+        "Besmira Nushi"
+      ],
+      "rank": 5,
+      "extensions": [
+        {
+          "title": "Enhancing Instruction Following of LLMs via Activation Steering with Dynamic Rejection",
+          "authors": "Various authors",
+          "year": 2026,
+          "venue": "arXiv preprint",
+          "link": "https://arxiv.org/abs/2603.06745",
+          "type": [
+            "extend",
+            "improve"
+          ],
+          "confidence": "high",
+          "evidence": "Builds directly on Stolfo et al. (2025)'s instruction-following activation steering framework, adding dynamic rejection to address oversteer failures; cites the paper in motivation and experimental comparison.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2603.06745",
+            "arxiv_title": "Enhancing Instruction Following of LLMs via Activation Steering with Dynamic Rejection",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        },
+        {
+          "title": "Prompt-Activation Duality: Improving Activation Steering via Attention-Level Interventions",
+          "authors": "Various authors",
+          "year": 2025,
+          "venue": "arXiv preprint",
+          "link": "https://arxiv.org/abs/2605.10664",
+          "type": [
+            "extend"
+          ],
+          "confidence": "high",
+          "evidence": "Explicitly lists Stolfo et al. (2024/2025) instruction-following steering as the line of work it builds upon, extending steering to attention-level interventions for KV-cache-aware control.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2605.10664",
+            "arxiv_title": "Prompt-Activation Duality: Improving Activation Steering via Attention-Level Interventions",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        },
+        {
+          "title": "Steering Code LLMs with Activation Directions for Language and Library Control",
+          "authors": "Various authors",
+          "year": 2026,
+          "venue": "arXiv preprint",
+          "link": "https://arxiv.org/abs/2603.23629",
+          "type": [
+            "extend"
+          ],
+          "confidence": "high",
+          "evidence": "Applies the instruction-following activation steering paradigm from Stolfo et al. to code-generation LLMs for programming language and library control, citing the original paper in methodology.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2603.23629",
+            "arxiv_title": "Steering Code LLMs with Activation Directions for Language and Library Control",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        },
+        {
+          "title": "Denoising Concept Vectors with Sparse Autoencoders for Improved Language Model Steering",
+          "authors": "Various authors",
+          "year": 2025,
+          "venue": "arXiv preprint",
+          "link": "https://arxiv.org/abs/2505.15038",
+          "type": [
+            "extend"
+          ],
+          "confidence": "medium",
+          "evidence": "Cites Stolfo et al. in its baseline comparison of activation steering methods for instruction following, testing whether SAE-denoised vectors outperform plain difference-in-means steering.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2505.15038",
+            "arxiv_title": "Denoising Concept Vectors with Sparse Autoencoders for Improved Language Model Steering",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        }
+      ],
+      "counts": {
+        "reproduce": 0,
+        "extend": 4,
+        "improve": 1,
+        "total": 4
+      },
+      "n_extensions": 4,
+      "search_notes": "Searched arXiv (2410.12877), Microsoft Research page, OpenReview (wozhdnRCtw), Google Scholar. Has 4 OpenAlex citations; additional web-search pass found several direct methodological extensions."
+    },
+    {
+      "title": "Angular Steering: Behavior Control via Rotation in Activation Space",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "NeurIPS",
+      "year": 2025,
+      "composite": 54.2,
+      "score_breakdown": {
+        "focus": 22.7,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 6,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/lone17/angular-steering",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 3,
+      "citations": null,
+      "relevance_score": 13.0,
+      "matched_terms": [
+        "activation steering",
+        "interpretab",
+        "mechanistic interpretab",
+        "representation engineering",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)"
+      ],
+      "url": "https://openreview.net/forum?id=dGi2d5yDs4",
+      "pdf": "",
+      "authors": [
+        "Hieu M. Vu",
+        "Tan Minh Nguyen"
+      ],
+      "rank": 6,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched OpenReview (NeurIPS 2025 forum id dGi2d5yDs4), arXiv, Google Scholar. Paper is NeurIPS 2025; no qualifying follow-ups found in this web pass."
+    },
+    {
+      "title": "Programming Refusal with Conditional Activation Steering",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "ICLR",
+      "year": 2025,
+      "composite": 54.0,
+      "score_breakdown": {
+        "focus": 28.3,
+        "reproducibility": 12,
+        "cross_model": 0.0,
+        "impact": 4.2,
+        "recency": 3.5,
+        "safety": 6,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": null,
+      "code_status": "promised",
+      "persona": false,
+      "safety_hits": 3,
+      "citations": 10,
+      "relevance_score": 11.0,
+      "matched_terms": [
+        "activation engineering",
+        "activation steering",
+        "hidden state(s)?",
+        "steering vector"
+      ],
+      "url": "https://iclr.cc/virtual/2025/poster/29806",
+      "pdf": "https://openreview.net/pdf?id=Oi47wc10sm",
+      "authors": [
+        "Bruce W. Lee",
+        "Inkit Padhi",
+        "Karthikeyan Natesan Ramamurthy",
+        "Erik Miehling",
+        "Pierre Dognin",
+        "Manish Nagireddy",
+        "Amit Dhurandhar"
+      ],
+      "rank": 7,
+      "extensions": [
+        {
+          "title": "C-ΔΘ: Circuit-Restricted Weight Arithmetic for Selective Refusal",
+          "authors": "Various authors",
+          "year": 2026,
+          "venue": "arXiv preprint",
+          "link": "https://arxiv.org/abs/2602.04521",
+          "type": [
+            "extend",
+            "improve"
+          ],
+          "confidence": "high",
+          "evidence": "Lists CAST (Lee et al., ICLR 2025) as reference [2] and directly contrasts its circuit-restricted weight-arithmetic approach against conditional activation steering for selective refusal control.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2602.04521",
+            "arxiv_title": "$C$-$ΔΘ$: Circuit-Restricted Weight Arithmetic for Selective Refusal",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        }
+      ],
+      "counts": {
+        "reproduce": 0,
+        "extend": 1,
+        "improve": 1,
+        "total": 1
+      },
+      "n_extensions": 1,
+      "search_notes": "Searched arXiv (2409.05907), IBM GitHub repo, OpenReview (Oi47wc10sm), Google Scholar. ICLR 2025 Spotlight paper. Found one direct follow-up in a refusal-steering extension paper."
+    },
+    {
+      "title": "SCANS: Mitigating the Exaggerated Safety for LLMs via Safety-Conscious Activation Steering",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "AAAI",
+      "year": 2025,
+      "composite": 53.3,
+      "score_breakdown": {
+        "focus": 19.8,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 8,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/zouyingcao/SCANS",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 4,
+      "citations": 0,
+      "relevance_score": 8.0,
+      "matched_terms": [
+        "activation steering",
+        "hidden state(s)?",
+        "steering vector"
+      ],
+      "url": "https://ojs.aaai.org/index.php/AAAI/article/view/34521",
+      "pdf": "https://ojs.aaai.org/index.php/AAAI/article/view/34521/36676",
+      "authors": [
+        "Zouying Cao",
+        "Yifei Yang",
+        "Hai Zhao"
+      ],
+      "rank": 8,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched arXiv (2408.11491), AAAI OJS, GitHub (zouyingcao/SCANS), Semantic Scholar. Found one medium-confidence extension via ResearchGate snippet citing SCANS in related work on conditional refusal behavior."
+    },
+    {
+      "title": "LayerNavigator: Finding Promising Intervention Layers for Efficient Activation Steering in Large Language Models",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "NeurIPS",
+      "year": 2025,
+      "composite": 53.0,
+      "score_breakdown": {
+        "focus": 25.5,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 2,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/Bryson-Arrot/LayerNavigator",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 1,
+      "citations": null,
+      "relevance_score": 13.0,
+      "matched_terms": [
+        "activation steering",
+        "interpretab",
+        "residual stream",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)",
+        "steering vector"
+      ],
+      "url": "https://openreview.net/forum?id=wj4lM45xQR",
+      "pdf": "",
+      "authors": [
+        "Hao Sun",
+        "Huailiang Peng",
+        "Qiong Dai",
+        "Xu Bai",
+        "Yanan Cao"
+      ],
+      "rank": 9,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched OpenReview (NeurIPS 2025 forum id wj4lM45xQR), arXiv, Google Scholar. Very recent NeurIPS 2025 paper; no qualifying follow-ups found."
+    },
+    {
+      "title": "Towards Interpretability Without Sacrifice: Faithful Dense Layer Decomposition with Mixture of Decoders",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "NeurIPS",
+      "year": 2025,
+      "composite": 52.7,
+      "score_breakdown": {
+        "focus": 25.2,
+        "reproducibility": 22,
+        "cross_model": 2.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 0,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [
+        3.0
+      ],
+      "size_min_b": 3.0,
+      "size_max_b": 3.0,
+      "code": "https://github.com/james-oldfield/MxD.",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 0,
+      "citations": null,
+      "relevance_score": 14.0,
+      "matched_terms": [
+        "\\bprobing\\b",
+        "feature steering",
+        "interpretab",
+        "sparse probing",
+        "transcoder"
+      ],
+      "url": "https://openreview.net/forum?id=jcvX8XFNqX",
+      "pdf": "",
+      "authors": [
+        "James Oldfield",
+        "Shawn Im",
+        "Sharon Li",
+        "Mihalis Nicolaou",
+        "Ioannis Patras",
+        "Grigorios Chrysos"
+      ],
+      "rank": 10,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched OpenReview (NeurIPS 2025 forum id jcvX8XFNqX), arXiv, Google Scholar. Very recent NeurIPS 2025 paper; no qualifying follow-ups found."
+    },
+    {
+      "title": "REAL: Reading Out Transformer Activations for Precise Localization in Language Model Steering",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "ICLR",
+      "year": 2026,
+      "composite": 51.0,
+      "score_breakdown": {
+        "focus": 30.0,
+        "reproducibility": 6,
+        "cross_model": 7.0,
+        "impact": 0.0,
+        "recency": 4,
+        "safety": 4,
+        "persona_bonus": 0
+      },
+      "families": [
+        "Llama",
+        "Qwen"
+      ],
+      "n_families": 2,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": null,
+      "code_status": "unknown",
+      "persona": false,
+      "safety_hits": 2,
+      "citations": null,
+      "relevance_score": 12.0,
+      "matched_terms": [
+        "inference[- ]time intervention",
+        "model steering",
+        "representation engineering",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)"
+      ],
+      "url": "https://openreview.net/forum?id=P38RYdkFLI",
+      "pdf": "",
+      "authors": [],
+      "rank": 11,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched OpenReview (ICLR 2026 forum id P38RYdkFLI), arXiv, Google Scholar. ICLR 2026 paper; no qualifying follow-ups found, as expected for a paper this recent."
+    },
+    {
+      "title": "The Linear Representation Hypothesis and the Geometry of Large Language Models",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "ICML",
+      "year": 2024,
+      "composite": 50.0,
+      "score_breakdown": {
+        "focus": 30.0,
+        "reproducibility": 6,
+        "cross_model": 3.5,
+        "impact": 8.0,
+        "recency": 2.5,
+        "safety": 0,
+        "persona_bonus": 0
+      },
+      "families": [
+        "Llama"
+      ],
+      "n_families": 1,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": null,
+      "code_status": "unknown",
+      "persona": false,
+      "safety_hits": 0,
+      "citations": 155,
+      "relevance_score": 16.0,
+      "matched_terms": [
+        "\\bprobe(s)?\\b",
+        "\\bprobing\\b",
+        "linear prob(e|es|ing)",
+        "linear representation hypothesis",
+        "model steering",
+        "steering vector"
+      ],
+      "url": "https://icml.cc/virtual/2024/poster/33950",
+      "pdf": "https://openreview.net/pdf?id=UGpGkLzwpP",
+      "authors": [
+        "Kiho Park",
+        "Yo Joong Choe",
+        "Victor Veitch"
+      ],
+      "rank": 12,
+      "extensions": [
+        {
+          "title": "The Geometry of Categorical and Hierarchical Concepts in Large Language Models",
+          "authors": "Park, Choe, Jiang, Veitch",
+          "year": 2025,
+          "venue": "ICLR 2025 (oral), Best Paper ICML 2024 Workshop on MI",
+          "link": "https://arxiv.org/abs/2406.01506",
+          "type": [
+            "extend"
+          ],
+          "confidence": "high",
+          "evidence": "Directly extends Park et al. (2024)'s binary-concept formalization to categorical and hierarchical concepts, authored by overlapping authors, and proves new geometric results about polytope representations.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2406.01506",
+            "arxiv_title": "The Geometry of Categorical and Hierarchical Concepts in Large Language Models",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        },
+        {
+          "title": "Toward a Flexible Framework for Linear Representation Hypothesis Using Maximum Likelihood Estimation",
+          "authors": "Nguyen and Leng",
+          "year": 2025,
+          "venue": "arXiv preprint",
+          "link": "https://arxiv.org/abs/2502.16385",
+          "type": [
+            "extend",
+            "improve"
+          ],
+          "confidence": "high",
+          "evidence": "Explicitly extends Park et al. (2024) by removing the single-token-pair constraint via MLE on von Mises-Fisher distributions, demonstrated on LLaMA models across diverse concepts.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2502.16385",
+            "arxiv_title": "Toward a Flexible Framework for Linear Representation Hypothesis Using Maximum Likelihood Estimation",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        },
+        {
+          "title": "Mapping Semantic & Syntactic Relationships with Geometric Rotation",
+          "authors": "Various authors",
+          "year": 2025,
+          "venue": "arXiv preprint",
+          "link": "https://arxiv.org/abs/2510.09790",
+          "type": [
+            "extend"
+          ],
+          "confidence": "medium",
+          "evidence": "Extends the LRH formalization of Park et al. (2024) to multilingual contexts and geodesic/manifold geometry, citing it as the foundational framework in Section 2.1.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2510.09790",
+            "arxiv_title": "Mapping Semantic & Syntactic Relationships with Geometric Rotation",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        }
+      ],
+      "counts": {
+        "reproduce": 0,
+        "extend": 3,
+        "improve": 1,
+        "total": 3
+      },
+      "n_extensions": 3,
+      "search_notes": "Searched arXiv (2311.03658), Semantic Scholar (265042984), ICML 2024 proceedings. Has 8 OpenAlex citations as lower bound; found several high-quality direct extensions."
+    },
+    {
+      "title": "InferAligner: Inference-Time Alignment for Harmlessness through Cross-Model Guidance",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "EMNLP",
+      "year": 2024,
+      "composite": 49.7,
+      "score_breakdown": {
+        "focus": 8.5,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 6.7,
+        "recency": 2.5,
+        "safety": 10,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/Jihuai-wpy/InferAligner",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 5,
+      "citations": 46,
+      "relevance_score": 3.0,
+      "matched_terms": [
+        "steering vector"
+      ],
+      "url": "https://aclanthology.org/2024.emnlp-main.585/",
+      "pdf": "https://aclanthology.org/2024.emnlp-main.585.pdf",
+      "authors": [
+        "Pengyu Wang",
+        "Dong Zhang",
+        "Linyang Li",
+        "Chenkun Tan",
+        "Xinghao Wang",
+        "Mozhi Zhang",
+        "Ke Ren",
+        "Botian Jiang",
+        "Xipeng Qiu"
+      ],
+      "rank": 13,
+      "extensions": [
+        {
+          "title": "Inference-time Alignment in Continuous Space",
+          "authors": "Various authors",
+          "year": 2025,
+          "venue": "arXiv preprint",
+          "link": "https://arxiv.org/abs/2505.20081",
+          "type": [
+            "extend"
+          ],
+          "confidence": "high",
+          "evidence": "Cites InferAligner [50] as a key prior inference-time alignment method and proposes a continuous-space extension in Section 2, explicitly positioning its approach relative to InferAligner's cross-model safety-vector extraction.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2505.20081",
+            "arxiv_title": "Inference-time Alignment in Continuous Space",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        }
+      ],
+      "counts": {
+        "reproduce": 0,
+        "extend": 1,
+        "improve": 0,
+        "total": 1
+      },
+      "n_extensions": 1,
+      "search_notes": "Searched arXiv (2401.11206), ACL Anthology, OpenReview, GitHub (Jihuai-wpy/InferAligner). Has 10 OpenAlex citations. Found one confirmed methodological extension; other citations appear to be background mentions."
+    },
+    {
+      "title": "Embedded Named Entity Recognition using Probing Classifiers",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "EMNLP",
+      "year": 2024,
+      "composite": 49.0,
+      "score_breakdown": {
+        "focus": 23.3,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 1.2,
+        "recency": 2.5,
+        "safety": 0,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/nicpopovic/EMBER",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 0,
+      "citations": 1,
+      "relevance_score": 7.0,
+      "matched_terms": [
+        "\\bprobing\\b",
+        "probing classifier"
+      ],
+      "url": "https://aclanthology.org/2024.emnlp-main.988/",
+      "pdf": "https://aclanthology.org/2024.emnlp-main.988.pdf",
+      "authors": [
+        "Nicholas Popovic",
+        "Michael Färber"
+      ],
+      "rank": 14,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched arXiv (2403.11747), ACL Anthology, HuggingFace papers, Semantic Scholar. Has 2 OpenAlex citations as lower bound, but neither appears to extend the EMBER method specifically; one citation is a background mention. No qualifying follow-ups confirmed."
+    },
+    {
+      "title": "Steering Knowledge Selection Behaviours in LLMs via SAE-Based Representation Engineering",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "NAACL",
+      "year": 2025,
+      "composite": 48.4,
+      "score_breakdown": {
+        "focus": 19.8,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 3.1,
+        "recency": 3.5,
+        "safety": 0,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/yuzhaouoe/SAE-based-representation-engineering",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 0,
+      "citations": 5,
+      "relevance_score": 14.0,
+      "matched_terms": [
+        "\\bSAEs?\\b",
+        "inference[- ]time intervention",
+        "representation engineering",
+        "sparse auto-encoder"
+      ],
+      "url": "https://aclanthology.org/2025.naacl-long.264/",
+      "pdf": "https://aclanthology.org/2025.naacl-long.264.pdf",
+      "authors": [
+        "Yu Zhao",
+        "Alessio Devoto",
+        "Giwon Hong",
+        "Xiaotang Du",
+        "Aryo Pradipta Gema",
+        "Hongru Wang",
+        "Xuanli He",
+        "Kam-Fai Wong",
+        "Pasquale Minervini"
+      ],
+      "rank": 15,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched arXiv (2410.15999), ACL Anthology, NAACL 2025 proceedings, GitHub (yuzhaouoe), ResearchGate. Has 2 OpenAlex citations. Found one direct methodological extension via ResearchGate snippet. Link tentative — should be verified."
+    },
+    {
+      "title": "Activation Steering for LLM Alignment via a Unified ODE-Based Framework",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "ICLR",
+      "year": 2026,
+      "composite": 48.3,
+      "score_breakdown": {
+        "focus": 28.3,
+        "reproducibility": 12,
+        "cross_model": 0.0,
+        "impact": 0.0,
+        "recency": 4,
+        "safety": 4,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": null,
+      "code_status": "promised",
+      "persona": false,
+      "safety_hits": 2,
+      "citations": null,
+      "relevance_score": 10.0,
+      "matched_terms": [
+        "activation addition",
+        "activation steering",
+        "representation engineering"
+      ],
+      "url": "https://openreview.net/forum?id=CFewUmgIIL",
+      "pdf": "",
+      "authors": [],
+      "rank": 16,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched OpenReview (ICLR 2026 forum id CFewUmgIIL), arXiv, Google Scholar. ICLR 2026 paper; too recent for follow-ups."
+    },
+    {
+      "title": "Differentially Private Steering for Large Language Model Alignment",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "ICLR",
+      "year": 2025,
+      "composite": 46.7,
+      "score_breakdown": {
+        "focus": 14.2,
+        "reproducibility": 6,
+        "cross_model": 15.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 8,
+        "persona_bonus": 0
+      },
+      "families": [
+        "Llama",
+        "Qwen"
+      ],
+      "n_families": 2,
+      "sizes_b": [
+        0.5,
+        7.0
+      ],
+      "size_min_b": 0.5,
+      "size_max_b": 7.0,
+      "code": null,
+      "code_status": "unknown",
+      "persona": false,
+      "safety_hits": 4,
+      "citations": 0,
+      "relevance_score": 5.0,
+      "matched_terms": [
+        "activation engineering",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)"
+      ],
+      "url": "https://iclr.cc/virtual/2025/poster/28523",
+      "pdf": "https://openreview.net/pdf?id=lLkgj7FEtZ",
+      "authors": [
+        "Anmol Goel",
+        "Yaxi Hu",
+        "Iryna Gurevych",
+        "Amartya Sanyal"
+      ],
+      "rank": 17,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched arXiv (2501.18532), ICLR 2025 page, GitHub (UKPLab/iclr2025-psa), Google Scholar. Found arxiv 2505.08849 'Improved Algorithms for Differentially Private Language Model Alignment' but it focuses on DP-DPO/RLHF training, not activation-steering PSA; does not cite PSA, so excluded. No qualifying follow-ups confirmed."
+    },
+    {
+      "title": "LEGEND: Leveraging Representation Engineering to Annotate Safety Margin for Preference Datasets",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "AAAI",
+      "year": 2025,
+      "composite": 46.0,
+      "score_breakdown": {
+        "focus": 11.3,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 1.2,
+        "recency": 3.5,
+        "safety": 8,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/colfeng/Legend",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 4,
+      "citations": 1,
+      "relevance_score": 4.0,
+      "matched_terms": [
+        "representation engineering"
+      ],
+      "url": "https://ojs.aaai.org/index.php/AAAI/article/view/34937",
+      "pdf": "https://ojs.aaai.org/index.php/AAAI/article/view/34937/37092",
+      "authors": [
+        "Duanyu Feng",
+        "Bowen Qin",
+        "Chen Huang",
+        "Youcheng Huang",
+        "Zheng Zhang",
+        "Wenqiang Lei"
+      ],
+      "rank": 18,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched arXiv (2406.08124), AAAI OJS, ResearchGate, alphaXiv. No confirmed qualifying follow-ups found that genuinely engage the LEGEND method."
+    },
+    {
+      "title": "Beyond Linear Probes: Dynamic Safety Monitoring for Language Models",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "ICLR",
+      "year": 2026,
+      "composite": 46.0,
+      "score_breakdown": {
+        "focus": 20.0,
+        "reproducibility": 12,
+        "cross_model": 2.0,
+        "impact": 0.0,
+        "recency": 4,
+        "safety": 8,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [
+        30.0
+      ],
+      "size_min_b": 30.0,
+      "size_max_b": 30.0,
+      "code": null,
+      "code_status": "promised",
+      "persona": false,
+      "safety_hits": 4,
+      "citations": null,
+      "relevance_score": 8.0,
+      "matched_terms": [
+        "\\bprobe(s)?\\b",
+        "interpretab",
+        "linear prob(e|es|ing)"
+      ],
+      "url": "https://openreview.net/forum?id=AGWa8whf92",
+      "pdf": "",
+      "authors": [],
+      "rank": 19,
+      "extensions": [],
+      "counts": {
+        "reproduce": 0,
+        "extend": 0,
+        "improve": 0,
+        "total": 0
+      },
+      "n_extensions": 0,
+      "search_notes": "Searched OpenReview (ICLR 2026 forum id AGWa8whf92), arXiv, Google Scholar. ICLR 2026 paper; too recent for follow-ups."
+    },
+    {
+      "title": "Are Sparse Autoencoders Useful? A Case Study in Sparse Probing",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "ICML",
+      "year": 2025,
+      "composite": 44.3,
+      "score_breakdown": {
+        "focus": 30.0,
+        "reproducibility": 6,
+        "cross_model": 0.0,
+        "impact": 2.8,
+        "recency": 3.5,
+        "safety": 2,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": null,
+      "code_status": "unknown",
+      "persona": false,
+      "safety_hits": 1,
+      "citations": 4,
+      "relevance_score": 23.0,
+      "matched_terms": [
+        "\\bSAEs?\\b",
+        "\\bprobe(s)?\\b",
+        "\\bprobing\\b",
+        "activation prob(e|es|ing)",
+        "interpretab",
+        "mechanistic interpretab",
+        "sparse autoencoder",
+        "sparse probing"
+      ],
+      "url": "https://icml.cc/virtual/2025/poster/43895",
+      "pdf": "https://openreview.net/pdf?id=rNfzT8YkgO",
+      "authors": [
+        "Subhash Kantamneni",
+        "Joshua Engels",
+        "Senthooran Rajamanoharan",
+        "Max Tegmark",
+        "Neel Nanda"
+      ],
+      "rank": 20,
+      "extensions": [
+        {
+          "title": "Rethinking Sparse Autoencoders: Select-and-Project for Fairness and Control from Encoder Features Alone",
+          "authors": "Various authors",
+          "year": 2025,
+          "venue": "arXiv preprint",
+          "link": "https://arxiv.org/abs/2509.10809",
+          "type": [
+            "extend"
+          ],
+          "confidence": "high",
+          "evidence": "Directly cites Kantamneni et al. (2025) 'Are sparse autoencoders useful?' [15] as foundational motivation and proposes select-and-project as a response to its negative findings on SAE probe utility.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2509.10809",
+            "arxiv_title": "Rethinking Sparse Autoencoders: Select-and-Project for Fairness and Control from Encoder Features Alone",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        },
+        {
+          "title": "Inference-Time Decomposition of Activations (ITDA): A Scalable Approach to Interpreting Large Language Models",
+          "authors": "Various authors",
+          "year": 2025,
+          "venue": "arXiv preprint",
+          "link": "https://arxiv.org/abs/2505.17769",
+          "type": [
+            "extend"
+          ],
+          "confidence": "high",
+          "evidence": "Cites Kantamneni et al. (arXiv:2502.16681) as a key negative result benchmark and proposes ITDA as a scalable alternative that addresses the limitations identified in the sparse probing case study.",
+          "link_check": {
+            "ok": true,
+            "source": "arxiv",
+            "arxiv_id": "2505.17769",
+            "arxiv_title": "Inference-Time Decomposition of Activations (ITDA): A Scalable Approach to Interpreting Large Language Models",
+            "title_match": 1.0,
+            "note": "ok"
+          }
+        }
+      ],
+      "counts": {
+        "reproduce": 0,
+        "extend": 2,
+        "improve": 0,
+        "total": 2
+      },
+      "n_extensions": 2,
+      "search_notes": "Searched arXiv (2502.16681), ICML 2025 page, Google Scholar. Found two direct methodological extensions that explicitly cite and build on the paper's negative probing findings."
+    }
+  ],
+  "summary": {
+    "papers": 20,
+    "papers_with_extensions": 7,
+    "extensions_total": 15,
+    "extensions_valid_links": 15
+  }
+}

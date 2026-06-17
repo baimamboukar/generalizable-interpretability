@@ -1,0 +1,1011 @@
+{
+  "metadata": {
+    "title": "Probes & steering reproduction shortlist",
+    "generated_by": "scripts/select_interp_targets.py",
+    "source_corpus": "data/interp_corpus.json (built by scripts/build_interp_corpus.py)",
+    "objective": "Pick reproduction targets for a clean, scalable pipeline that runs probes — then steering vectors (incl. persona) — across many model families and sizes, reproducing each paper's original result before extending to new models. Probes are prioritized first per mentor guidance.",
+    "max_selected": 20,
+    "selection_funnel": {
+      "corpus": 641,
+      "has_probe_or_steer_signal": 231,
+      "in_llm_context": 168,
+      "after_ssl_eval_filter": 154,
+      "after_modality_filter": 148
+    },
+    "scope_filters": [
+      "Has a probing or steering signal in the source corpus (SAE-only / circuit-only excluded).",
+      "Sits in an LLM/NLP context (drops vision/self-supervised 'linear probing' used as an evaluation protocol).",
+      "Not a self-supervised / vision-transfer eval paper unless it carries a genuine interpretability signal.",
+      "Text modality only — audio / speech / EEG / ECG / biosignal papers are dropped."
+    ],
+    "relevance_score": {
+      "field": "relevance_score (carried from the corpus harvester)",
+      "how": "Each paper is matched against a term taxonomy over title + abstract + keywords. Strong unambiguous terms (e.g. 'steering vector', 'linear probe', 'mechanistic interpretability') weight 3, medium terms 2, weak/context terms 1, with a +1 bonus when a term appears in the title. A paper is kept only if it hits a strong term or an explicit interpretability keyword and totals at least 3."
+    },
+    "composite_score": {
+      "formula": "focus + reproducibility + cross_model + impact + recency + topic, capped at 100",
+      "weights_max_points": {
+        "focus": 30,
+        "reproducibility": 22,
+        "cross_model": 22,
+        "impact": 8,
+        "recency": 4,
+        "topic": 14
+      },
+      "components": {
+        "focus": "Probe/steering alignment from the corpus category scores; probing weighted 1.0 vs steering 0.85 ('probes first').",
+        "reproducibility": "Reusable code to build the pipeline on. {'repo': 22, 'promised': 12, 'unknown': 6} points for repo link / code promised / none detected (from abstract or fields).",
+        "cross_model": "Cross-model readiness: model families (up to 14 pts for >=4 families) plus a gradual parameter-size span (8 pts when max/min >= 4x, e.g. 1B->70B).",
+        "impact": "Citations, log-scaled: 8 * min(log10(cites+1)/2, 1).",
+        "recency": "Publication year: {2026: 4, 2025: 3.5, 2024: 2.5} (older -> 1.5).",
+        "topic": "Safety/alignment incentive: 2 pts per distinct safety/alignment term (<=10) + 4 for persona steering, capped at 14."
+      }
+    },
+    "field_notes": {
+      "families/sizes": "Parsed from the abstract as a cross-model-readiness signal; verify per paper.",
+      "code_status": "repo = link found, promised = code release mentioned, unknown = none detected (absence is not proof there is no repo).",
+      "citations": "Google Scholar count from the conference dump; null when unavailable."
+    },
+    "stats": {
+      "n_selected": 20,
+      "by_focus": {
+        "steering": 13,
+        "probing": 7
+      },
+      "by_venue": {
+        "NeurIPS 2025": 5,
+        "ICML 2025": 3,
+        "ICLR 2025": 3,
+        "ICLR 2026": 3,
+        "AAAI 2025": 2,
+        "EMNLP 2024": 2,
+        "ICML 2024": 1,
+        "NAACL 2025": 1
+      },
+      "by_year": {
+        "2024": 3,
+        "2025": 14,
+        "2026": 3
+      },
+      "code_status": {
+        "promised": 4,
+        "repo": 12,
+        "unknown": 4
+      },
+      "with_safety_signal": 14,
+      "with_persona": 0,
+      "model_families_covered": {
+        "Llama": 5,
+        "Gemma": 2,
+        "Qwen": 2
+      },
+      "with_extracted_sizes": 6,
+      "size_span_b": [
+        0.5,
+        70.0
+      ],
+      "composite_range": [
+        44.3,
+        63.5
+      ]
+    }
+  },
+  "selection": [
+    {
+      "title": "AxBench: Steering LLMs? Even Simple Baselines Outperform Sparse Autoencoders",
+      "focus": "steering",
+      "category": "sae",
+      "venue": "ICML",
+      "year": 2025,
+      "composite": 63.5,
+      "score_breakdown": {
+        "focus": 30.0,
+        "reproducibility": 12,
+        "cross_model": 11.5,
+        "impact": 4.5,
+        "recency": 3.5,
+        "safety": 2,
+        "persona_bonus": 0
+      },
+      "families": [
+        "Gemma"
+      ],
+      "n_families": 1,
+      "sizes_b": [
+        2.0,
+        9.0
+      ],
+      "size_min_b": 2.0,
+      "size_max_b": 9.0,
+      "code": null,
+      "code_status": "promised",
+      "persona": false,
+      "safety_hits": 1,
+      "citations": 12,
+      "relevance_score": 22.0,
+      "matched_terms": [
+        "\\bSAEs?\\b",
+        "\\bprobe(s)?\\b",
+        "dictionary learning",
+        "interpretab",
+        "linear prob(e|es|ing)",
+        "sparse autoencoder",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)",
+        "steering vector"
+      ],
+      "url": "https://icml.cc/virtual/2025/poster/45658",
+      "pdf": "https://openreview.net/pdf?id=K2CckZjNy0",
+      "authors": [
+        "Zhengxuan Wu",
+        "Aryaman Arora",
+        "Atticus Geiger",
+        "Zheng Wang",
+        "Jing Huang",
+        "Dan Jurafsky",
+        "Christopher D Manning",
+        "Christopher Potts"
+      ],
+      "abstract": "Fine-grained steering of language model outputs is essential for safety and reliability. Prompting and finetuning are widely used to achieve these goals, but interpretability researchers have proposed a variety of representation-based techniques as well, including sparse autoencoders (SAEs), linear artificial tomography, supervised steering vectors, linear probes, and representation finetuning. At present, there is no benchmark for making direct comparisons between these proposals. Therefore, we introduce AxBench, a large-scale benchmark for steering and concept detection, and report experiments on Gemma-2-2B and 9B. For steering,  we find that prompting outperforms all existing methods, followed by finetuning. For concept detection, representation-based methods such as difference-in-means, perform the best. On both evaluations, SAEs are not competitive. We introduce a novel weakly-supervised representational method (Rank-1 Representation Finetuning; ReFT-r1), which is competitive on both tasks while providing the interpretability advantages that prompting lacks. Along with AxBench, we train and publicly release SAE-scale feature dictionaries for ReFT-r1 and DiffMean.",
+      "rank": 1
+    },
+    {
+      "title": "DISCO: Disentangled Communication Steering for Large Language Models",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "NeurIPS",
+      "year": 2025,
+      "composite": 60.2,
+      "score_breakdown": {
+        "focus": 22.7,
+        "reproducibility": 22,
+        "cross_model": 12.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 0,
+        "persona_bonus": 0
+      },
+      "families": [
+        "Gemma",
+        "Llama"
+      ],
+      "n_families": 2,
+      "sizes_b": [
+        8.0,
+        9.0
+      ],
+      "size_min_b": 8.0,
+      "size_max_b": 9.0,
+      "code": "https://github.com/MaxTorop/DISCO.",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 0,
+      "citations": null,
+      "relevance_score": 8.0,
+      "matched_terms": [
+        "representation engineering",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)",
+        "steering vector"
+      ],
+      "url": "https://openreview.net/forum?id=c8AjdgdHnD",
+      "pdf": "",
+      "authors": [
+        "Max Torop",
+        "Aria Masoomi",
+        "Masih Eskandar",
+        "Jennifer Dy"
+      ],
+      "abstract": "A variety of recent methods guide large language model outputs via the inference-time addition of *steering vectors* to residual-stream or attention-head representations. In contrast, we propose to inject steering vectors directly into the query and value representation spaces within attention heads. We provide evidence that a greater portion of these spaces exhibit high linear discriminability of concepts --a key property motivating the use of steering vectors-- than attention head outputs. We analytically characterize the effect of our method, which we term *DISentangled COmmunication (DISCO) Steering*, on attention head outputs. Our analysis reveals that DISCO disentangles a strong but underutilized baseline, steering attention head inputs, which implicitly modifies queries and values in a rigid manner. In contrast, DISCO's direct modulation of these components enables more granular control. We find that DISCO achieves superior performance over a number of steering vector baselines across multiple datasets on LLaMA 3.1 8B and Gemma 2 9B, with steering efficacy scoring up to $19.1$% higher than the runner-up. Our results support the conclusion that the query and value spaces are powerful building blocks for steering vector methods. Our code is publicly available at https://github.com/MaxTorop/DISCO.",
+      "rank": 2
+    },
+    {
+      "title": "Detecting Strategic Deception with Linear Probes",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "ICML",
+      "year": 2025,
+      "composite": 58.2,
+      "score_breakdown": {
+        "focus": 20.0,
+        "reproducibility": 22,
+        "cross_model": 5.5,
+        "impact": 1.2,
+        "recency": 3.5,
+        "safety": 6,
+        "persona_bonus": 0
+      },
+      "families": [
+        "Llama"
+      ],
+      "n_families": 1,
+      "sizes_b": [
+        70.0
+      ],
+      "size_min_b": 70.0,
+      "size_max_b": 70.0,
+      "code": "https://github.com/ApolloResearch/deception-detection.",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 3,
+      "citations": 1,
+      "relevance_score": 8.0,
+      "matched_terms": [
+        "\\bprobe(s)?\\b",
+        "interpretab",
+        "linear prob(e|es|ing)"
+      ],
+      "url": "https://icml.cc/virtual/2025/poster/46082",
+      "pdf": "https://openreview.net/pdf?id=C5Jj3QKQav",
+      "authors": [
+        "Nicholas Goldowsky-Dill",
+        "Bilal Chughtai",
+        "Stefan Heimersheim",
+        "Marius Hobbhahn"
+      ],
+      "abstract": "AI models might use deceptive strategies as part of scheming or misaligned behaviour. Monitoring outputs alone is insufficient, since the AI might produce seemingly benign outputs while its internal reasoning is misaligned. We thus evaluate if linear probes can robustly detect deception by monitoring model activations. We test two probe-training datasets, one with contrasting instructions to be honest or deceptive (following Zou et al. (2023)) and one of responses to simple roleplaying scenarios. We test whether these probes generalize to realistic settings where Llama-3.3-70B-Instruct behaves deceptively, such as concealing insider trading Scheurer et al. (2023) and purposely underperforming on safety evaluations Benton et al. (2024). We find that our probe distinguishes honest and deceptive responses with AUROCs between 0.96 and 0.999 on our evaluation datasets. If we set the decision threshold to have a 1\\% false positive rate on chat data not related to deception, our probe catches 95-99\\% of the deceptive responses. Overall we think white-box probes are promising for future monitoring systems, but current performance is insufficient as a robust defence against deception. Our probes' outputs can be viewed at https://data.apolloresearch.ai/dd/ and our code at https://github.com/ApolloResearch/deception-detection.",
+      "rank": 3
+    },
+    {
+      "title": "Detecting High-Stakes Interactions with Activation Probes",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "NeurIPS",
+      "year": 2025,
+      "composite": 57.5,
+      "score_breakdown": {
+        "focus": 30.0,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 2,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/arrrlex/models-under-pressure",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 1,
+      "citations": null,
+      "relevance_score": 14.0,
+      "matched_terms": [
+        "\\bprobe(s)?\\b",
+        "activation prob(e|es|ing)",
+        "interpretab",
+        "linear prob(e|es|ing)",
+        "mechanistic interpretab"
+      ],
+      "url": "https://openreview.net/forum?id=8YniJnJQ0P",
+      "pdf": "",
+      "authors": [
+        "Alex McKenzie",
+        "Urja Pawar",
+        "Phil Blandfort",
+        "William Bankes",
+        "David Krueger",
+        "Ekdeep Singh Lubana",
+        "Dmitrii Krasheninnikov"
+      ],
+      "abstract": "Monitoring is an important aspect of safely deploying Large Language Models (LLMs).\nThis paper examines activation probes for detecting ``high-stakes'' interactions---where the text indicates that the interaction might lead to significant harm---as a critical, yet underexplored, target for such monitoring.\nWe evaluate several probe architectures trained on synthetic data, and find them to exhibit robust generalization to diverse, out-of-distribution, real-world data.\nProbes' performance is comparable to that of prompted or finetuned medium-sized LLM monitors, while offering computational savings of six orders-of-magnitude.\nThese savings are enabled by reusing activations of the model that is being monitored.\nOur experiments also highlight the potential of building resource-aware hierarchical monitoring systems, where probes serve as an efficient initial filter and flag cases for more expensive downstream analysis.\nWe release our novel synthetic dataset and the codebase at\n\\url{https://github.com/arrrlex/models-under-pressure}.",
+      "rank": 4
+    },
+    {
+      "title": "Improving Instruction-Following in Language Models through Activation Steering",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "ICLR",
+      "year": 2025,
+      "composite": 55.0,
+      "score_breakdown": {
+        "focus": 25.5,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 4.0,
+        "recency": 3.5,
+        "safety": 0,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/microsoft/llm-steer-instruct.",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 0,
+      "citations": 9,
+      "relevance_score": 14.0,
+      "matched_terms": [
+        "activation steering",
+        "interpretab",
+        "mechanistic interpretab",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)",
+        "steering vector"
+      ],
+      "url": "https://iclr.cc/virtual/2025/poster/27819",
+      "pdf": "https://openreview.net/pdf?id=wozhdnRCtw",
+      "authors": [
+        "Alessandro Stolfo",
+        "Vidhisha Balachandran",
+        "Safoora Yousefi",
+        "Eric Horvitz",
+        "Besmira Nushi"
+      ],
+      "abstract": "The ability to follow instructions is crucial for numerous real-world applications of language models. In pursuit of deeper insights and more powerful capabilities, we derive instruction-specific vector representations from language models and use them to steer models accordingly. These vectors are computed as the difference in activations between inputs with and without instructions, enabling a modular approach to activation steering. We demonstrate how this method can enhance model adherence to constraints such as output format, length, and word inclusion, providing inference-time control over instruction following. Our experiments across four models demonstrate how we can use the activation vectors to guide models to follow constraints even without explicit instructions and to enhance performance when instructions are present. Additionally, we explore the compositionality of activation steering, successfully applying multiple instructions simultaneously. Finally, we demonstrate that steering vectors computed on instruction-tuned models can transfer to improve base models. Our findings demonstrate that activation steering offers a practical and scalable approach for fine-grained control in language generation. Our code and data are available at https://github.com/microsoft/llm-steer-instruct.",
+      "rank": 5
+    },
+    {
+      "title": "Angular Steering: Behavior Control via Rotation in Activation Space",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "NeurIPS",
+      "year": 2025,
+      "composite": 54.2,
+      "score_breakdown": {
+        "focus": 22.7,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 6,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/lone17/angular-steering",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 3,
+      "citations": null,
+      "relevance_score": 13.0,
+      "matched_terms": [
+        "activation steering",
+        "interpretab",
+        "mechanistic interpretab",
+        "representation engineering",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)"
+      ],
+      "url": "https://openreview.net/forum?id=dGi2d5yDs4",
+      "pdf": "",
+      "authors": [
+        "Hieu M. Vu",
+        "Tan Minh Nguyen"
+      ],
+      "abstract": "Controlling specific behaviors in large language models while preserving their general capabilities is a central challenge for safe and reliable artificial intelligence deployment. Current steering methods, such as vector addition and directional ablation, are constrained within a two-dimensional subspace defined by the activation and feature direction, making them sensitive to chosen parameters and potentially affecting unrelated features due to unintended interactions in activation space. We introduce Angular Steering, a novel and flexible method for behavior modulation that operates by rotating activations within a fixed two-dimensional subspace. By formulating steering as a geometric rotation toward or away from a target behavior direction, Angular Steering provides continuous, fine-grained control over behaviors such as refusal and compliance. We demonstrate this method using refusal steering emotion steering as use cases. Additionally, we propose Adaptive Angular Steering, a selective variant that rotates only activations aligned with the target feature, further enhancing stability and coherence. Angular Steering generalizes existing addition and orthogonalization techniques under a unified geometric rotation framework, simplifying parameter selection and maintaining model stability across a broader range of adjustments. Experiments across multiple model families and sizes show that Angular Steering achieves robust behavioral control while maintaining general language modeling performance, underscoring its flexibility, generalization, and robustness compared to prior approaches. Code and artifacts are available at \\url{https://github.com/lone17/angular-steering/}.",
+      "rank": 6
+    },
+    {
+      "title": "Programming Refusal with Conditional Activation Steering",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "ICLR",
+      "year": 2025,
+      "composite": 54.0,
+      "score_breakdown": {
+        "focus": 28.3,
+        "reproducibility": 12,
+        "cross_model": 0.0,
+        "impact": 4.2,
+        "recency": 3.5,
+        "safety": 6,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": null,
+      "code_status": "promised",
+      "persona": false,
+      "safety_hits": 3,
+      "citations": 10,
+      "relevance_score": 11.0,
+      "matched_terms": [
+        "activation engineering",
+        "activation steering",
+        "hidden state(s)?",
+        "steering vector"
+      ],
+      "url": "https://iclr.cc/virtual/2025/poster/29806",
+      "pdf": "https://openreview.net/pdf?id=Oi47wc10sm",
+      "authors": [
+        "Bruce W. Lee",
+        "Inkit Padhi",
+        "Karthikeyan Natesan Ramamurthy",
+        "Erik Miehling",
+        "Pierre Dognin",
+        "Manish Nagireddy",
+        "Amit Dhurandhar"
+      ],
+      "abstract": "LLMs have shown remarkable capabilities, but precisely controlling their response behavior remains challenging.\nExisting activation steering methods alter LLM behavior indiscriminately, limiting their practical applicability in settings where selective responses are essential, such as content moderation or domain-specific assistants.\nIn this paper, we propose Conditional Activation Steering (CAST), which analyzes LLM activation patterns during inference to selectively apply or withhold activation steering based on the input context.\nOur method is based on the observation that different categories of prompts activate distinct patterns in the model's hidden states.\nUsing CAST, one can systematically control LLM behavior with rules like \"if input is about hate speech or adult content, then refuse\" or \"if input is not about legal advice, then refuse.\"\nThis allows for selective modification of responses to specific content while maintaining normal responses to other content, all without requiring weight optimization.\nWe release an open-source implementation of our framework.",
+      "rank": 7
+    },
+    {
+      "title": "SCANS: Mitigating the Exaggerated Safety for LLMs via Safety-Conscious Activation Steering",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "AAAI",
+      "year": 2025,
+      "composite": 53.3,
+      "score_breakdown": {
+        "focus": 19.8,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 8,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/zouyingcao/SCANS",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 4,
+      "citations": 0,
+      "relevance_score": 8.0,
+      "matched_terms": [
+        "activation steering",
+        "hidden state(s)?",
+        "steering vector"
+      ],
+      "url": "https://ojs.aaai.org/index.php/AAAI/article/view/34521",
+      "pdf": "https://ojs.aaai.org/index.php/AAAI/article/view/34521/36676",
+      "authors": [
+        "Zouying Cao",
+        "Yifei Yang",
+        "Hai Zhao"
+      ],
+      "abstract": "Safety alignment is indispensable for Large language models (LLMs) to defend threats from malicious instructions. However, recent researches reveal safety-aligned LLMs tend to reject benign queries due to the exaggerated safety issue, limiting their helpfulness. In this paper, we propose a Safety-Conscious Activation Steering (SCANS) method to mitigate the exaggerated safety concerns in aligned LLMs. First, SCANS extracts the refusal steering vectors within the activation space and utilizes vocabulary projection to anchor some specific safety-critical layers which influence model refusal behavior. Second, by tracking the hidden state transition, SCANS identifies the steering direction and steers the model behavior accordingly, achieving a balance between exaggerated safety and adequate safety. Experiments show that SCANS achieves new state-of-the-art performance on XSTest and OKTest benchmarks, without impairing their defense capability against harmful queries and maintaining almost unchanged model capability.",
+      "rank": 8
+    },
+    {
+      "title": "LayerNavigator: Finding Promising Intervention Layers for Efficient Activation Steering in Large Language Models",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "NeurIPS",
+      "year": 2025,
+      "composite": 53.0,
+      "score_breakdown": {
+        "focus": 25.5,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 2,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/Bryson-Arrot/LayerNavigator",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 1,
+      "citations": null,
+      "relevance_score": 13.0,
+      "matched_terms": [
+        "activation steering",
+        "interpretab",
+        "residual stream",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)",
+        "steering vector"
+      ],
+      "url": "https://openreview.net/forum?id=wj4lM45xQR",
+      "pdf": "",
+      "authors": [
+        "Hao Sun",
+        "Huailiang Peng",
+        "Qiong Dai",
+        "Xu Bai",
+        "Yanan Cao"
+      ],
+      "abstract": "Activation steering is an efficient technique for aligning the behavior of large language models (LLMs) by injecting steering vectors directly into a model’s residual stream during inference.\nA pivotal challenge in this approach lies in choosing the right layers to intervene, as inappropriate selection can undermine behavioral alignment and even impair the model’s language fluency and other core capabilities.\nWhile single-layer steering allows straightforward evaluation on held-out data to identify the \"best\" layer, it offers only limited alignment improvements.\nMulti-layer steering promises stronger control but faces a combinatorial explosion of possible layer subsets, making exhaustive search impractical.\nTo address these challenges, we propose LayerNavigator, which provides a principled and promising layer selection strategy.\nThe core innovation of LayerNavigator lies in its novel, quantifiable criterion that evaluates each layer's steerability by jointly considering two key aspects: discriminability and consistency.\nBy reusing the activations computed during steering vector generation, LayerNavigator requires no extra data and adds negligible overhead.\nComprehensive experiments show that LayerNavigator achieves not only superior alignment but also greater scalability and interpretability compared to existing strategies.\nOur code is available at https://github.com/Bryson-Arrot/LayerNavigator",
+      "rank": 9
+    },
+    {
+      "title": "Towards Interpretability Without Sacrifice: Faithful Dense Layer Decomposition with Mixture of Decoders",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "NeurIPS",
+      "year": 2025,
+      "composite": 52.7,
+      "score_breakdown": {
+        "focus": 25.2,
+        "reproducibility": 22,
+        "cross_model": 2.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 0,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [
+        3.0
+      ],
+      "size_min_b": 3.0,
+      "size_max_b": 3.0,
+      "code": "https://github.com/james-oldfield/MxD.",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 0,
+      "citations": null,
+      "relevance_score": 14.0,
+      "matched_terms": [
+        "\\bprobing\\b",
+        "feature steering",
+        "interpretab",
+        "sparse probing",
+        "transcoder"
+      ],
+      "url": "https://openreview.net/forum?id=jcvX8XFNqX",
+      "pdf": "",
+      "authors": [
+        "James Oldfield",
+        "Shawn Im",
+        "Sharon Li",
+        "Mihalis Nicolaou",
+        "Ioannis Patras",
+        "Grigorios Chrysos"
+      ],
+      "abstract": "Multilayer perceptrons (MLPs) are an integral part of large language models, yet their dense representations render them difficult to understand, edit, and steer. Recent methods learn interpretable approximations via neuron-level sparsity, yet fail to faithfully reconstruct the original mapping--significantly increasing model's next-token cross-entropy loss. In this paper, we advocate for moving to layer-level sparsity to overcome the accuracy trade-off in sparse layer approximation. Under this paradigm, we introduce Mixture of Decoders (MxDs). MxDs generalize MLPs and Gated Linear Units, expanding pre-trained dense layers into tens of thousands of specialized sublayers. Through a flexible form of tensor factorization, each sparsely activating MxD sublayer implements a linear transformation with full-rank weights--preserving the original decoders' expressive capacity even under heavy sparsity. Experimentally, we show that MxDs significantly outperform state-of-the-art methods (e.g., Transcoders) on the sparsity-accuracy frontier in language models with up to 3B parameters. Further evaluations on sparse probing and feature steering demonstrate that MxDs learn similarly specialized features of natural language--opening up a promising new avenue for designing interpretable yet faithful decompositions. Our code is included at: https://github.com/james-oldfield/MxD.",
+      "rank": 10
+    },
+    {
+      "title": "REAL: Reading Out Transformer Activations for Precise Localization in Language Model Steering",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "ICLR",
+      "year": 2026,
+      "composite": 51.0,
+      "score_breakdown": {
+        "focus": 30.0,
+        "reproducibility": 6,
+        "cross_model": 7.0,
+        "impact": 0.0,
+        "recency": 4,
+        "safety": 4,
+        "persona_bonus": 0
+      },
+      "families": [
+        "Llama",
+        "Qwen"
+      ],
+      "n_families": 2,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": null,
+      "code_status": "unknown",
+      "persona": false,
+      "safety_hits": 2,
+      "citations": null,
+      "relevance_score": 12.0,
+      "matched_terms": [
+        "inference[- ]time intervention",
+        "model steering",
+        "representation engineering",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)"
+      ],
+      "url": "https://openreview.net/forum?id=P38RYdkFLI",
+      "pdf": "",
+      "authors": [],
+      "abstract": "Inference-time steering aims to alter an LLM’s responses without changing its parameters. A key challenge lies in selecting internal modules that most strongly govern the target behavior; existing approaches often rely on simplistic cues or ad hoc heuristics, leading to suboptimal or unintended effects. In this work, we introduce \\modelname{}, a novel framework for identifying behavior-relevant modules (heads or layers) in Transformers. For each module, we train a vector-quantized autoencoder (VQ-AE) on its hidden activations, partitioning the latent space into behavior-relevant and behavior-irrelevant subspaces via a shared, learnable codebook. We quantify each module’s behavioral relevance by evaluating how effectively the VQ-AE encodings distinguish between behavior-aligned and behavior-violating responses using a binary classification metric. This relevance score informs both module selection and steering strength. We evaluate \\modelname{} across eight LLMs from two model families (\\textsc{Llama} and \\textsc{Qwen}) and nine datasets spanning truthfulness enhancement, open-domain question answering under knowledge conflicts, and general alignment tasks. \\modelname{} enables more effective inference-time interventions, yielding significant improvements on these steering tasks. Notably, it achieves an average relative improvement of 20\\% (up to 81.5\\%) over the seminal ITI method~\\citep{DBLP:conf/nips/0002PVPW23} on truthfulness steering. Moreover, the modules selected by our method exhibit strong zero-shot generalization in cross-domain truthfulness-steering scenarios.",
+      "rank": 11
+    },
+    {
+      "title": "The Linear Representation Hypothesis and the Geometry of Large Language Models",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "ICML",
+      "year": 2024,
+      "composite": 50.0,
+      "score_breakdown": {
+        "focus": 30.0,
+        "reproducibility": 6,
+        "cross_model": 3.5,
+        "impact": 8.0,
+        "recency": 2.5,
+        "safety": 0,
+        "persona_bonus": 0
+      },
+      "families": [
+        "Llama"
+      ],
+      "n_families": 1,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": null,
+      "code_status": "unknown",
+      "persona": false,
+      "safety_hits": 0,
+      "citations": 155,
+      "relevance_score": 16.0,
+      "matched_terms": [
+        "\\bprobe(s)?\\b",
+        "\\bprobing\\b",
+        "linear prob(e|es|ing)",
+        "linear representation hypothesis",
+        "model steering",
+        "steering vector"
+      ],
+      "url": "https://icml.cc/virtual/2024/poster/33950",
+      "pdf": "https://openreview.net/pdf?id=UGpGkLzwpP",
+      "authors": [
+        "Kiho Park",
+        "Yo Joong Choe",
+        "Victor Veitch"
+      ],
+      "abstract": "Informally, the \"linear representation hypothesis\" is the idea that high-level concepts are represented linearly as directions in some representation space. In this paper, we address two closely related questions: What does \"linear representation\" actually mean? And, how do we make sense of geometric notions (e.g., cosine similarity and projection) in the representation space? To answer these, we use the language of counterfactuals to give two formalizations of linear representation, one in the output (word) representation space, and one in the input (context) space. We then prove that these connect to linear probing and model steering, respectively. To make sense of geometric notions, we use the formalization to identify a particular (non-Euclidean) inner product that respects language structure in a sense we make precise. Using this *causal inner product*, we show how to unify all notions of linear representation. In particular, this allows the construction of probes and steering vectors using counterfactual pairs. Experiments with LLaMA-2 demonstrate the existence of linear representations of concepts, the connection to interpretation and control, and the fundamental role of the choice of inner product.",
+      "rank": 12
+    },
+    {
+      "title": "InferAligner: Inference-Time Alignment for Harmlessness through Cross-Model Guidance",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "EMNLP",
+      "year": 2024,
+      "composite": 49.7,
+      "score_breakdown": {
+        "focus": 8.5,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 6.7,
+        "recency": 2.5,
+        "safety": 10,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/Jihuai-wpy/InferAligner",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 5,
+      "citations": 46,
+      "relevance_score": 3.0,
+      "matched_terms": [
+        "steering vector"
+      ],
+      "url": "https://aclanthology.org/2024.emnlp-main.585/",
+      "pdf": "https://aclanthology.org/2024.emnlp-main.585.pdf",
+      "authors": [
+        "Pengyu Wang",
+        "Dong Zhang",
+        "Linyang Li",
+        "Chenkun Tan",
+        "Xinghao Wang",
+        "Mozhi Zhang",
+        "Ke Ren",
+        "Botian Jiang",
+        "Xipeng Qiu"
+      ],
+      "abstract": "As large language models (LLMs) rapidly evolve, they are increasingly being customized through fine-tuning to suit the specific needs of various applications. A critical aspect of this advancement is the alignment process, which ensures that these models perform tasks in ways that align with human values and expectations. Current alignment methods, such as direct preference optimization (DPO) and reinforcement learning from human feedback (RLHF), focus primarily on alignment during training phase. However, these methods often involve complex and resource-intensive training processes, posing significant challenge for their implementation. Therefore, we propose InferAligner, a simple yet effective method for harmlessness alignment during inference phase. InferAligner decouples harmlessness from helpfulness. During the training phase, it focuses solely on enhancing the target model’s capabilities on downstream tasks. In the inference phase, it utilizes safety steering vectors extracted from the aligned model to guide the target model towards harmlessness alignment. Experimental results show that our method can be very effectively applied to domain-specific models in finance, medicine, and mathematics, as well as to multimodal large language models (MLLMs) such as LLaVA. It significantly diminishes the attack success rate (ASR) of both harmful instructions and jailbreak instructions, while maintaining almost unchanged performance in downstream tasks.",
+      "rank": 13
+    },
+    {
+      "title": "Embedded Named Entity Recognition using Probing Classifiers",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "EMNLP",
+      "year": 2024,
+      "composite": 49.0,
+      "score_breakdown": {
+        "focus": 23.3,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 1.2,
+        "recency": 2.5,
+        "safety": 0,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/nicpopovic/EMBER",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 0,
+      "citations": 1,
+      "relevance_score": 7.0,
+      "matched_terms": [
+        "\\bprobing\\b",
+        "probing classifier"
+      ],
+      "url": "https://aclanthology.org/2024.emnlp-main.988/",
+      "pdf": "https://aclanthology.org/2024.emnlp-main.988.pdf",
+      "authors": [
+        "Nicholas Popovic",
+        "Michael Färber"
+      ],
+      "abstract": "Streaming text generation, has become a common way of increasing the responsiveness of language model powered applications such as chat assistants. At the same time, extracting semantic information from generated text is a useful tool for applications such as automated fact checking or retrieval augmented generation. Currently, this requires either separate models during inference, which increases computational cost, or destructive fine-tuning of the language model. Instead, we propose an approach called EMBER which enables streaming named entity recognition in decoder-only language models without fine-tuning them and while incurring minimal additional computational cost at inference time. Specifically, our experiments show that EMBER maintains high token generation rates, with only a negligible decrease in speed of around 1% compared to a 43.64% slowdown measured for a baseline. We make our code and data available online, including a toolkit for training, testing, and deploying efficient token classification models optimized for streaming text generation.",
+      "rank": 14
+    },
+    {
+      "title": "Steering Knowledge Selection Behaviours in LLMs via SAE-Based Representation Engineering",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "NAACL",
+      "year": 2025,
+      "composite": 48.4,
+      "score_breakdown": {
+        "focus": 19.8,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 3.1,
+        "recency": 3.5,
+        "safety": 0,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/yuzhaouoe/SAE-based-representation-engineering",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 0,
+      "citations": 5,
+      "relevance_score": 14.0,
+      "matched_terms": [
+        "\\bSAEs?\\b",
+        "inference[- ]time intervention",
+        "representation engineering",
+        "sparse auto-encoder"
+      ],
+      "url": "https://aclanthology.org/2025.naacl-long.264/",
+      "pdf": "https://aclanthology.org/2025.naacl-long.264.pdf",
+      "authors": [
+        "Yu Zhao",
+        "Alessio Devoto",
+        "Giwon Hong",
+        "Xiaotang Du",
+        "Aryo Pradipta Gema",
+        "Hongru Wang",
+        "Xuanli He",
+        "Kam-Fai Wong",
+        "Pasquale Minervini"
+      ],
+      "abstract": "Large language models (LLMs) can store a significant amount of factual knowledge in their parameters. However, their parametric knowledge may conflict with the information provided in the context—this phenomenon, known as context-memory knowledge conflicts, can lead to undesirable model behaviour, such as reliance on outdated or incorrect information. Analysing the internal activations of LLMs, we find that they can internally register the signals of knowledge conflict at mid-layers. Such signals allow us to detect whether a knowledge conflict occurs and use inference-time intervention strategies to resolve it. In this work, we propose SpARE, a training-free representation engineering method that uses pre-trained sparse auto-encoders (SAEs) to control the knowledge selection behaviour of LLMs. SpARE identifies the functional features that control the knowledge selection behaviours and applies them to edit the internal activations of LLMs at inference time. Our experimental results show that SpARE can effectively control the usage of either knowledge source to resolve knowledge conflict in open-domain question-answering tasks, surpassing existing representation engineering methods (+10%) as well as contrastive decoding methods (+15%).",
+      "rank": 15
+    },
+    {
+      "title": "Activation Steering for LLM Alignment via a Unified ODE-Based Framework",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "ICLR",
+      "year": 2026,
+      "composite": 48.3,
+      "score_breakdown": {
+        "focus": 28.3,
+        "reproducibility": 12,
+        "cross_model": 0.0,
+        "impact": 0.0,
+        "recency": 4,
+        "safety": 4,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": null,
+      "code_status": "promised",
+      "persona": false,
+      "safety_hits": 2,
+      "citations": null,
+      "relevance_score": 10.0,
+      "matched_terms": [
+        "activation addition",
+        "activation steering",
+        "representation engineering"
+      ],
+      "url": "https://openreview.net/forum?id=CFewUmgIIL",
+      "pdf": "",
+      "authors": [],
+      "abstract": "Activation steering, or representation engineering, offers a lightweight approach to align large language models (LLMs) by manipulating their internal activations at inference time. However, current methods suffer from two key limitations: \\textit{(i)} the lack of a unified theoretical framework for guiding the design of steering directions, and \\textit{(ii)} an over-reliance on \\textit{one-step steering} that fail to capture complex patterns of activation distributions. In this work, we propose a unified ordinary differential equations (ODEs)-based \\textit{theoretical} framework for activation steering in LLM alignment. We show that conventional activation addition can be interpreted as a first-order approximation to the solution of an ODE. Based on this ODE perspective, identifying a steering direction becomes equivalent to designing a \\textit{barrier function} from control theory. Derived from this framework, we introduce \\textsc{Bodes} (\\textbf{B}arrier function-guided \\textbf{ODE} \\textbf{S}teering), which shows \\textit{empirical} advancement in LLM alignment. \\textsc{Bodes} identifies steering directions by defining the barrier function as the log-density ratio between positive and negative activations, and employs it to construct an ODE for \\textit{multi-step and adaptive} steering. Compared to state-of-the-art activation steering methods, \\textsc{Bodes} achieves consistent empirical improvements on diverse LLM alignment benchmarks, a notable 7\\% improvement over TruthfulQA, and 2\\% over RealToxicityPrompts, and 2% over UltraFeedback. Our work establishes a principled new view of activation steering in LLM alignment by unifying its theoretical foundations via ODEs, and validating it empirically through the proposed \\textsc{Bodes} method. We will release our source code after the paper is published.",
+      "rank": 16
+    },
+    {
+      "title": "Differentially Private Steering for Large Language Model Alignment",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "ICLR",
+      "year": 2025,
+      "composite": 46.7,
+      "score_breakdown": {
+        "focus": 14.2,
+        "reproducibility": 6,
+        "cross_model": 15.0,
+        "impact": 0.0,
+        "recency": 3.5,
+        "safety": 8,
+        "persona_bonus": 0
+      },
+      "families": [
+        "Llama",
+        "Qwen"
+      ],
+      "n_families": 2,
+      "sizes_b": [
+        0.5,
+        7.0
+      ],
+      "size_min_b": 0.5,
+      "size_max_b": 7.0,
+      "code": null,
+      "code_status": "unknown",
+      "persona": false,
+      "safety_hits": 4,
+      "citations": 0,
+      "relevance_score": 5.0,
+      "matched_terms": [
+        "activation engineering",
+        "steer(ing)? (the|a|llm|language model|model|behavior|behaviour|generation)"
+      ],
+      "url": "https://iclr.cc/virtual/2025/poster/28523",
+      "pdf": "https://openreview.net/pdf?id=lLkgj7FEtZ",
+      "authors": [
+        "Anmol Goel",
+        "Yaxi Hu",
+        "Iryna Gurevych",
+        "Amartya Sanyal"
+      ],
+      "abstract": "Aligning Large Language Models (LLMs) with human values and away from undesirable behaviors (such as hallucination) has become increasingly important. Recently, steering LLMs towards a desired behavior via activation editing has emerged as an effective method to mitigate harmful  generations at inference-time. Activation editing modifies LLM representations by preserving information from positive demonstrations (e.g., truthful) and minimising information from negative demonstrations (e.g., hallucinations). When these demonstrations come from a private dataset, the aligned LLM may leak private information contained in those private samples. In this work, we present the first study of aligning LLM behavior with private datasets. Our work proposes the \\textit{\\underline{P}rivate \\underline{S}teering for LLM \\underline{A}lignment (PSA)} algorithm to edit LLM activations with differential privacy (DP) guarantees. We conduct extensive experiments on seven different benchmarks with open-source LLMs of different sizes (0.5B to 7B) and model families (LlaMa and Qwen). Our results show that PSA achieves DP guarantees for LLM alignment with minimal loss in performance, including alignment metrics, open-ended text generation quality, and general-purpose reasoning. We also develop the first Membership Inference Attack (MIA) for evaluating and auditing the empirical privacy for the problem of LLM steering via activation editing. Our attack is tailored for activation editing and relies solely on the generated texts without their associated probabilities. Our experiments support the theoretical guarantees by showing improved guarantees for our \\textit{PSA} algorithm compared to several existing non-private techniques.",
+      "rank": 17
+    },
+    {
+      "title": "LEGEND: Leveraging Representation Engineering to Annotate Safety Margin for Preference Datasets",
+      "focus": "steering",
+      "category": "steering",
+      "venue": "AAAI",
+      "year": 2025,
+      "composite": 46.0,
+      "score_breakdown": {
+        "focus": 11.3,
+        "reproducibility": 22,
+        "cross_model": 0.0,
+        "impact": 1.2,
+        "recency": 3.5,
+        "safety": 8,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": "https://github.com/colfeng/Legend",
+      "code_status": "repo",
+      "persona": false,
+      "safety_hits": 4,
+      "citations": 1,
+      "relevance_score": 4.0,
+      "matched_terms": [
+        "representation engineering"
+      ],
+      "url": "https://ojs.aaai.org/index.php/AAAI/article/view/34937",
+      "pdf": "https://ojs.aaai.org/index.php/AAAI/article/view/34937/37092",
+      "authors": [
+        "Duanyu Feng",
+        "Bowen Qin",
+        "Chen Huang",
+        "Youcheng Huang",
+        "Zheng Zhang",
+        "Wenqiang Lei"
+      ],
+      "abstract": "The success of the reward model in distinguishing between responses with subtle safety differences depends critically on the high-quality preference dataset, which should capture the fine-grained nuances of harmful and harmless responses. This motivates the need to develop the datasets involving preference margins, which accurately quantify how harmless one response is compared to another. In this paper, we take the first step to propose an effective and cost-efficient framework to promote the margin-enhanced preference dataset development. Our framework, Legend, Leverages rEpresentation enGineering to annotate preferENce Datasets. It constructs the specific direction within the LLM's embedding space that represents safety. By leveraging this safety direction, Legend can then leverage the semantic distances of paired responses along this direction to annotate margins automatically. We experimentally demonstrate our effectiveness in both reward modeling and harmless alignment for LLMs. Legend also stands out for its efficiency, requiring only the inference time rather than additional training. This efficiency allows for easier implementation and scalability, making Legend particularly valuable for practical applications in aligning LLMs with safe conversations.",
+      "rank": 18
+    },
+    {
+      "title": "Beyond Linear Probes: Dynamic Safety Monitoring for Language Models",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "ICLR",
+      "year": 2026,
+      "composite": 46.0,
+      "score_breakdown": {
+        "focus": 20.0,
+        "reproducibility": 12,
+        "cross_model": 2.0,
+        "impact": 0.0,
+        "recency": 4,
+        "safety": 8,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [
+        30.0
+      ],
+      "size_min_b": 30.0,
+      "size_max_b": 30.0,
+      "code": null,
+      "code_status": "promised",
+      "persona": false,
+      "safety_hits": 4,
+      "citations": null,
+      "relevance_score": 8.0,
+      "matched_terms": [
+        "\\bprobe(s)?\\b",
+        "interpretab",
+        "linear prob(e|es|ing)"
+      ],
+      "url": "https://openreview.net/forum?id=AGWa8whf92",
+      "pdf": "",
+      "authors": [],
+      "abstract": "Monitoring large language models' (LLMs) activations is an effective way to detect harmful requests before they lead to unsafe outputs. However, traditional safety monitors often require the same amount of compute for every query. This creates a trade-off: expensive monitors waste resources on easy inputs, while cheap ones risk missing subtle cases. We argue that safety monitors should be flexible--costs should rise only when inputs are difficult to assess, or when more compute is available. To achieve this, we introduce Truncated Polynomial Classifiers (TPCs), a natural extension of linear probes for dynamic activation monitoring. Our key insight is that polynomials can be trained and evaluated progressively, term-by-term. At test-time, one can early-stop for lightweight monitoring, or use more terms for stronger guardrails when needed. TPCs provide two modes of use. First, as a safety dial: by evaluating more terms, developers and regulators can \"buy\" stronger guardrails from the same model. Second, as an adaptive cascade: clear cases exit early after low-order checks, and higher-order guardrails are evaluated only for ambiguous inputs, reducing overall monitoring costs. On two large-scale safety datasets (WildGuardMix and BeaverTails), for 4 models with up to 30B parameters, we show that  TPCs compete with or outperform MLP-based probe baselines of the same size,  all the while being more interpretable than their black-box counterparts. Our anonymous code is available at https://anonymous.4open.science/r/tpc-anon-0708.",
+      "rank": 19
+    },
+    {
+      "title": "Are Sparse Autoencoders Useful? A Case Study in Sparse Probing",
+      "focus": "probing",
+      "category": "probing",
+      "venue": "ICML",
+      "year": 2025,
+      "composite": 44.3,
+      "score_breakdown": {
+        "focus": 30.0,
+        "reproducibility": 6,
+        "cross_model": 0.0,
+        "impact": 2.8,
+        "recency": 3.5,
+        "safety": 2,
+        "persona_bonus": 0
+      },
+      "families": [],
+      "n_families": 0,
+      "sizes_b": [],
+      "size_min_b": null,
+      "size_max_b": null,
+      "code": null,
+      "code_status": "unknown",
+      "persona": false,
+      "safety_hits": 1,
+      "citations": 4,
+      "relevance_score": 23.0,
+      "matched_terms": [
+        "\\bSAEs?\\b",
+        "\\bprobe(s)?\\b",
+        "\\bprobing\\b",
+        "activation prob(e|es|ing)",
+        "interpretab",
+        "mechanistic interpretab",
+        "sparse autoencoder",
+        "sparse probing"
+      ],
+      "url": "https://icml.cc/virtual/2025/poster/43895",
+      "pdf": "https://openreview.net/pdf?id=rNfzT8YkgO",
+      "authors": [
+        "Subhash Kantamneni",
+        "Joshua Engels",
+        "Senthooran Rajamanoharan",
+        "Max Tegmark",
+        "Neel Nanda"
+      ],
+      "abstract": "Sparse autoencoders (SAEs) are a popular method for interpreting concepts represented in large language model (LLM) activations. However, there is a lack of evidence regarding the validity of their interpretations due to the lack of a ground truth for the concepts used by an LLM, and a growing number of works have presented problems with current SAEs. One alternative source of evidence would be demonstrating that SAEs improve performance on downstream tasks beyond existing baselines. We test this by applying SAEs to the real-world task of LLM activation probing in four regimes: data scarcity, class imbalance, label noise, and covariate shift. Due to the difficulty of detecting concepts in these challenging settings, we hypothesize that SAEs’ basis of interpretable, concept-level latents should provide a useful inductive bias. However, although SAEs occasionally perform better than baselines on individual datasets, we are unable to design ensemble methods combining SAEs with baselines that consistently outperform ensemble methods solely using baselines. Additionally, although SAEs initially appear promising for identifying spurious correlations, detecting poor dataset quality, and training multi-token probes, we are able to achieve similar results with simple non-SAE baselines as well. Though we cannot discount SAEs’ utility on other tasks, our findings highlight the shortcomings of current SAEs and the need to rigorously evaluate interpretability methods on downstream tasks with strong baselines.",
+      "rank": 20
+    }
+  ]
+}
