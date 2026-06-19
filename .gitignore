@@ -8,3 +8,6 @@ __pycache__/
 # OS
 .DS_Store
 papers-base/
+
+# Folder that houses cloned repos for works to be replicated
+external/

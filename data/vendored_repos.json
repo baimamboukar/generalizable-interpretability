@@ -1,0 +1,114 @@
+{
+  "source": "data/interp_final_selection.json",
+  "note": "Upstream repos vendored with .git stripped; commit = HEAD at clone time.",
+  "repos": [
+    {
+      "title": "DISCO: Disentangled Communication Steering for Large Language Models",
+      "rank": 2,
+      "focus": "steering",
+      "url": "https://github.com/MaxTorop/DISCO.git",
+      "slug": "DISCO",
+      "status": "vendored",
+      "commit": "fddbc1b19384f0de43c875783e11119c7ed4ef8c"
+    },
+    {
+      "title": "Detecting Strategic Deception with Linear Probes",
+      "rank": 3,
+      "focus": "probing",
+      "url": "https://github.com/ApolloResearch/deception-detection.git",
+      "slug": "deception-detection",
+      "status": "vendored",
+      "commit": "f8ec4010e74927394709dffa22b97bdf8cd5a62f"
+    },
+    {
+      "title": "Detecting High-Stakes Interactions with Activation Probes",
+      "rank": 4,
+      "focus": "probing",
+      "url": "https://github.com/arrrlex/models-under-pressure.git",
+      "slug": "models-under-pressure",
+      "status": "vendored",
+      "commit": "77d5c265c63e755d005768f9314a31d30ca02874"
+    },
+    {
+      "title": "Improving Instruction-Following in Language Models through Activation Steering",
+      "rank": 5,
+      "focus": "steering",
+      "url": "https://github.com/microsoft/llm-steer-instruct.git",
+      "slug": "llm-steer-instruct",
+      "status": "vendored",
+      "commit": "9dac937ef6fc3e483b1efc13863deeb03ec38dbe"
+    },
+    {
+      "title": "Angular Steering: Behavior Control via Rotation in Activation Space",
+      "rank": 6,
+      "focus": "steering",
+      "url": "https://github.com/lone17/angular-steering.git",
+      "slug": "angular-steering",
+      "status": "vendored",
+      "commit": "496495a96051e182729d2cbdde556d5a0f986779"
+    },
+    {
+      "title": "SCANS: Mitigating the Exaggerated Safety for LLMs via Safety-Conscious Activation Steering",
+      "rank": 8,
+      "focus": "steering",
+      "url": "https://github.com/zouyingcao/SCANS.git",
+      "slug": "SCANS",
+      "status": "vendored",
+      "commit": "9dc20d2f1ce29d6b26ccd08c2d457c8ad64d5760"
+    },
+    {
+      "title": "LayerNavigator: Finding Promising Intervention Layers for Efficient Activation Steering in Large Language Models",
+      "rank": 9,
+      "focus": "steering",
+      "url": "https://github.com/Bryson-Arrot/LayerNavigator.git",
+      "slug": "LayerNavigator",
+      "status": "vendored",
+      "commit": "09e96c725cb87d15c5a179568099175585ac3283"
+    },
+    {
+      "title": "Towards Interpretability Without Sacrifice: Faithful Dense Layer Decomposition with Mixture of Decoders",
+      "rank": 10,
+      "focus": "probing",
+      "url": "https://github.com/james-oldfield/MxD.git",
+      "slug": "MxD",
+      "status": "vendored",
+      "commit": "f2d8ef78894863898dc807e502fe45cab21f0891"
+    },
+    {
+      "title": "InferAligner: Inference-Time Alignment for Harmlessness through Cross-Model Guidance",
+      "rank": 13,
+      "focus": "steering",
+      "url": "https://github.com/Jihuai-wpy/InferAligner.git",
+      "slug": "InferAligner",
+      "status": "vendored",
+      "commit": "a30d73e8c1d95a5c299e17f7e885aa68ff2f0e60"
+    },
+    {
+      "title": "Embedded Named Entity Recognition using Probing Classifiers",
+      "rank": 14,
+      "focus": "probing",
+      "url": "https://github.com/nicpopovic/EMBER.git",
+      "slug": "EMBER",
+      "status": "vendored",
+      "commit": "8d7438ed9bb242f867f1b21981f0083ce37d9897"
+    },
+    {
+      "title": "Steering Knowledge Selection Behaviours in LLMs via SAE-Based Representation Engineering",
+      "rank": 15,
+      "focus": "steering",
+      "url": "https://github.com/yuzhaouoe/SAE-based-representation-engineering.git",
+      "slug": "SAE-based-representation-engineering",
+      "status": "vendored",
+      "commit": "efd3cbd77d36b44add8071e0be31351cd70a4f71"
+    },
+    {
+      "title": "LEGEND: Leveraging Representation Engineering to Annotate Safety Margin for Preference Datasets",
+      "rank": 18,
+      "focus": "steering",
+      "url": "https://github.com/colfeng/Legend.git",
+      "slug": "Legend",
+      "status": "vendored",
+      "commit": "02ba9afe9b2f114bd7665062516518b14cb4233e"
+    }
+  ]
+}
