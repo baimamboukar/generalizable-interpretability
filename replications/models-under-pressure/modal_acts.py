@@ -8,6 +8,7 @@
 
 import os
 import subprocess
+import hashlib
 from pathlib import Path
 import modal
 
@@ -30,11 +31,11 @@ image = (
         ignore=[".venv", ".env", "**/__pycache__", "*.pt.zst", "*.pyc", "data/activations"],
     )
     # Editable install, then: modern torch+torchvision for B200, and pin
-    # transformers to 4.50 (what their code's Gemma3 layer paths target; the
-    # lockfile's 5.12 moved them and breaks multimodal Gemma).
+    # transformers to a recent release that supports Qwen3 while keeping
+    # Gemma3/Llama support intact.
     .run_commands(
         "cd /repo && pip install -e . && "
-        "pip install -U torch torchvision 'transformers==4.50.*'"
+        "pip install -U torch torchvision 'transformers>=4.56,<4.57'"
     )
 )
 
@@ -45,7 +46,45 @@ secret = modal.Secret.from_name("mup-env")
 volume = modal.Volume.from_name("mup-activations", create_if_missing=True)
 ACTS_DIR = "/repo/data/activations"
 
+
 app = modal.App("mup-replication")
+
+
+def _resolve_model_key(model: str) -> str:
+    """Map a full HF model name to the repo's short config key when needed."""
+    short_to_full = {
+        "llama-1b": "meta-llama/Llama-3.2-1B-Instruct",
+        "llama-3b": "meta-llama/Llama-3.2-3B-Instruct",
+        "llama-8b": "meta-llama/Llama-3.1-8B-Instruct",
+        "llama-70b": "meta-llama/Llama-3.3-70B-Instruct",
+        "gemma-1b": "google/gemma-3-1b-it",
+        "gemma-12b": "google/gemma-3-12b-it",
+        "gemma-27b": "google/gemma-3-27b-it",
+        "qwen3-32b": "Qwen/Qwen3-32B",
+    }
+    if model in short_to_full:
+        return model
+    for short, full in short_to_full.items():
+        if model == full:
+            return short
+    raise ValueError(f"Unknown model key or HF name: {model}")
+
+
+def _resolve_layers(model: str, layers: str) -> str:
+    """Expand shorthand layer specs like `auto5` into a comma-separated list."""
+    if not layers.startswith("auto"):
+        return layers
+
+    from transformers import AutoConfig
+
+    n_layers = AutoConfig.from_pretrained(model).num_hidden_layers
+    suffix = layers[4:]
+    n_points = int(suffix) if suffix.isdigit() else 5
+    if n_points <= 1:
+        return str(n_layers - 1)
+    raw = [round(i * (n_layers - 1) / (n_points - 1)) for i in range(n_points)]
+    resolved = list(dict.fromkeys(int(x) for x in raw))
+    return ",".join(str(x) for x in resolved)
 
 
 def _seed_manifest() -> None:
@@ -68,8 +107,55 @@ def _seed_manifest() -> None:
         print("seeded empty manifest.json")
 
 
-def _run_store(model: str, layers: str, dataset: str) -> None:
+def _purge_activation_spec(model: str, dataset: str, layer: int) -> None:
+    # Remove any stale manifest entry or tensor files for this exact spec so the
+    # next `mup acts store` call actually re-extracts the layer.
+    import json
+    import boto3
+
+    acct = os.environ["R2_ACCOUNT_ID"]
+    bucket = os.environ["R2_ACTIVATIONS_BUCKET"]
+    c = boto3.client(
+        "s3",
+        endpoint_url=f"https://{acct}.r2.cloudflarestorage.com",
+        aws_access_key_id=os.environ["R2_ACCESS_KEY_ID"],
+        aws_secret_access_key=os.environ["R2_SECRET_ACCESS_KEY"],
+        region_name="auto",
+    )
+    common_name = model + dataset
+    common_id = hashlib.sha1(common_name.encode()).hexdigest()[:8]
+    keys = [
+        f"activations/{common_id}_{layer}.pt.zst",
+        f"input_ids/{common_id}.pt.zst",
+        f"attention_masks/{common_id}.pt.zst",
+    ]
+    for key in keys:
+        try:
+            c.delete_object(Bucket=bucket, Key=key)
+            print(f"deleted stale {key}")
+        except Exception:
+            pass
+    try:
+        manifest = c.get_object(Bucket=bucket, Key="manifest.json")
+        rows = json.loads(manifest["Body"].read().decode()).get("rows", [])
+        rows = [
+            row for row in rows
+            if not (
+                row.get("model_name") == model
+                and row.get("dataset_path") == dataset
+                and row.get("layer") == layer
+            )
+        ]
+        c.put_object(Bucket=bucket, Key="manifest.json", Body=json.dumps({"rows": rows}).encode())
+        print("refreshed manifest.json without the target spec")
+    except Exception:
+        # If the manifest is missing, the next store call will seed it.
+        pass
+
+
+def _run_store(model: str, layers: str, dataset: str, vol) -> None:
     os.chdir("/repo")
+    layers = _resolve_layers(model, layers)
     # Keep the model cache on the volume; container local disk is small.
     os.environ["HF_HOME"] = f"{ACTS_DIR}/_hf"
     # The store writes here but doesn't create the dirs.
@@ -84,6 +170,7 @@ def _run_store(model: str, layers: str, dataset: str) -> None:
     failed = []
     for lyr in [x.strip() for x in layers.split(",")]:
         for d in [x.strip() for x in dataset.split(",")]:
+            _purge_activation_spec(model, d, int(lyr))
             r = subprocess.run(
                 ["mup", "acts", "store", "--model", model, "--layers", lyr,
                  "--dataset", d],
@@ -94,28 +181,19 @@ def _run_store(model: str, layers: str, dataset: str) -> None:
             # Drop the uncompressed .pt left by save_compressed before the next.
             for p in Path(ACTS_DIR).rglob("*.pt"):
                 p.unlink()
-            volume.commit()
+            vol.commit()
     print(f"done: {model} layers={layers} on {dataset}")
     if failed:
         print(f"FAILED PAIRS ({len(failed)}): {failed}")
 
 
-# Single GPU: fits up to ~12B in bf16.
-@app.function(
-    image=image, gpu="B200", secrets=[secret],
-    volumes={ACTS_DIR: volume}, timeout=3 * 60 * 60,
-)
-def store_acts(model: str, layers: str, dataset: str) -> None:
-    _run_store(model, layers, dataset)
-
-
 # Two B200s: for 70B (~140GB weights in bf16).
 @app.function(
     image=image, gpu="B200:2", secrets=[secret],
-    volumes={ACTS_DIR: volume}, timeout=5 * 60 * 60,
+    volumes={ACTS_DIR: volume}, timeout=3 * 60 * 60,
 )
-def store_acts_big(model: str, layers: str, dataset: str) -> None:
-    _run_store(model, layers, dataset)
+def store_acts(model: str, layers: str, dataset: str) -> None:
+    _run_store(model, layers, dataset, volume)
 
 
 @app.function(
@@ -145,31 +223,29 @@ def pull_from_r2() -> None:
     print(f"done: {n} objects on volume")
 
 
-@app.function(
-    image=image, gpu="B200", secrets=[secret],
-    volumes={ACTS_DIR: volume}, timeout=4 * 60 * 60,
-)
-def evaluate_probe(
-    probe: str = "attention",
-    model: str = "llama-70b",
-    eval_datasets: str = "test_balanced",
-    run_id: str = "attn_test_full",
-    validation: bool = True,
-    seed: int = 42,
-    use_store: bool = True,
-    layer: int = -1,
+def _run_eval(
+    probe: str, model: str, eval_datasets: str, run_id: str,
+    validation: bool, seed: int, use_store: bool, layer: int, eval_spec: str,
 ) -> None:
     # Trains the probe on cached train activations and scores AUROC per eval set.
     # use_store=False forces a real retrain each seed (cache key ignores seed).
     # layer>=0 overrides the model config's default layer (for layer sweeps).
+    # eval_spec "name=path,name=path" writes a custom eval set (e.g. the subset a
+    # model's chat template can ingest); otherwise eval_datasets names a config.
     import json
 
     os.chdir("/repo")
+    model_key = _resolve_model_key(model)
     subprocess.run(["mup", "datasets", "download"], check=True)
+    if eval_spec:
+        lines = [f"{p.split('=')[0]}: {p.split('=')[1]}" for p in eval_spec.split(",")]
+        Path(f"/repo/config/eval_datasets/{eval_datasets}.yaml").write_text(
+            "\n".join(lines) + "\n"
+        )
     env = {**os.environ, "DOUBLE_CHECK_CONFIG": "false",
            "USE_PROBE_STORE": str(use_store).lower()}
     cmd = ["mup", "exp", "+experiment=evaluate_probe", f"probe={probe}",
-           f"model={model}", f"eval_datasets={eval_datasets}", f"+id={run_id}",
+           f"model={model_key}", f"eval_datasets={eval_datasets}", f"+id={run_id}",
            f"validation_dataset={str(validation).lower()}", f"random_seed={seed}"]
     if layer >= 0:
         cmd.append(f"model.layer={layer}")
@@ -187,6 +263,25 @@ def evaluate_probe(
         print(f"{r['dataset_name']:>28}  AUROC {a:.4f}")
     if aurocs:
         print(f"{'MEAN':>28}  AUROC {sum(aurocs) / len(aurocs):.4f}")
+
+
+@app.function(
+    image=image, gpu="B200:2", secrets=[secret],
+    volumes={ACTS_DIR: volume}, timeout=4 * 60 * 60,
+)
+def evaluate_probe(
+    probe: str = "attention",
+    model: str = "llama-70b",
+    eval_datasets: str = "test_balanced",
+    run_id: str = "attn_test_full",
+    validation: bool = True,
+    seed: int = 42,
+    use_store: bool = True,
+    layer: int = -1,
+    eval_spec: str = "",
+) -> None:
+    _run_eval(probe, model, eval_datasets, run_id, validation, seed,
+              use_store, layer, eval_spec)
 
 
 def _upload_results(local: Path, key: str) -> None:
@@ -208,8 +303,5 @@ def main(
     model: str = "meta-llama/Llama-3.2-1B-Instruct",
     layers: str = "11",
     dataset: str = "data/training/prompts_4x/train.jsonl",
-    big: bool = False,
 ) -> None:
-    # --big routes to the 4-GPU function for large models (e.g. 70B).
-    fn = store_acts_big if big else store_acts
-    fn.remote(model=model, layers=layers, dataset=dataset)
+    store_acts.remote(model=model, layers=layers, dataset=dataset)

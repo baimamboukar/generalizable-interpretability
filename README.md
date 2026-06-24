@@ -16,6 +16,12 @@ Candidate studies are mined from the proceedings of seven major venues and filte
 > steering, reusable code, cross-model readiness, and safety or
 > alignment relevance — then narrowed to a ranked shortlist.
 
+## Replicated Papers
+
+| Paper | Replication report |
+| :--- | :---: |
+| **Detecting High-Stakes Interactions with Activation Probes** | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/model-under-pressure.md) |
+
 ## Reproduction Shortlist
 
 ![Probes & steering reproduction shortlist](figures/target.papers.shortlist___generalizable.interp.png)
