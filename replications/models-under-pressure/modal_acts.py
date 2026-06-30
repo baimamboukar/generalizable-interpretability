@@ -61,6 +61,7 @@ def _resolve_model_key(model: str) -> str:
         "gemma-12b": "google/gemma-3-12b-it",
         "gemma-27b": "google/gemma-3-27b-it",
         "qwen3-32b": "Qwen/Qwen3-32B",
+        "deepseek-r1-distill-qwen-32b": "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
     }
     if model in short_to_full:
         return model
@@ -129,12 +130,41 @@ def _purge_activation_spec(model: str, dataset: str, layer: int) -> None:
         f"input_ids/{common_id}.pt.zst",
         f"attention_masks/{common_id}.pt.zst",
     ]
+
+    # Clear the mounted Modal volume too. The CLI checks the local manifest/files
+    # first, so R2-only purges are not enough to force a fresh extraction.
+    local_paths = [Path(ACTS_DIR) / key for key in keys]
+    for path in local_paths:
+        try:
+            path.unlink()
+            print(f"deleted local stale {path}")
+        except Exception:
+            pass
+
     for key in keys:
         try:
             c.delete_object(Bucket=bucket, Key=key)
             print(f"deleted stale {key}")
         except Exception:
             pass
+
+    local_manifest = Path(ACTS_DIR) / "manifest.json"
+    try:
+        if local_manifest.exists():
+            manifest_rows = json.loads(local_manifest.read_text()).get("rows", [])
+            manifest_rows = [
+                row for row in manifest_rows
+                if not (
+                    row.get("model_name") == model
+                    and row.get("dataset_path") == dataset
+                    and row.get("layer") == layer
+                )
+            ]
+            local_manifest.write_text(json.dumps({"rows": manifest_rows}))
+            print("refreshed local manifest.json without the target spec")
+    except Exception:
+        pass
+
     try:
         manifest = c.get_object(Bucket=bucket, Key="manifest.json")
         rows = json.loads(manifest["Body"].read().decode()).get("rows", [])

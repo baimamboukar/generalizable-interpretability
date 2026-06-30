@@ -34,7 +34,7 @@
   - aya 0.909
   - toolace 0.876
   - mental_health 0.789
-- mental_health is the weak outlier; everything else high.
+- mental_health is the weak outlier; everything else high. 0.96 mean for 4 dataets
 - Hook mismatch (code vs paper). The code registers a forward hook on `layers[L].input_layernorm` and stores it, i.e. **post-LN**. But the paper says "residual activations **before** layer norm". We patched the released code to remain faithful to the paper's framing.
 
 ## June 22, 2026 | cross-model generalization
@@ -208,3 +208,50 @@ JSON record:
 | mental_health_balanced  | 0.6386 |
 | aya_redteaming_balanced | 0.8949 |
 | Mean                    | 0.8812 |
+
+## June 27, 2026 | DeepSeek reasoning model
+
+- Added `deepseek-ai/DeepSeek-R1-Distill-Qwen-32B` support through the existing Qwen adapter path.
+- Extracted explicit layers `28, 32, 36, 44, 54, 63` on train/test and all six balanced eval sets.
+
+## DeepSeek-R1-Distill-Qwen-32B Layer 36 Attention Result
+
+| Dataset                 |  AUROC |
+| ----------------------- | -----: |
+| anthropic_hh_balanced   | 0.9079 |
+| toolace_balanced        | 0.8714 |
+| mt_balanced             | 0.9654 |
+| mts_balanced            | 1.0000 |
+| mental_health_balanced  | 0.7943 |
+| aya_redteaming_balanced | 0.8624 |
+| Mean                    | 0.9002 |
+
+- Mean excluding `mental_health_balanced` and `aya_redteaming_balanced`: **0.9362**
+
+## DeepSeek-R1-Distill-Qwen-32B Layer 28 Attention Result
+
+| Dataset                 |  AUROC |
+| ----------------------- | -----: |
+| anthropic_hh_balanced   | 0.8595 |
+| toolace_balanced        | 0.8807 |
+| mt_balanced             | 0.9811 |
+| mts_balanced            | 0.9973 |
+| mental_health_balanced  | 0.8947 |
+| aya_redteaming_balanced | 0.8282 |
+| Mean                    | 0.9069 |
+
+- Mean excluding `mental_health_balanced` and `aya_redteaming_balanced`: **0.9297**
+
+## DeepSeek-R1-Distill-Qwen-32B Layer 44 Attention Result
+
+| Dataset                 |  AUROC |
+| ----------------------- | -----: |
+| anthropic_hh_balanced   | 0.9453 |
+| toolace_balanced        | 0.8779 |
+| mt_balanced             | 0.9782 |
+| mts_balanced            | 0.9930 |
+| mental_health_balanced  | 0.6225 |
+| aya_redteaming_balanced | 0.8890 |
+| Mean                    | 0.8843 |
+
+- Mean excluding `mental_health_balanced` and `aya_redteaming_balanced`: **0.9486**
