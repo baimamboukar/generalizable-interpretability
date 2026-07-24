@@ -1,4 +1,5 @@
 .claude/
+
 # Python
 __pycache__/
 *.py[cod]
@@ -11,3 +12,8 @@ papers-base/
 
 # Folder that houses cloned repos for works to be replicated
 external/
+
+# Generated inspection and scratch artifacts
+tmp/
+tables_out/
+*.inspect.ndjson

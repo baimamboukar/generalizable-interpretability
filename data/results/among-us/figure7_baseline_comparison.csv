@@ -1,0 +1,21 @@
+study,model,layer,num_tokens,train_dataset,eval_dataset,paper_auroc,replication_auroc,delta,official_checkpoint_auroc
+Among Us,Phi-4,20,5,Among Us,TruthfulQA,0.5417,0.5859,0.0441,0.5227
+Among Us,Phi-4,20,5,Among Us,DishonestQA,0.8194,0.4764,-0.3429,0.6778
+Among Us,Phi-4,20,5,Among Us,RepEng,1.0000,0.8278,-0.1722,0.2723
+Among Us,Phi-4,20,5,Among Us,Lying,0.8627,0.8817,0.0190,0.6924
+Among Us,Phi-4,20,5,Among Us,Deception,1.0000,0.9884,-0.0116,0.7766
+Among Us,Phi-4,20,5,TruthfulQA,TruthfulQA,0.8272,0.9212,0.0940,0.6531
+Among Us,Phi-4,20,5,TruthfulQA,DishonestQA,0.5987,0.2777,-0.3210,0.5255
+Among Us,Phi-4,20,5,TruthfulQA,RepEng,0.8242,0.8710,0.0468,0.6674
+Among Us,Phi-4,20,5,TruthfulQA,Lying,0.8609,0.4400,-0.4209,0.4977
+Among Us,Phi-4,20,5,TruthfulQA,Deception,0.9404,0.4788,-0.4617,0.5142
+Among Us,Phi-4,20,5,DishonestQA,TruthfulQA,0.5872,0.6279,0.0406,0.3818
+Among Us,Phi-4,20,5,DishonestQA,DishonestQA,1.0000,0.9997,-0.0003,0.1959
+Among Us,Phi-4,20,5,DishonestQA,RepEng,0.9853,0.9907,0.0054,0.1410
+Among Us,Phi-4,20,5,DishonestQA,Lying,0.8328,0.7216,-0.1113,0.4332
+Among Us,Phi-4,20,5,DishonestQA,Deception,0.7717,0.6239,-0.1479,0.4862
+Among Us,Phi-4,20,5,RepEng,TruthfulQA,0.5482,0.6012,0.0530,0.5410
+Among Us,Phi-4,20,5,RepEng,DishonestQA,0.9990,0.9625,-0.0365,0.8268
+Among Us,Phi-4,20,5,RepEng,RepEng,1.0000,1.0000,0.0000,0.9704
+Among Us,Phi-4,20,5,RepEng,Lying,0.9415,0.7536,-0.1879,0.6088
+Among Us,Phi-4,20,5,RepEng,Deception,0.9956,0.6479,-0.3478,0.5392

@@ -30,6 +30,15 @@
       "commit": "77d5c265c63e755d005768f9314a31d30ca02874"
     },
     {
+      "title": "Among Us: A Sandbox for Measuring and Detecting Agentic Deception",
+      "rank": null,
+      "focus": "probing",
+      "url": "https://github.com/7vik/AmongUs.git",
+      "slug": "AmongUs",
+      "status": "vendored",
+      "commit": "e4ea002a3617b7d78362e053ab58d37a07abe214"
+    },
+    {
       "title": "Improving Instruction-Following in Language Models through Activation Steering",
       "rank": 5,
       "focus": "steering",
@@ -109,6 +118,24 @@
       "slug": "Legend",
       "status": "vendored",
       "commit": "02ba9afe9b2f114bd7665062516518b14cb4233e"
+    },
+    {
+      "title": "Neural Chameleons: Language Models Can Learn to Hide Their Thoughts from Activation Monitors",
+      "rank": null,
+      "focus": "probing",
+      "url": "https://github.com/mgm52/neural-chameleons.git",
+      "slug": "neural-chameleons",
+      "status": "vendored",
+      "commit": "04552285b7c11aae9e117d75af22c5c681e617f9"
+    },
+    {
+      "title": "Neural Chameleons Minimal Reproduction",
+      "rank": null,
+      "focus": "probing",
+      "url": "https://github.com/serteal/minimal_neural_chameleons.git",
+      "slug": "minimal-neural-chameleons",
+      "status": "vendored",
+      "commit": "f077304f6bebd31ded4cc868f2115a8c81067960"
     }
   ]
 }

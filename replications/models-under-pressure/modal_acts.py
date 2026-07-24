@@ -50,22 +50,25 @@ ACTS_DIR = "/repo/data/activations"
 app = modal.App("mup-replication")
 
 
+MODEL_ALIASES = {
+    "llama-1b": "meta-llama/Llama-3.2-1B-Instruct",
+    "llama-3b": "meta-llama/Llama-3.2-3B-Instruct",
+    "llama-8b": "meta-llama/Llama-3.1-8B-Instruct",
+    "llama-70b": "meta-llama/Llama-3.3-70B-Instruct",
+    "gemma-1b": "google/gemma-3-1b-it",
+    "gemma-12b": "google/gemma-3-12b-it",
+    "gemma-27b": "google/gemma-3-27b-it",
+    "qwen3-32b": "Qwen/Qwen3-32B",
+    "deepseek-r1-distill-qwen-32b": "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+    "glm4-32b": "zai-org/GLM-4-32B-0414",
+}
+
+
 def _resolve_model_key(model: str) -> str:
     """Map a full HF model name to the repo's short config key when needed."""
-    short_to_full = {
-        "llama-1b": "meta-llama/Llama-3.2-1B-Instruct",
-        "llama-3b": "meta-llama/Llama-3.2-3B-Instruct",
-        "llama-8b": "meta-llama/Llama-3.1-8B-Instruct",
-        "llama-70b": "meta-llama/Llama-3.3-70B-Instruct",
-        "gemma-1b": "google/gemma-3-1b-it",
-        "gemma-12b": "google/gemma-3-12b-it",
-        "gemma-27b": "google/gemma-3-27b-it",
-        "qwen3-32b": "Qwen/Qwen3-32B",
-        "deepseek-r1-distill-qwen-32b": "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
-    }
-    if model in short_to_full:
+    if model in MODEL_ALIASES:
         return model
-    for short, full in short_to_full.items():
+    for short, full in MODEL_ALIASES.items():
         if model == full:
             return short
     raise ValueError(f"Unknown model key or HF name: {model}")
@@ -106,6 +109,56 @@ def _seed_manifest() -> None:
     except Exception:
         c.put_object(Bucket=bucket, Key="manifest.json", Body=b'{"rows": []}')
         print("seeded empty manifest.json")
+
+
+def _adapt_glm4_dataset_roles(model_key: str, dataset: str) -> None:
+    """Map OpenAI-style tool turns to GLM-4's native observation role."""
+    if model_key != "glm4-32b":
+        return
+
+    import json
+
+    path = Path(dataset)
+    if not path.is_absolute():
+        path = Path("/repo") / path
+    if not path.exists():
+        raise FileNotFoundError(path)
+
+    output_lines = []
+    changed_messages = 0
+    for line in path.read_text().splitlines():
+        row = json.loads(line)
+        input_key = "inputs" if "inputs" in row else "input"
+        raw_messages = row.get(input_key)
+        encoded_as_string = isinstance(raw_messages, str)
+        if encoded_as_string and raw_messages.lstrip().startswith("["):
+            messages = json.loads(raw_messages)
+        elif isinstance(raw_messages, list):
+            messages = raw_messages
+        else:
+            output_lines.append(json.dumps(row, ensure_ascii=False))
+            continue
+
+        for message in messages:
+            if message.get("role") == "tool":
+                message["role"] = "observation"
+                changed_messages += 1
+
+        row[input_key] = (
+            json.dumps(messages, ensure_ascii=False)
+            if encoded_as_string
+            else messages
+        )
+        output_lines.append(json.dumps(row, ensure_ascii=False))
+
+    if changed_messages:
+        temp_path = path.with_suffix(path.suffix + ".glm4.tmp")
+        temp_path.write_text("\n".join(output_lines) + "\n")
+        temp_path.replace(path)
+        print(
+            f"GLM-4 role adapter: mapped {changed_messages} tool turn(s) "
+            f"to observation in {dataset}"
+        )
 
 
 def _purge_activation_spec(model: str, dataset: str, layer: int) -> None:
@@ -185,7 +238,14 @@ def _purge_activation_spec(model: str, dataset: str, layer: int) -> None:
 
 def _run_store(model: str, layers: str, dataset: str, vol) -> None:
     os.chdir("/repo")
-    layers = _resolve_layers(model, layers)
+    try:
+        model_key = _resolve_model_key(model)
+        model_name = MODEL_ALIASES[model_key]
+    except ValueError:
+        # Preserve support for arbitrary full Hugging Face model identifiers.
+        model_key = model
+        model_name = model
+    layers = _resolve_layers(model_name, layers)
     # Keep the model cache on the volume; container local disk is small.
     os.environ["HF_HOME"] = f"{ACTS_DIR}/_hf"
     # The store writes here but doesn't create the dirs.
@@ -200,9 +260,10 @@ def _run_store(model: str, layers: str, dataset: str, vol) -> None:
     failed = []
     for lyr in [x.strip() for x in layers.split(",")]:
         for d in [x.strip() for x in dataset.split(",")]:
-            _purge_activation_spec(model, d, int(lyr))
+            _adapt_glm4_dataset_roles(model_key, d)
+            _purge_activation_spec(model_name, d, int(lyr))
             r = subprocess.run(
-                ["mup", "acts", "store", "--model", model, "--layers", lyr,
+                ["mup", "acts", "store", "--model", model_name, "--layers", lyr,
                  "--dataset", d],
             )
             if r.returncode != 0:
@@ -212,9 +273,58 @@ def _run_store(model: str, layers: str, dataset: str, vol) -> None:
             for p in Path(ACTS_DIR).rglob("*.pt"):
                 p.unlink()
             vol.commit()
-    print(f"done: {model} layers={layers} on {dataset}")
+    print(f"done: {model_key} layers={layers} on {dataset}")
     if failed:
         print(f"FAILED PAIRS ({len(failed)}): {failed}")
+
+
+def _drop_uncompressed_activation_tensors() -> None:
+    for p in Path(ACTS_DIR).rglob("*.pt"):
+        try:
+            p.unlink()
+            print(f"deleted temporary {p}")
+        except FileNotFoundError:
+            pass
+
+
+def _purge_gemma_activations() -> None:
+    """Delete every Gemma-family activation row from local cache and R2."""
+    import json
+    from models_under_pressure.activation_store import ActivationStore, ActivationsSpec
+
+    store = ActivationStore()
+    rows = list(store.manifest.rows)
+    gemma_rows = [
+        row for row in rows
+        if "gemma" in str(row.model_name).lower()
+    ]
+    if not gemma_rows:
+        print("No Gemma activations found to delete")
+        return
+
+    print(f"Deleting {len(gemma_rows)} Gemma activation row(s)")
+    for row in gemma_rows:
+        spec = ActivationsSpec(
+            model_name=row.model_name,
+            dataset_path=row.dataset_path,
+            layer=row.layer,
+        )
+        store.delete(spec)
+
+    # Refresh the local manifest copy one more time in case anything changed
+    # while deletes were in flight.
+    local_manifest = Path(ACTS_DIR) / "manifest.json"
+    try:
+        if local_manifest.exists():
+            remaining_rows = json.loads(local_manifest.read_text()).get("rows", [])
+            remaining_rows = [
+                row for row in remaining_rows
+                if "gemma" not in str(row.get("model_name", "")).lower()
+            ]
+            local_manifest.write_text(json.dumps({"rows": remaining_rows}))
+            print("refreshed local manifest.json after Gemma cleanup")
+    except Exception:
+        pass
 
 
 # Two B200s: for 70B (~140GB weights in bf16).
@@ -279,7 +389,12 @@ def _run_eval(
            f"validation_dataset={str(validation).lower()}", f"random_seed={seed}"]
     if layer >= 0:
         cmd.append(f"model.layer={layer}")
-    subprocess.run(cmd, check=True, env=env)
+    _drop_uncompressed_activation_tensors()
+    try:
+        subprocess.run(cmd, check=True, env=env)
+    finally:
+        _drop_uncompressed_activation_tensors()
+        volume.commit()
 
     # Persist the full results (config + per-dataset metrics) to R2 for plotting.
     results = Path(f"/repo/data/results/evaluate_probes/results_{run_id}.jsonl")
@@ -312,6 +427,42 @@ def evaluate_probe(
 ) -> None:
     _run_eval(probe, model, eval_datasets, run_id, validation, seed,
               use_store, layer, eval_spec)
+
+
+@app.function(
+    image=image, gpu="B200:2", secrets=[secret],
+    volumes={ACTS_DIR: volume}, timeout=4 * 60 * 60,
+)
+def evaluate_probe_layers(
+    probe: str = "attention",
+    model: str = "llama-70b",
+    eval_datasets: str = "test_balanced",
+    run_id: str = "attn_test_full",
+    validation: bool = True,
+    seed: int = 42,
+    use_store: bool = True,
+    layers: str = "-1",
+    eval_spec: str = "",
+) -> None:
+    # Evaluate one probe across several layers in a SINGLE container (one GPU
+    # allocation, one cold start). Each layer writes a distinct run_id of the
+    # form `{run_id}_L{layer}`; activations are read from the cache per layer.
+    for lyr in [int(x.strip()) for x in layers.split(",") if x.strip()]:
+        rid = f"{run_id}_L{lyr}" if lyr >= 0 else run_id
+        print(f"\n===== layer {lyr}  run_id={rid} =====")
+        _run_eval(probe, model, eval_datasets, rid, validation, seed,
+                  use_store, lyr, eval_spec)
+
+
+@app.function(
+    image=image, secrets=[secret], volumes={ACTS_DIR: volume}, timeout=60 * 60,
+)
+def purge_gemma_activations() -> None:
+    """Delete all Gemma-family activations from the shared store."""
+    os.chdir("/repo")
+    _purge_gemma_activations()
+    _drop_uncompressed_activation_tensors()
+    volume.commit()
 
 
 def _upload_results(local: Path, key: str) -> None:
