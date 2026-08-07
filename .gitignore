@@ -17,3 +17,6 @@ external/
 tmp/
 tables_out/
 *.inspect.ndjson
+.cache/
+artifacts/
+.env
