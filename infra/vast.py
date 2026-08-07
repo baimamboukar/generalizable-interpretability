@@ -133,7 +133,7 @@ class VastRunner:
     ) -> None:
         def clean(member: tarfile.TarInfo):
             parts = Path(member.name).parts
-            excluded = set() if parts[:1] == ("external",) else EXCLUDED
+            excluded = EXCLUDED
             if excluded.intersection(parts) or member.name.endswith(".pyc"):
                 return None
             return member
