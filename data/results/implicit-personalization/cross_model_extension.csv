@@ -1,0 +1,721 @@
+model,attribute,layer,result,fold,accuracy_percent
+Gemma-2-9B-IT,race,12,Paper,,100.0
+Gemma-2-9B-IT,race,18,Paper,,100.0
+Gemma-2-9B-IT,race,24,Paper,,100.0
+Gemma-2-9B-IT,race,30,Paper,,100.0
+Gemma-2-9B-IT,race,36,Paper,,100.0
+Gemma-2-9B-IT,race,12,Replication,,100.0
+Gemma-2-9B-IT,race,18,Replication,,100.0
+Gemma-2-9B-IT,race,24,Replication,,100.0
+Gemma-2-9B-IT,race,30,Replication,,100.0
+Gemma-2-9B-IT,race,36,Replication,,100.0
+Gemma-2-9B-IT,age,12,Paper,,100.0
+Gemma-2-9B-IT,age,18,Paper,,100.0
+Gemma-2-9B-IT,age,24,Paper,,100.0
+Gemma-2-9B-IT,age,30,Paper,,100.0
+Gemma-2-9B-IT,age,36,Paper,,100.0
+Gemma-2-9B-IT,age,12,Replication,,100.0
+Gemma-2-9B-IT,age,18,Replication,,100.0
+Gemma-2-9B-IT,age,24,Replication,,100.0
+Gemma-2-9B-IT,age,30,Replication,,100.0
+Gemma-2-9B-IT,age,36,Replication,,100.0
+Gemma-2-9B-IT,gender,12,Paper,,100.0
+Gemma-2-9B-IT,gender,18,Paper,,100.0
+Gemma-2-9B-IT,gender,24,Paper,,100.0
+Gemma-2-9B-IT,gender,30,Paper,,100.0
+Gemma-2-9B-IT,gender,36,Paper,,100.0
+Gemma-2-9B-IT,gender,12,Replication,,100.0
+Gemma-2-9B-IT,gender,18,Replication,,100.0
+Gemma-2-9B-IT,gender,24,Replication,,100.0
+Gemma-2-9B-IT,gender,30,Replication,,100.0
+Gemma-2-9B-IT,gender,36,Replication,,99.9
+Gemma-2-9B-IT,socio-economic status,12,Paper,,100.0
+Gemma-2-9B-IT,socio-economic status,18,Paper,,100.0
+Gemma-2-9B-IT,socio-economic status,24,Paper,,100.0
+Gemma-2-9B-IT,socio-economic status,30,Paper,,100.0
+Gemma-2-9B-IT,socio-economic status,36,Paper,,100.0
+Gemma-2-9B-IT,socio-economic status,12,Replication,,100.0
+Gemma-2-9B-IT,socio-economic status,18,Replication,,100.0
+Gemma-2-9B-IT,socio-economic status,24,Replication,,100.0
+Gemma-2-9B-IT,socio-economic status,30,Replication,,100.0
+Gemma-2-9B-IT,socio-economic status,36,Replication,,100.0
+Llama-3.1-8B-Instruct,race,9,Paper,,100.0
+Llama-3.1-8B-Instruct,race,14,Paper,,100.0
+Llama-3.1-8B-Instruct,race,18,Paper,,100.0
+Llama-3.1-8B-Instruct,race,23,Paper,,100.0
+Llama-3.1-8B-Instruct,race,28,Paper,,100.0
+Llama-3.1-8B-Instruct,race,9,Replication,,100.0
+Llama-3.1-8B-Instruct,race,14,Replication,,100.0
+Llama-3.1-8B-Instruct,race,18,Replication,,100.0
+Llama-3.1-8B-Instruct,race,23,Replication,,100.0
+Llama-3.1-8B-Instruct,race,28,Replication,,100.0
+Llama-3.1-8B-Instruct,age,9,Paper,,100.0
+Llama-3.1-8B-Instruct,age,14,Paper,,100.0
+Llama-3.1-8B-Instruct,age,18,Paper,,100.0
+Llama-3.1-8B-Instruct,age,23,Paper,,100.0
+Llama-3.1-8B-Instruct,age,28,Paper,,100.0
+Llama-3.1-8B-Instruct,age,9,Replication,,100.0
+Llama-3.1-8B-Instruct,age,14,Replication,,100.0
+Llama-3.1-8B-Instruct,age,18,Replication,,100.0
+Llama-3.1-8B-Instruct,age,23,Replication,,100.0
+Llama-3.1-8B-Instruct,age,28,Replication,,100.0
+Llama-3.1-8B-Instruct,gender,9,Paper,,100.0
+Llama-3.1-8B-Instruct,gender,14,Paper,,100.0
+Llama-3.1-8B-Instruct,gender,18,Paper,,100.0
+Llama-3.1-8B-Instruct,gender,23,Paper,,100.0
+Llama-3.1-8B-Instruct,gender,28,Paper,,100.0
+Llama-3.1-8B-Instruct,gender,9,Replication,,100.0
+Llama-3.1-8B-Instruct,gender,14,Replication,,100.0
+Llama-3.1-8B-Instruct,gender,18,Replication,,100.0
+Llama-3.1-8B-Instruct,gender,23,Replication,,100.0
+Llama-3.1-8B-Instruct,gender,28,Replication,,100.0
+Llama-3.1-8B-Instruct,socio-economic status,9,Paper,,100.0
+Llama-3.1-8B-Instruct,socio-economic status,14,Paper,,100.0
+Llama-3.1-8B-Instruct,socio-economic status,18,Paper,,100.0
+Llama-3.1-8B-Instruct,socio-economic status,23,Paper,,100.0
+Llama-3.1-8B-Instruct,socio-economic status,28,Paper,,100.0
+Llama-3.1-8B-Instruct,socio-economic status,9,Replication,,100.0
+Llama-3.1-8B-Instruct,socio-economic status,14,Replication,,100.0
+Llama-3.1-8B-Instruct,socio-economic status,18,Replication,,100.0
+Llama-3.1-8B-Instruct,socio-economic status,23,Replication,,100.0
+Llama-3.1-8B-Instruct,socio-economic status,28,Replication,,100.0
+OLMo-2-7B-Instruct,race,9,Paper,,74.1
+OLMo-2-7B-Instruct,race,14,Paper,,78.2
+OLMo-2-7B-Instruct,race,18,Paper,,100.0
+OLMo-2-7B-Instruct,race,23,Paper,,100.0
+OLMo-2-7B-Instruct,race,28,Paper,,100.0
+OLMo-2-7B-Instruct,race,9,Replication,,73.9
+OLMo-2-7B-Instruct,race,14,Replication,,78.9
+OLMo-2-7B-Instruct,race,18,Replication,,100.0
+OLMo-2-7B-Instruct,race,23,Replication,,100.0
+OLMo-2-7B-Instruct,race,28,Replication,,100.0
+OLMo-2-7B-Instruct,age,9,Paper,,85.9
+OLMo-2-7B-Instruct,age,14,Paper,,86.5
+OLMo-2-7B-Instruct,age,18,Paper,,100.0
+OLMo-2-7B-Instruct,age,23,Paper,,100.0
+OLMo-2-7B-Instruct,age,28,Paper,,100.0
+OLMo-2-7B-Instruct,age,9,Replication,,86.2
+OLMo-2-7B-Instruct,age,14,Replication,,86.8
+OLMo-2-7B-Instruct,age,18,Replication,,100.0
+OLMo-2-7B-Instruct,age,23,Replication,,100.0
+OLMo-2-7B-Instruct,age,28,Replication,,100.0
+OLMo-2-7B-Instruct,gender,9,Paper,,77.6
+OLMo-2-7B-Instruct,gender,14,Paper,,78.2
+OLMo-2-7B-Instruct,gender,18,Paper,,100.0
+OLMo-2-7B-Instruct,gender,23,Paper,,100.0
+OLMo-2-7B-Instruct,gender,28,Paper,,100.0
+OLMo-2-7B-Instruct,gender,9,Replication,,78.2
+OLMo-2-7B-Instruct,gender,14,Replication,,78.5
+OLMo-2-7B-Instruct,gender,18,Replication,,100.0
+OLMo-2-7B-Instruct,gender,23,Replication,,100.0
+OLMo-2-7B-Instruct,gender,28,Replication,,100.0
+OLMo-2-7B-Instruct,socio-economic status,9,Paper,,82.4
+OLMo-2-7B-Instruct,socio-economic status,14,Paper,,96.5
+OLMo-2-7B-Instruct,socio-economic status,18,Paper,,100.0
+OLMo-2-7B-Instruct,socio-economic status,23,Paper,,100.0
+OLMo-2-7B-Instruct,socio-economic status,28,Paper,,100.0
+OLMo-2-7B-Instruct,socio-economic status,9,Replication,,78.5
+OLMo-2-7B-Instruct,socio-economic status,14,Replication,,95.0
+OLMo-2-7B-Instruct,socio-economic status,18,Replication,,100.0
+OLMo-2-7B-Instruct,socio-economic status,23,Replication,,100.0
+OLMo-2-7B-Instruct,socio-economic status,28,Replication,,100.0
+qwen3-8b,race,10,Replication,0,100.0
+qwen3-8b,race,10,Replication,1,100.0
+qwen3-8b,race,10,Replication,2,100.0
+qwen3-8b,race,10,Replication,3,100.0
+qwen3-8b,race,10,Replication,4,100.0
+qwen3-8b,race,16,Replication,0,100.0
+qwen3-8b,race,16,Replication,1,100.0
+qwen3-8b,race,16,Replication,2,100.0
+qwen3-8b,race,16,Replication,3,100.0
+qwen3-8b,race,16,Replication,4,100.0
+qwen3-8b,race,20,Replication,0,100.0
+qwen3-8b,race,20,Replication,1,100.0
+qwen3-8b,race,20,Replication,2,100.0
+qwen3-8b,race,20,Replication,3,100.0
+qwen3-8b,race,20,Replication,4,100.0
+qwen3-8b,race,26,Replication,0,100.0
+qwen3-8b,race,26,Replication,1,100.0
+qwen3-8b,race,26,Replication,2,100.0
+qwen3-8b,race,26,Replication,3,100.0
+qwen3-8b,race,26,Replication,4,100.0
+qwen3-8b,race,32,Replication,0,100.0
+qwen3-8b,race,32,Replication,1,100.0
+qwen3-8b,race,32,Replication,2,100.0
+qwen3-8b,race,32,Replication,3,100.0
+qwen3-8b,race,32,Replication,4,100.0
+qwen3-8b,race,10,Control,0,22.119815668202765
+qwen3-8b,race,10,Control,1,30.87557603686636
+qwen3-8b,race,10,Control,2,29.166666666666668
+qwen3-8b,race,10,Control,3,41.66666666666667
+qwen3-8b,race,10,Control,4,42.129629629629626
+qwen3-8b,race,16,Control,0,22.58064516129032
+qwen3-8b,race,16,Control,1,21.658986175115206
+qwen3-8b,race,16,Control,2,13.425925925925927
+qwen3-8b,race,16,Control,3,33.7962962962963
+qwen3-8b,race,16,Control,4,22.685185185185187
+qwen3-8b,race,20,Control,0,37.78801843317972
+qwen3-8b,race,20,Control,1,37.78801843317972
+qwen3-8b,race,20,Control,2,35.18518518518518
+qwen3-8b,race,20,Control,3,34.25925925925926
+qwen3-8b,race,20,Control,4,26.38888888888889
+qwen3-8b,race,26,Control,0,24.42396313364055
+qwen3-8b,race,26,Control,1,18.89400921658986
+qwen3-8b,race,26,Control,2,13.425925925925927
+qwen3-8b,race,26,Control,3,28.703703703703702
+qwen3-8b,race,26,Control,4,24.537037037037038
+qwen3-8b,race,32,Control,0,21.658986175115206
+qwen3-8b,race,32,Control,1,26.26728110599078
+qwen3-8b,race,32,Control,2,21.296296296296298
+qwen3-8b,race,32,Control,3,22.685185185185187
+qwen3-8b,race,32,Control,4,24.537037037037038
+qwen3-8b,age,10,Replication,0,100.0
+qwen3-8b,age,10,Replication,1,100.0
+qwen3-8b,age,10,Replication,2,100.0
+qwen3-8b,age,10,Replication,3,100.0
+qwen3-8b,age,10,Replication,4,100.0
+qwen3-8b,age,16,Replication,0,100.0
+qwen3-8b,age,16,Replication,1,100.0
+qwen3-8b,age,16,Replication,2,100.0
+qwen3-8b,age,16,Replication,3,100.0
+qwen3-8b,age,16,Replication,4,100.0
+qwen3-8b,age,20,Replication,0,100.0
+qwen3-8b,age,20,Replication,1,100.0
+qwen3-8b,age,20,Replication,2,100.0
+qwen3-8b,age,20,Replication,3,100.0
+qwen3-8b,age,20,Replication,4,100.0
+qwen3-8b,age,26,Replication,0,100.0
+qwen3-8b,age,26,Replication,1,100.0
+qwen3-8b,age,26,Replication,2,100.0
+qwen3-8b,age,26,Replication,3,100.0
+qwen3-8b,age,26,Replication,4,100.0
+qwen3-8b,age,32,Replication,0,100.0
+qwen3-8b,age,32,Replication,1,100.0
+qwen3-8b,age,32,Replication,2,100.0
+qwen3-8b,age,32,Replication,3,100.0
+qwen3-8b,age,32,Replication,4,100.0
+qwen3-8b,age,10,Control,0,18.67704280155642
+qwen3-8b,age,10,Control,1,26.07003891050584
+qwen3-8b,age,10,Control,2,21.09375
+qwen3-8b,age,10,Control,3,29.296875
+qwen3-8b,age,10,Control,4,23.4375
+qwen3-8b,age,16,Control,0,28.793774319066145
+qwen3-8b,age,16,Control,1,40.856031128404666
+qwen3-8b,age,16,Control,2,47.65625
+qwen3-8b,age,16,Control,3,51.171875
+qwen3-8b,age,16,Control,4,39.84375
+qwen3-8b,age,20,Control,0,31.906614785992215
+qwen3-8b,age,20,Control,1,34.63035019455253
+qwen3-8b,age,20,Control,2,28.515625
+qwen3-8b,age,20,Control,3,23.046875
+qwen3-8b,age,20,Control,4,27.34375
+qwen3-8b,age,26,Control,0,20.233463035019454
+qwen3-8b,age,26,Control,1,28.01556420233463
+qwen3-8b,age,26,Control,2,29.296875
+qwen3-8b,age,26,Control,3,26.953125
+qwen3-8b,age,26,Control,4,18.359375
+qwen3-8b,age,32,Control,0,45.525291828793776
+qwen3-8b,age,32,Control,1,60.311284046692606
+qwen3-8b,age,32,Control,2,55.078125
+qwen3-8b,age,32,Control,3,30.078125
+qwen3-8b,age,32,Control,4,27.34375
+qwen3-8b,gender,10,Replication,0,100.0
+qwen3-8b,gender,10,Replication,1,100.0
+qwen3-8b,gender,10,Replication,2,100.0
+qwen3-8b,gender,10,Replication,3,100.0
+qwen3-8b,gender,10,Replication,4,100.0
+qwen3-8b,gender,16,Replication,0,100.0
+qwen3-8b,gender,16,Replication,1,100.0
+qwen3-8b,gender,16,Replication,2,100.0
+qwen3-8b,gender,16,Replication,3,100.0
+qwen3-8b,gender,16,Replication,4,100.0
+qwen3-8b,gender,20,Replication,0,100.0
+qwen3-8b,gender,20,Replication,1,100.0
+qwen3-8b,gender,20,Replication,2,100.0
+qwen3-8b,gender,20,Replication,3,100.0
+qwen3-8b,gender,20,Replication,4,100.0
+qwen3-8b,gender,26,Replication,0,100.0
+qwen3-8b,gender,26,Replication,1,100.0
+qwen3-8b,gender,26,Replication,2,100.0
+qwen3-8b,gender,26,Replication,3,100.0
+qwen3-8b,gender,26,Replication,4,100.0
+qwen3-8b,gender,32,Replication,0,100.0
+qwen3-8b,gender,32,Replication,1,100.0
+qwen3-8b,gender,32,Replication,2,100.0
+qwen3-8b,gender,32,Replication,3,100.0
+qwen3-8b,gender,32,Replication,4,100.0
+qwen3-8b,gender,10,Control,0,23.728813559322035
+qwen3-8b,gender,10,Control,1,35.59322033898305
+qwen3-8b,gender,10,Control,2,22.15909090909091
+qwen3-8b,gender,10,Control,3,42.61363636363637
+qwen3-8b,gender,10,Control,4,39.77272727272727
+qwen3-8b,gender,16,Control,0,24.858757062146893
+qwen3-8b,gender,16,Control,1,45.76271186440678
+qwen3-8b,gender,16,Control,2,44.88636363636363
+qwen3-8b,gender,16,Control,3,42.61363636363637
+qwen3-8b,gender,16,Control,4,48.29545454545455
+qwen3-8b,gender,20,Control,0,38.4180790960452
+qwen3-8b,gender,20,Control,1,33.89830508474576
+qwen3-8b,gender,20,Control,2,30.681818181818183
+qwen3-8b,gender,20,Control,3,26.704545454545453
+qwen3-8b,gender,20,Control,4,26.136363636363637
+qwen3-8b,gender,26,Control,0,39.548022598870055
+qwen3-8b,gender,26,Control,1,29.943502824858758
+qwen3-8b,gender,26,Control,2,31.818181818181817
+qwen3-8b,gender,26,Control,3,26.704545454545453
+qwen3-8b,gender,26,Control,4,13.636363636363635
+qwen3-8b,gender,32,Control,0,23.728813559322035
+qwen3-8b,gender,32,Control,1,42.93785310734463
+qwen3-8b,gender,32,Control,2,51.13636363636363
+qwen3-8b,gender,32,Control,3,47.159090909090914
+qwen3-8b,gender,32,Control,4,42.04545454545455
+qwen3-8b,socio-economic status,10,Replication,0,100.0
+qwen3-8b,socio-economic status,10,Replication,1,100.0
+qwen3-8b,socio-economic status,10,Replication,2,100.0
+qwen3-8b,socio-economic status,10,Replication,3,100.0
+qwen3-8b,socio-economic status,10,Replication,4,100.0
+qwen3-8b,socio-economic status,16,Replication,0,100.0
+qwen3-8b,socio-economic status,16,Replication,1,100.0
+qwen3-8b,socio-economic status,16,Replication,2,100.0
+qwen3-8b,socio-economic status,16,Replication,3,100.0
+qwen3-8b,socio-economic status,16,Replication,4,100.0
+qwen3-8b,socio-economic status,20,Replication,0,100.0
+qwen3-8b,socio-economic status,20,Replication,1,100.0
+qwen3-8b,socio-economic status,20,Replication,2,100.0
+qwen3-8b,socio-economic status,20,Replication,3,100.0
+qwen3-8b,socio-economic status,20,Replication,4,100.0
+qwen3-8b,socio-economic status,26,Replication,0,100.0
+qwen3-8b,socio-economic status,26,Replication,1,100.0
+qwen3-8b,socio-economic status,26,Replication,2,100.0
+qwen3-8b,socio-economic status,26,Replication,3,100.0
+qwen3-8b,socio-economic status,26,Replication,4,100.0
+qwen3-8b,socio-economic status,32,Replication,0,100.0
+qwen3-8b,socio-economic status,32,Replication,1,100.0
+qwen3-8b,socio-economic status,32,Replication,2,100.0
+qwen3-8b,socio-economic status,32,Replication,3,100.0
+qwen3-8b,socio-economic status,32,Replication,4,100.0
+qwen3-8b,socio-economic status,10,Control,0,69.66292134831461
+qwen3-8b,socio-economic status,10,Control,1,79.7752808988764
+qwen3-8b,socio-economic status,10,Control,2,65.9090909090909
+qwen3-8b,socio-economic status,10,Control,3,27.27272727272727
+qwen3-8b,socio-economic status,10,Control,4,53.40909090909091
+qwen3-8b,socio-economic status,16,Control,0,48.31460674157304
+qwen3-8b,socio-economic status,16,Control,1,56.17977528089888
+qwen3-8b,socio-economic status,16,Control,2,79.54545454545455
+qwen3-8b,socio-economic status,16,Control,3,84.0909090909091
+qwen3-8b,socio-economic status,16,Control,4,47.72727272727273
+qwen3-8b,socio-economic status,20,Control,0,35.95505617977528
+qwen3-8b,socio-economic status,20,Control,1,41.57303370786517
+qwen3-8b,socio-economic status,20,Control,2,61.36363636363637
+qwen3-8b,socio-economic status,20,Control,3,72.72727272727273
+qwen3-8b,socio-economic status,20,Control,4,54.54545454545454
+qwen3-8b,socio-economic status,26,Control,0,55.0561797752809
+qwen3-8b,socio-economic status,26,Control,1,49.43820224719101
+qwen3-8b,socio-economic status,26,Control,2,60.22727272727273
+qwen3-8b,socio-economic status,26,Control,3,60.22727272727273
+qwen3-8b,socio-economic status,26,Control,4,70.45454545454545
+qwen3-8b,socio-economic status,32,Control,0,48.31460674157304
+qwen3-8b,socio-economic status,32,Control,1,47.19101123595505
+qwen3-8b,socio-economic status,32,Control,2,40.909090909090914
+qwen3-8b,socio-economic status,32,Control,3,30.681818181818183
+qwen3-8b,socio-economic status,32,Control,4,27.27272727272727
+glm4-9b,race,12,Replication,0,100.0
+glm4-9b,race,12,Replication,1,100.0
+glm4-9b,race,12,Replication,2,100.0
+glm4-9b,race,12,Replication,3,100.0
+glm4-9b,race,12,Replication,4,100.0
+glm4-9b,race,18,Replication,0,100.0
+glm4-9b,race,18,Replication,1,100.0
+glm4-9b,race,18,Replication,2,100.0
+glm4-9b,race,18,Replication,3,100.0
+glm4-9b,race,18,Replication,4,100.0
+glm4-9b,race,24,Replication,0,100.0
+glm4-9b,race,24,Replication,1,100.0
+glm4-9b,race,24,Replication,2,100.0
+glm4-9b,race,24,Replication,3,100.0
+glm4-9b,race,24,Replication,4,100.0
+glm4-9b,race,30,Replication,0,100.0
+glm4-9b,race,30,Replication,1,100.0
+glm4-9b,race,30,Replication,2,100.0
+glm4-9b,race,30,Replication,3,100.0
+glm4-9b,race,30,Replication,4,100.0
+glm4-9b,race,36,Replication,0,100.0
+glm4-9b,race,36,Replication,1,100.0
+glm4-9b,race,36,Replication,2,100.0
+glm4-9b,race,36,Replication,3,100.0
+glm4-9b,race,36,Replication,4,100.0
+glm4-9b,race,12,Control,0,53.91705069124424
+glm4-9b,race,12,Control,1,52.07373271889401
+glm4-9b,race,12,Control,2,35.648148148148145
+glm4-9b,race,12,Control,3,45.83333333333333
+glm4-9b,race,12,Control,4,18.51851851851852
+glm4-9b,race,18,Control,0,32.71889400921659
+glm4-9b,race,18,Control,1,29.03225806451613
+glm4-9b,race,18,Control,2,47.22222222222222
+glm4-9b,race,18,Control,3,24.537037037037038
+glm4-9b,race,18,Control,4,40.27777777777778
+glm4-9b,race,24,Control,0,16.589861751152075
+glm4-9b,race,24,Control,1,30.414746543778804
+glm4-9b,race,24,Control,2,21.296296296296298
+glm4-9b,race,24,Control,3,24.537037037037038
+glm4-9b,race,24,Control,4,6.944444444444445
+glm4-9b,race,30,Control,0,20.276497695852534
+glm4-9b,race,30,Control,1,19.35483870967742
+glm4-9b,race,30,Control,2,31.944444444444443
+glm4-9b,race,30,Control,3,24.074074074074073
+glm4-9b,race,30,Control,4,39.351851851851855
+glm4-9b,race,36,Control,0,26.26728110599078
+glm4-9b,race,36,Control,1,20.737327188940093
+glm4-9b,race,36,Control,2,16.203703703703702
+glm4-9b,race,36,Control,3,22.685185185185187
+glm4-9b,race,36,Control,4,26.38888888888889
+glm4-9b,age,12,Replication,0,100.0
+glm4-9b,age,12,Replication,1,100.0
+glm4-9b,age,12,Replication,2,100.0
+glm4-9b,age,12,Replication,3,100.0
+glm4-9b,age,12,Replication,4,100.0
+glm4-9b,age,18,Replication,0,100.0
+glm4-9b,age,18,Replication,1,100.0
+glm4-9b,age,18,Replication,2,100.0
+glm4-9b,age,18,Replication,3,100.0
+glm4-9b,age,18,Replication,4,100.0
+glm4-9b,age,24,Replication,0,100.0
+glm4-9b,age,24,Replication,1,100.0
+glm4-9b,age,24,Replication,2,100.0
+glm4-9b,age,24,Replication,3,100.0
+glm4-9b,age,24,Replication,4,100.0
+glm4-9b,age,30,Replication,0,100.0
+glm4-9b,age,30,Replication,1,100.0
+glm4-9b,age,30,Replication,2,100.0
+glm4-9b,age,30,Replication,3,100.0
+glm4-9b,age,30,Replication,4,100.0
+glm4-9b,age,36,Replication,0,100.0
+glm4-9b,age,36,Replication,1,100.0
+glm4-9b,age,36,Replication,2,100.0
+glm4-9b,age,36,Replication,3,100.0
+glm4-9b,age,36,Replication,4,100.0
+glm4-9b,age,12,Control,0,14.396887159533073
+glm4-9b,age,12,Control,1,24.5136186770428
+glm4-9b,age,12,Control,2,28.125
+glm4-9b,age,12,Control,3,17.96875
+glm4-9b,age,12,Control,4,27.34375
+glm4-9b,age,18,Control,0,23.346303501945524
+glm4-9b,age,18,Control,1,33.07392996108949
+glm4-9b,age,18,Control,2,27.34375
+glm4-9b,age,18,Control,3,35.546875
+glm4-9b,age,18,Control,4,36.328125
+glm4-9b,age,24,Control,0,25.680933852140075
+glm4-9b,age,24,Control,1,24.90272373540856
+glm4-9b,age,24,Control,2,35.15625
+glm4-9b,age,24,Control,3,29.6875
+glm4-9b,age,24,Control,4,23.4375
+glm4-9b,age,30,Control,0,26.07003891050584
+glm4-9b,age,30,Control,1,32.68482490272373
+glm4-9b,age,30,Control,2,18.359375
+glm4-9b,age,30,Control,3,35.546875
+glm4-9b,age,30,Control,4,28.125
+glm4-9b,age,36,Control,0,21.40077821011673
+glm4-9b,age,36,Control,1,20.233463035019454
+glm4-9b,age,36,Control,2,23.828125
+glm4-9b,age,36,Control,3,23.046875
+glm4-9b,age,36,Control,4,16.015625
+glm4-9b,gender,12,Replication,0,100.0
+glm4-9b,gender,12,Replication,1,100.0
+glm4-9b,gender,12,Replication,2,100.0
+glm4-9b,gender,12,Replication,3,100.0
+glm4-9b,gender,12,Replication,4,100.0
+glm4-9b,gender,18,Replication,0,100.0
+glm4-9b,gender,18,Replication,1,100.0
+glm4-9b,gender,18,Replication,2,100.0
+glm4-9b,gender,18,Replication,3,100.0
+glm4-9b,gender,18,Replication,4,100.0
+glm4-9b,gender,24,Replication,0,100.0
+glm4-9b,gender,24,Replication,1,100.0
+glm4-9b,gender,24,Replication,2,100.0
+glm4-9b,gender,24,Replication,3,100.0
+glm4-9b,gender,24,Replication,4,100.0
+glm4-9b,gender,30,Replication,0,100.0
+glm4-9b,gender,30,Replication,1,100.0
+glm4-9b,gender,30,Replication,2,100.0
+glm4-9b,gender,30,Replication,3,100.0
+glm4-9b,gender,30,Replication,4,100.0
+glm4-9b,gender,36,Replication,0,100.0
+glm4-9b,gender,36,Replication,1,100.0
+glm4-9b,gender,36,Replication,2,100.0
+glm4-9b,gender,36,Replication,3,100.0
+glm4-9b,gender,36,Replication,4,100.0
+glm4-9b,gender,12,Control,0,42.3728813559322
+glm4-9b,gender,12,Control,1,38.4180790960452
+glm4-9b,gender,12,Control,2,27.84090909090909
+glm4-9b,gender,12,Control,3,27.84090909090909
+glm4-9b,gender,12,Control,4,32.38636363636363
+glm4-9b,gender,18,Control,0,28.8135593220339
+glm4-9b,gender,18,Control,1,29.37853107344633
+glm4-9b,gender,18,Control,2,28.40909090909091
+glm4-9b,gender,18,Control,3,28.40909090909091
+glm4-9b,gender,18,Control,4,16.477272727272727
+glm4-9b,gender,24,Control,0,36.15819209039548
+glm4-9b,gender,24,Control,1,29.37853107344633
+glm4-9b,gender,24,Control,2,31.818181818181817
+glm4-9b,gender,24,Control,3,46.02272727272727
+glm4-9b,gender,24,Control,4,30.681818181818183
+glm4-9b,gender,30,Control,0,35.59322033898305
+glm4-9b,gender,30,Control,1,34.463276836158194
+glm4-9b,gender,30,Control,2,30.681818181818183
+glm4-9b,gender,30,Control,3,42.04545454545455
+glm4-9b,gender,30,Control,4,51.13636363636363
+glm4-9b,gender,36,Control,0,40.11299435028249
+glm4-9b,gender,36,Control,1,37.28813559322034
+glm4-9b,gender,36,Control,2,28.97727272727273
+glm4-9b,gender,36,Control,3,32.95454545454545
+glm4-9b,gender,36,Control,4,49.43181818181818
+glm4-9b,socio-economic status,12,Replication,0,100.0
+glm4-9b,socio-economic status,12,Replication,1,100.0
+glm4-9b,socio-economic status,12,Replication,2,100.0
+glm4-9b,socio-economic status,12,Replication,3,100.0
+glm4-9b,socio-economic status,12,Replication,4,100.0
+glm4-9b,socio-economic status,18,Replication,0,100.0
+glm4-9b,socio-economic status,18,Replication,1,100.0
+glm4-9b,socio-economic status,18,Replication,2,100.0
+glm4-9b,socio-economic status,18,Replication,3,100.0
+glm4-9b,socio-economic status,18,Replication,4,100.0
+glm4-9b,socio-economic status,24,Replication,0,100.0
+glm4-9b,socio-economic status,24,Replication,1,100.0
+glm4-9b,socio-economic status,24,Replication,2,100.0
+glm4-9b,socio-economic status,24,Replication,3,100.0
+glm4-9b,socio-economic status,24,Replication,4,100.0
+glm4-9b,socio-economic status,30,Replication,0,100.0
+glm4-9b,socio-economic status,30,Replication,1,100.0
+glm4-9b,socio-economic status,30,Replication,2,100.0
+glm4-9b,socio-economic status,30,Replication,3,100.0
+glm4-9b,socio-economic status,30,Replication,4,100.0
+glm4-9b,socio-economic status,36,Replication,0,100.0
+glm4-9b,socio-economic status,36,Replication,1,100.0
+glm4-9b,socio-economic status,36,Replication,2,100.0
+glm4-9b,socio-economic status,36,Replication,3,100.0
+glm4-9b,socio-economic status,36,Replication,4,100.0
+glm4-9b,socio-economic status,12,Control,0,47.19101123595505
+glm4-9b,socio-economic status,12,Control,1,48.31460674157304
+glm4-9b,socio-economic status,12,Control,2,36.36363636363637
+glm4-9b,socio-economic status,12,Control,3,38.63636363636363
+glm4-9b,socio-economic status,12,Control,4,48.86363636363637
+glm4-9b,socio-economic status,18,Control,0,35.95505617977528
+glm4-9b,socio-economic status,18,Control,1,43.82022471910113
+glm4-9b,socio-economic status,18,Control,2,45.45454545454545
+glm4-9b,socio-economic status,18,Control,3,45.45454545454545
+glm4-9b,socio-economic status,18,Control,4,47.72727272727273
+glm4-9b,socio-economic status,24,Control,0,31.46067415730337
+glm4-9b,socio-economic status,24,Control,1,46.06741573033708
+glm4-9b,socio-economic status,24,Control,2,64.77272727272727
+glm4-9b,socio-economic status,24,Control,3,75.0
+glm4-9b,socio-economic status,24,Control,4,75.0
+glm4-9b,socio-economic status,30,Control,0,34.831460674157306
+glm4-9b,socio-economic status,30,Control,1,29.213483146067414
+glm4-9b,socio-economic status,30,Control,2,36.36363636363637
+glm4-9b,socio-economic status,30,Control,3,42.04545454545455
+glm4-9b,socio-economic status,30,Control,4,47.72727272727273
+glm4-9b,socio-economic status,36,Control,0,51.68539325842697
+glm4-9b,socio-economic status,36,Control,1,49.43820224719101
+glm4-9b,socio-economic status,36,Control,2,54.54545454545454
+glm4-9b,socio-economic status,36,Control,3,48.86363636363637
+glm4-9b,socio-economic status,36,Control,4,72.72727272727273
+phi4-14b,race,12,Replication,0,100.0
+phi4-14b,race,12,Replication,1,100.0
+phi4-14b,race,12,Replication,2,100.0
+phi4-14b,race,12,Replication,3,100.0
+phi4-14b,race,12,Replication,4,100.0
+phi4-14b,race,18,Replication,0,100.0
+phi4-14b,race,18,Replication,1,100.0
+phi4-14b,race,18,Replication,2,100.0
+phi4-14b,race,18,Replication,3,100.0
+phi4-14b,race,18,Replication,4,100.0
+phi4-14b,race,24,Replication,0,100.0
+phi4-14b,race,24,Replication,1,100.0
+phi4-14b,race,24,Replication,2,100.0
+phi4-14b,race,24,Replication,3,100.0
+phi4-14b,race,24,Replication,4,100.0
+phi4-14b,race,30,Replication,0,100.0
+phi4-14b,race,30,Replication,1,100.0
+phi4-14b,race,30,Replication,2,100.0
+phi4-14b,race,30,Replication,3,100.0
+phi4-14b,race,30,Replication,4,100.0
+phi4-14b,race,36,Replication,0,100.0
+phi4-14b,race,36,Replication,1,100.0
+phi4-14b,race,36,Replication,2,100.0
+phi4-14b,race,36,Replication,3,100.0
+phi4-14b,race,36,Replication,4,100.0
+phi4-14b,race,12,Control,0,28.57142857142857
+phi4-14b,race,12,Control,1,23.502304147465438
+phi4-14b,race,12,Control,2,33.33333333333333
+phi4-14b,race,12,Control,3,36.11111111111111
+phi4-14b,race,12,Control,4,19.90740740740741
+phi4-14b,race,18,Control,0,42.857142857142854
+phi4-14b,race,18,Control,1,45.622119815668206
+phi4-14b,race,18,Control,2,31.48148148148148
+phi4-14b,race,18,Control,3,32.870370370370374
+phi4-14b,race,18,Control,4,31.01851851851852
+phi4-14b,race,24,Control,0,28.110599078341014
+phi4-14b,race,24,Control,1,36.405529953917046
+phi4-14b,race,24,Control,2,31.944444444444443
+phi4-14b,race,24,Control,3,28.240740740740737
+phi4-14b,race,24,Control,4,18.51851851851852
+phi4-14b,race,30,Control,0,23.963133640552993
+phi4-14b,race,30,Control,1,21.658986175115206
+phi4-14b,race,30,Control,2,49.53703703703704
+phi4-14b,race,30,Control,3,26.38888888888889
+phi4-14b,race,30,Control,4,31.48148148148148
+phi4-14b,race,36,Control,0,29.03225806451613
+phi4-14b,race,36,Control,1,36.405529953917046
+phi4-14b,race,36,Control,2,51.85185185185185
+phi4-14b,race,36,Control,3,47.22222222222222
+phi4-14b,race,36,Control,4,25.462962962962965
+phi4-14b,age,12,Replication,0,100.0
+phi4-14b,age,12,Replication,1,100.0
+phi4-14b,age,12,Replication,2,100.0
+phi4-14b,age,12,Replication,3,100.0
+phi4-14b,age,12,Replication,4,100.0
+phi4-14b,age,18,Replication,0,100.0
+phi4-14b,age,18,Replication,1,100.0
+phi4-14b,age,18,Replication,2,100.0
+phi4-14b,age,18,Replication,3,100.0
+phi4-14b,age,18,Replication,4,100.0
+phi4-14b,age,24,Replication,0,100.0
+phi4-14b,age,24,Replication,1,100.0
+phi4-14b,age,24,Replication,2,100.0
+phi4-14b,age,24,Replication,3,100.0
+phi4-14b,age,24,Replication,4,100.0
+phi4-14b,age,30,Replication,0,100.0
+phi4-14b,age,30,Replication,1,100.0
+phi4-14b,age,30,Replication,2,100.0
+phi4-14b,age,30,Replication,3,100.0
+phi4-14b,age,30,Replication,4,100.0
+phi4-14b,age,36,Replication,0,100.0
+phi4-14b,age,36,Replication,1,100.0
+phi4-14b,age,36,Replication,2,100.0
+phi4-14b,age,36,Replication,3,100.0
+phi4-14b,age,36,Replication,4,100.0
+phi4-14b,age,12,Control,0,26.07003891050584
+phi4-14b,age,12,Control,1,33.46303501945525
+phi4-14b,age,12,Control,2,45.703125
+phi4-14b,age,12,Control,3,32.8125
+phi4-14b,age,12,Control,4,11.71875
+phi4-14b,age,18,Control,0,24.90272373540856
+phi4-14b,age,18,Control,1,27.237354085603112
+phi4-14b,age,18,Control,2,27.34375
+phi4-14b,age,18,Control,3,27.34375
+phi4-14b,age,18,Control,4,16.796875
+phi4-14b,age,24,Control,0,28.01556420233463
+phi4-14b,age,24,Control,1,32.68482490272373
+phi4-14b,age,24,Control,2,23.046875
+phi4-14b,age,24,Control,3,28.90625
+phi4-14b,age,24,Control,4,19.53125
+phi4-14b,age,30,Control,0,22.56809338521401
+phi4-14b,age,30,Control,1,42.023346303501945
+phi4-14b,age,30,Control,2,39.453125
+phi4-14b,age,30,Control,3,27.34375
+phi4-14b,age,30,Control,4,25.78125
+phi4-14b,age,36,Control,0,29.18287937743191
+phi4-14b,age,36,Control,1,28.793774319066145
+phi4-14b,age,36,Control,2,20.703125
+phi4-14b,age,36,Control,3,23.046875
+phi4-14b,age,36,Control,4,18.359375
+phi4-14b,gender,12,Replication,0,100.0
+phi4-14b,gender,12,Replication,1,100.0
+phi4-14b,gender,12,Replication,2,100.0
+phi4-14b,gender,12,Replication,3,100.0
+phi4-14b,gender,12,Replication,4,100.0
+phi4-14b,gender,18,Replication,0,100.0
+phi4-14b,gender,18,Replication,1,100.0
+phi4-14b,gender,18,Replication,2,100.0
+phi4-14b,gender,18,Replication,3,100.0
+phi4-14b,gender,18,Replication,4,100.0
+phi4-14b,gender,24,Replication,0,100.0
+phi4-14b,gender,24,Replication,1,100.0
+phi4-14b,gender,24,Replication,2,100.0
+phi4-14b,gender,24,Replication,3,100.0
+phi4-14b,gender,24,Replication,4,100.0
+phi4-14b,gender,30,Replication,0,100.0
+phi4-14b,gender,30,Replication,1,100.0
+phi4-14b,gender,30,Replication,2,100.0
+phi4-14b,gender,30,Replication,3,100.0
+phi4-14b,gender,30,Replication,4,100.0
+phi4-14b,gender,36,Replication,0,100.0
+phi4-14b,gender,36,Replication,1,100.0
+phi4-14b,gender,36,Replication,2,100.0
+phi4-14b,gender,36,Replication,3,100.0
+phi4-14b,gender,36,Replication,4,100.0
+phi4-14b,gender,12,Control,0,26.55367231638418
+phi4-14b,gender,12,Control,1,32.20338983050847
+phi4-14b,gender,12,Control,2,38.06818181818182
+phi4-14b,gender,12,Control,3,36.93181818181818
+phi4-14b,gender,12,Control,4,49.43181818181818
+phi4-14b,gender,18,Control,0,36.72316384180791
+phi4-14b,gender,18,Control,1,23.163841807909606
+phi4-14b,gender,18,Control,2,28.97727272727273
+phi4-14b,gender,18,Control,3,38.06818181818182
+phi4-14b,gender,18,Control,4,26.704545454545453
+phi4-14b,gender,24,Control,0,36.72316384180791
+phi4-14b,gender,24,Control,1,45.19774011299435
+phi4-14b,gender,24,Control,2,37.5
+phi4-14b,gender,24,Control,3,26.704545454545453
+phi4-14b,gender,24,Control,4,17.045454545454543
+phi4-14b,gender,30,Control,0,29.943502824858758
+phi4-14b,gender,30,Control,1,18.07909604519774
+phi4-14b,gender,30,Control,2,29.545454545454547
+phi4-14b,gender,30,Control,3,38.63636363636363
+phi4-14b,gender,30,Control,4,46.02272727272727
+phi4-14b,gender,36,Control,0,26.55367231638418
+phi4-14b,gender,36,Control,1,27.11864406779661
+phi4-14b,gender,36,Control,2,21.59090909090909
+phi4-14b,gender,36,Control,3,24.431818181818183
+phi4-14b,gender,36,Control,4,41.47727272727273
+phi4-14b,socio-economic status,12,Replication,0,100.0
+phi4-14b,socio-economic status,12,Replication,1,100.0
+phi4-14b,socio-economic status,12,Replication,2,100.0
+phi4-14b,socio-economic status,12,Replication,3,100.0
+phi4-14b,socio-economic status,12,Replication,4,100.0
+phi4-14b,socio-economic status,18,Replication,0,100.0
+phi4-14b,socio-economic status,18,Replication,1,100.0
+phi4-14b,socio-economic status,18,Replication,2,100.0
+phi4-14b,socio-economic status,18,Replication,3,100.0
+phi4-14b,socio-economic status,18,Replication,4,100.0
+phi4-14b,socio-economic status,24,Replication,0,100.0
+phi4-14b,socio-economic status,24,Replication,1,100.0
+phi4-14b,socio-economic status,24,Replication,2,100.0
+phi4-14b,socio-economic status,24,Replication,3,100.0
+phi4-14b,socio-economic status,24,Replication,4,100.0
+phi4-14b,socio-economic status,30,Replication,0,100.0
+phi4-14b,socio-economic status,30,Replication,1,100.0
+phi4-14b,socio-economic status,30,Replication,2,100.0
+phi4-14b,socio-economic status,30,Replication,3,100.0
+phi4-14b,socio-economic status,30,Replication,4,100.0
+phi4-14b,socio-economic status,36,Replication,0,100.0
+phi4-14b,socio-economic status,36,Replication,1,100.0
+phi4-14b,socio-economic status,36,Replication,2,100.0
+phi4-14b,socio-economic status,36,Replication,3,100.0
+phi4-14b,socio-economic status,36,Replication,4,100.0
+phi4-14b,socio-economic status,12,Control,0,60.67415730337079
+phi4-14b,socio-economic status,12,Control,1,58.42696629213483
+phi4-14b,socio-economic status,12,Control,2,50.0
+phi4-14b,socio-economic status,12,Control,3,57.95454545454546
+phi4-14b,socio-economic status,12,Control,4,50.0
+phi4-14b,socio-economic status,18,Control,0,71.91011235955057
+phi4-14b,socio-economic status,18,Control,1,66.29213483146067
+phi4-14b,socio-economic status,18,Control,2,65.9090909090909
+phi4-14b,socio-economic status,18,Control,3,47.72727272727273
+phi4-14b,socio-economic status,18,Control,4,43.18181818181818
+phi4-14b,socio-economic status,24,Control,0,39.325842696629216
+phi4-14b,socio-economic status,24,Control,1,28.08988764044944
+phi4-14b,socio-economic status,24,Control,2,35.22727272727273
+phi4-14b,socio-economic status,24,Control,3,43.18181818181818
+phi4-14b,socio-economic status,24,Control,4,50.0
+phi4-14b,socio-economic status,30,Control,0,25.842696629213485
+phi4-14b,socio-economic status,30,Control,1,38.20224719101123
+phi4-14b,socio-economic status,30,Control,2,28.40909090909091
+phi4-14b,socio-economic status,30,Control,3,40.909090909090914
+phi4-14b,socio-economic status,30,Control,4,59.09090909090909
+phi4-14b,socio-economic status,36,Control,0,73.03370786516854
+phi4-14b,socio-economic status,36,Control,1,82.02247191011236
+phi4-14b,socio-economic status,36,Control,2,86.36363636363636
+phi4-14b,socio-economic status,36,Control,3,93.18181818181817
+phi4-14b,socio-economic status,36,Control,4,90.9090909090909

@@ -1,0 +1,37 @@
+paper,table,result_type,model,attribute,group,metric,value,delta_vs_neutral
+Reading Between the Prompts,11,paper,Gemma-2-9B-IT,age,adult,probe_accuracy_percent,10.6,10.6
+Reading Between the Prompts,11,paper,Gemma-2-9B-IT,age,child,probe_accuracy_percent,99.8,-0.2
+Reading Between the Prompts,11,paper,Gemma-2-9B-IT,age,older adult,probe_accuracy_percent,21.2,21.2
+Reading Between the Prompts,11,paper,Gemma-2-9B-IT,age,teenager,probe_accuracy_percent,41.8,41.8
+Reading Between the Prompts,11,paper,Gemma-2-9B-IT,gender,female,probe_accuracy_percent,92.6,57.0
+Reading Between the Prompts,11,paper,Gemma-2-9B-IT,gender,male,probe_accuracy_percent,71.9,11.3
+Reading Between the Prompts,11,paper,Gemma-2-9B-IT,race,asian,probe_accuracy_percent,98.8,91.4
+Reading Between the Prompts,11,paper,Gemma-2-9B-IT,race,black,probe_accuracy_percent,87.0,58.9
+Reading Between the Prompts,11,paper,Gemma-2-9B-IT,race,hispanic,probe_accuracy_percent,89.0,89.0
+Reading Between the Prompts,11,paper,Gemma-2-9B-IT,race,white,probe_accuracy_percent,26.3,18.4
+Reading Between the Prompts,11,paper,Gemma-2-9B-IT,socio-economic status,high,probe_accuracy_percent,66.1,46.8
+Reading Between the Prompts,11,paper,Gemma-2-9B-IT,socio-economic status,low,probe_accuracy_percent,85.8,8.8
+Reading Between the Prompts,12,paper,Llama-3.1-8B-Instruct,age,adult,probe_accuracy_percent,11.7,11.7
+Reading Between the Prompts,12,paper,Llama-3.1-8B-Instruct,age,child,probe_accuracy_percent,94.8,4.4
+Reading Between the Prompts,12,paper,Llama-3.1-8B-Instruct,age,older adult,probe_accuracy_percent,0.6,0.6
+Reading Between the Prompts,12,paper,Llama-3.1-8B-Instruct,age,teenager,probe_accuracy_percent,20.3,20.3
+Reading Between the Prompts,12,paper,Llama-3.1-8B-Instruct,gender,female,probe_accuracy_percent,20.0,19.9
+Reading Between the Prompts,12,paper,Llama-3.1-8B-Instruct,gender,male,probe_accuracy_percent,10.9,10.6
+Reading Between the Prompts,12,paper,Llama-3.1-8B-Instruct,race,asian,probe_accuracy_percent,24.6,24.6
+Reading Between the Prompts,12,paper,Llama-3.1-8B-Instruct,race,black,probe_accuracy_percent,13.2,13.2
+Reading Between the Prompts,12,paper,Llama-3.1-8B-Instruct,race,hispanic,probe_accuracy_percent,53.8,53.8
+Reading Between the Prompts,12,paper,Llama-3.1-8B-Instruct,race,white,probe_accuracy_percent,0.0,0.0
+Reading Between the Prompts,12,paper,Llama-3.1-8B-Instruct,socio-economic status,high,probe_accuracy_percent,0.0,0.0
+Reading Between the Prompts,12,paper,Llama-3.1-8B-Instruct,socio-economic status,low,probe_accuracy_percent,0.0,0.0
+Reading Between the Prompts,13,paper,OLMo-2-7B-Instruct,age,adult,probe_accuracy_percent,8.6,8.4
+Reading Between the Prompts,13,paper,OLMo-2-7B-Instruct,age,child,probe_accuracy_percent,35.5,34.6
+Reading Between the Prompts,13,paper,OLMo-2-7B-Instruct,age,older adult,probe_accuracy_percent,2.0,2.0
+Reading Between the Prompts,13,paper,OLMo-2-7B-Instruct,age,teenager,probe_accuracy_percent,0.6,0.6
+Reading Between the Prompts,13,paper,OLMo-2-7B-Instruct,gender,female,probe_accuracy_percent,0.0,0.0
+Reading Between the Prompts,13,paper,OLMo-2-7B-Instruct,gender,male,probe_accuracy_percent,10.5,9.0
+Reading Between the Prompts,13,paper,OLMo-2-7B-Instruct,race,asian,probe_accuracy_percent,0.0,0.0
+Reading Between the Prompts,13,paper,OLMo-2-7B-Instruct,race,black,probe_accuracy_percent,0.0,0.0
+Reading Between the Prompts,13,paper,OLMo-2-7B-Instruct,race,hispanic,probe_accuracy_percent,5.4,5.4
+Reading Between the Prompts,13,paper,OLMo-2-7B-Instruct,race,white,probe_accuracy_percent,0.0,0.0
+Reading Between the Prompts,13,paper,OLMo-2-7B-Instruct,socio-economic status,high,probe_accuracy_percent,0.0,0.0
+Reading Between the Prompts,13,paper,OLMo-2-7B-Instruct,socio-economic status,low,probe_accuracy_percent,0.0,0.0
