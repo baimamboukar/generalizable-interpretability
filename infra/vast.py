@@ -3,11 +3,11 @@ from __future__ import annotations
 import os
 from pathlib import Path
 import shlex
+import subprocess
 import tarfile
 import tempfile
 from uuid import uuid4
 
-from huggingface_hub import HfApi
 from vastai import VastAI
 
 
@@ -51,9 +51,15 @@ class VastRunner:
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "project.tar.gz"
             self._archive(root, archive, external)
-            HfApi(token=os.environ.get("HF_TOKEN")).batch_bucket_files(
-                bucket,
-                add=[(archive, bundle_path)],
+            subprocess.run(
+                [
+                    "hf",
+                    "buckets",
+                    "cp",
+                    str(archive),
+                    f"hf://buckets/{bucket}/{bundle_path}",
+                ],
+                check=True,
             )
 
         offers = self.client.search_offers(
