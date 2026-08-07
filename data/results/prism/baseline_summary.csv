@@ -1,0 +1,17 @@
+study,dataset,model,method,representation,test_domain,metric,paper_value,replication_value,delta,status
+PRISM,True-False,Llama-2-7B-Chat,MM,raw,average,accuracy,0.5572,0.557159,-0.000041,completed
+PRISM,True-False,Llama-2-7B-Chat,SAPLMA,raw,average,accuracy,0.6563,0.649962,-0.006338,completed
+PRISM,True-False,Llama-2-7B-Chat,MM,prompted,average,accuracy,0.7524,0.752405,0.000005,completed
+PRISM,True-False,Llama-2-7B-Chat,SAPLMA,prompted,average,accuracy,0.7735,0.774630,0.001130,completed
+PRISM,True-False,Llama-2-13B-Chat,MM,raw,average,accuracy,0.5457,0.545684,-0.000016,completed
+PRISM,True-False,Llama-2-13B-Chat,SAPLMA,raw,average,accuracy,0.6858,0.690005,0.004205,completed
+PRISM,True-False,Llama-2-13B-Chat,MM,prompted,average,accuracy,0.7889,0.788935,0.000035,completed
+PRISM,True-False,Llama-2-13B-Chat,SAPLMA,prompted,average,accuracy,0.7987,0.799367,0.000667,completed
+PRISM,LogicStruct,Llama-2-7B-Chat,MM,raw,average,accuracy,0.4966,0.496623,0.000023,completed
+PRISM,LogicStruct,Llama-2-7B-Chat,SAPLMA,raw,average,accuracy,0.5030,0.503582,0.000582,completed
+PRISM,LogicStruct,Llama-2-7B-Chat,MM,prompted,average,accuracy,0.6405,0.640479,-0.000021,completed
+PRISM,LogicStruct,Llama-2-7B-Chat,SAPLMA,prompted,average,accuracy,0.6734,0.726486,0.053086,completed
+PRISM,LogicStruct,Llama-2-13B-Chat,MM,raw,average,accuracy,0.4995,0.499533,0.000033,completed
+PRISM,LogicStruct,Llama-2-13B-Chat,SAPLMA,raw,average,accuracy,0.5710,0.582430,0.011430,completed
+PRISM,LogicStruct,Llama-2-13B-Chat,MM,prompted,average,accuracy,0.6734,0.673384,-0.000016,completed
+PRISM,LogicStruct,Llama-2-13B-Chat,SAPLMA,prompted,average,accuracy,0.7074,0.690677,-0.016723,completed
