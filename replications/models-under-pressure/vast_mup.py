@@ -32,7 +32,10 @@ def command(parts: tuple[str, ...]) -> list[str]:
 
 def run(args: argparse.Namespace, *parts: str) -> None:
     bin_dir = str(Path(sys.executable).parent)
-    env = os.environ | {"PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}"}
+    env = os.environ | {
+        "PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}",
+        "DOUBLE_CHECK_CONFIG": "false",
+    }
     subprocess.run(command(parts), cwd=PROJECT, env=env, check=True)
 
 
