@@ -20,24 +20,16 @@ Candidate studies are mined from the proceedings of seven major venues and filte
 
 | Paper                                                                                            | Scope                                   |                 Status                 |                                                                               Replication report                                                                               |
 | :----------------------------------------------------------------------------------------------- | :-------------------------------------- | :------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| **Detecting High-Stakes Interactions with Activation Probes**                                    | Attention and softmax probes            |         Replicated + extended          | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/model-under-pressure.md) |
-| **Among Us: A Sandbox for Measuring and Detecting Agentic Deception**                            | Linear deception probes only            |              Runner ready              |       [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/among-us.md)       |
-| **LayerNavigator: Finding Promising Intervention Layers for Efficient Activation Steering**      | Layer selection for activation steering |                 Setup                  |   [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/layer-navigator.md)    |
-| **Neural Chameleons: Language Models Can Learn to Hide Their Thoughts from Activation Monitors** | Probe-aware model organism              | Paper targets frozen; baseline pending |  [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/neural-chameleons.md)   |
+| **Detecting High-Stakes Interactions with Activation Probes**                                    | Attention and softmax probes                 |          Replicated + extended           | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/model-under-pressure.md) |
+| **Among Us: A Sandbox for Measuring and Detecting Agentic Deception**                            | Linear deception probes                      | Baseline not reproduced; extended        |       [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/among-us.md)       |
+| **PRISM: Prompt-Guided Internal States for Hallucination Detection**                             | Prompt-guided factuality probes               |          Replicated + extended           |         [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/prism.md)        |
+| **Sycophancy Hides Linearly in the Attention Heads**                                             | Attention-head, MLP, and residual probes      |       Baseline not reproduced            |      [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/sycophancy.md)     |
+| **Reading Between the Prompts: How Stereotypes Shape LLM's Implicit Personalization**            | Multiclass demographic probes                |       Reduced baseline replicated        | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/implicit-personalization.md) |
+| **Monitoring Latent World States in Language Models with Propositional Probes**                  | Compositional propositional probes            | Closed: missing evaluation artifacts     | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/propositional-probes.md) |
+| **ICR Probe: Tracking Hidden State Dynamics for Reliable Hallucination Detection in LLMs**       | Cross-layer hallucination probes              |       Closed: incomplete release         |      [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/icr-probe.md)      |
+| **LayerNavigator: Finding Promising Intervention Layers for Efficient Activation Steering**      | Layer selection for activation steering      |                  Setup                   |   [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/layer-navigator.md)    |
+| **Neural Chameleons: Language Models Can Learn to Hide Their Thoughts from Activation Monitors** | Probe-aware model organism                   | Released demo verified; baseline blocked |  [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/neural-chameleons.md)   |
 
-### Current Replication: Neural Chameleons
-
-We are testing whether the paper's probe-aware Gemma-2-9B model organism can
-reproduce the reported suppression of activation monitors. The setup first runs
-the author-linked released checkpoint and 13 shipped probes unchanged, then
-keeps the paper-level training reproduction separate because the full release is
-missing the pretrained probe checkpoints it requires.
-
-The official and minimal repositories are pinned unchanged under `external/`;
-all project-specific infrastructure lives in `replications/neural-chameleons`.
-
-See the [Neural Chameleons replication instructions](replications/neural-chameleons/README.md)
-for the exact Modal commands and artifact locations.
 
 ## Reproduction Shortlist
 
