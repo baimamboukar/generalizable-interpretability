@@ -1,0 +1,13 @@
+method,metric,dataset,paper_value,paper_se,table,setting
+prompting,exact_match,synth,1.00,0.00,1,standard
+prompting,exact_match,para,0.93,0.01,1,standard
+prompting,exact_match,trans,0.40,0.02,1,standard
+prompting,jaccard,synth,1.00,0.00,1,standard
+prompting,jaccard,para,0.98,0.00,1,standard
+prompting,jaccard,trans,0.78,0.01,1,standard
+propositional_probe,exact_match,synth,0.97,0.01,1,standard
+propositional_probe,exact_match,para,0.55,0.02,1,standard
+propositional_probe,exact_match,trans,0.26,0.02,1,standard
+propositional_probe,jaccard,synth,0.99,0.01,1,standard
+propositional_probe,jaccard,para,0.90,0.01,1,standard
+propositional_probe,jaccard,trans,0.78,0.01,1,standard
