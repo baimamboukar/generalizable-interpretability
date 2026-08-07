@@ -139,7 +139,12 @@ class VastRunner:
     ) -> None:
         def clean(member: tarfile.TarInfo):
             parts = Path(member.name).parts
-            excluded = EXCLUDED
+            is_model_inputs = parts[:3] == (
+                "external",
+                "models-under-pressure",
+                "data",
+            ) and (len(parts) <= 4 or parts[3] == "inputs")
+            excluded = EXCLUDED - {"data"} if is_model_inputs else EXCLUDED
             if excluded.intersection(parts) or member.name.endswith(".pyc"):
                 return None
             return member
