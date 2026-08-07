@@ -31,7 +31,9 @@ def command(parts: tuple[str, ...]) -> list[str]:
 
 
 def run(args: argparse.Namespace, *parts: str) -> None:
-    subprocess.run(command(parts), cwd=PROJECT, check=True)
+    bin_dir = str(Path(sys.executable).parent)
+    env = os.environ | {"PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}"}
+    subprocess.run(command(parts), cwd=PROJECT, env=env, check=True)
 
 
 def remove_temporary_tensors() -> None:
@@ -88,12 +90,28 @@ def evaluate(args: argparse.Namespace) -> None:
             )
 
 
-def collect(args: argparse.Namespace) -> None:
+def collect(
+    args: argparse.Namespace,
+    include_activations: bool,
+    include_results: bool,
+) -> None:
     output = ROOT / "artifacts/models-under-pressure" / args.artifact_name
     output.mkdir(parents=True, exist_ok=True)
-    for source_name in ("results/evaluate_probes", "activations"):
-        source = PROJECT / "data" / source_name
-        destination = output / source_name.replace("/", "_")
+    if include_results:
+        source = PROJECT / "data/results/evaluate_probes"
+        destination = output / "results_evaluate_probes"
+        if destination.exists():
+            shutil.rmtree(destination)
+        destination.mkdir()
+        for probe in ("softmax", "attention"):
+            for layer in args.layers:
+                result = source / f"results_{args.run_id}_{probe}_L{layer}.jsonl"
+                if not result.exists():
+                    raise FileNotFoundError(result)
+                shutil.copy2(result, destination / result.name)
+    if include_activations:
+        source = PROJECT / "data/activations"
+        destination = output / "activations"
         if destination.exists():
             shutil.rmtree(destination)
         shutil.copytree(source, destination)
@@ -117,12 +135,21 @@ def main() -> None:
     parser.add_argument("--artifact-name", required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--batch-size", type=int, default=4)
+    parser.add_argument(
+        "--stage", choices=("all", "extract", "evaluate"), default="all"
+    )
     args = parser.parse_args()
     args.layers = tuple(int(layer) for layer in args.layers.split(","))
     os.environ.setdefault("HF_HOME", "/workspace/hf-cache")
-    extract(args)
-    evaluate(args)
-    collect(args)
+    if args.stage in ("all", "extract"):
+        extract(args)
+    if args.stage in ("all", "evaluate"):
+        evaluate(args)
+    collect(
+        args,
+        include_activations=args.stage != "evaluate",
+        include_results=args.stage != "extract",
+    )
 
 
 if __name__ == "__main__":
