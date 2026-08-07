@@ -102,7 +102,9 @@ def monitor(args: argparse.Namespace) -> None:
                             ]
                         ),
                     )
-                    if ready and destroy(client, instance_id, args.log):
+                    if (ready or not completion) and destroy(
+                        client, instance_id, args.log
+                    ):
                         remaining.remove(instance_id)
             except Exception as error:
                 append(args.log, f"instance={instance_id} watch_error={error!r}")
