@@ -94,7 +94,7 @@ def evaluate(args: argparse.Namespace) -> None:
                 f"probe={probe}",
                 f"model={args.model_config}",
                 f"model.name={args.model}",
-                f"model.layer={layer}",
+                f"++model.layer={layer}",
                 "eval_datasets=test_balanced",
                 f"+id={args.run_id}_{probe}_L{layer}",
                 "validation_dataset=true",
