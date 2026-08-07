@@ -44,6 +44,9 @@ def extract(args: argparse.Namespace) -> None:
     from models_under_pressure.interfaces.dataset import LabelledDataset
     from models_under_pressure.model import LLMModel
 
+    activation_root = PROJECT / "data/activations"
+    for name in ("activations", "input_ids", "attention_masks", "_hf"):
+        (activation_root / name).mkdir(parents=True, exist_ok=True)
     run(args, "datasets", "download")
     model = LLMModel.load(args.model, batch_size=args.batch_size)
     store = ActivationStore()

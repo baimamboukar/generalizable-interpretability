@@ -48,6 +48,8 @@ def extract() -> None:
     from models_under_pressure.interfaces.dataset import LabelledDataset
     from models_under_pressure.model import LLMModel
 
+    for name in ("activations", "input_ids", "attention_masks", "_hf"):
+        (ACTIVATIONS / name).mkdir(parents=True, exist_ok=True)
     run("mup", "datasets", "download")
     model = LLMModel.load(MODEL, batch_size=4)
     store = ActivationStore()
