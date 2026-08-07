@@ -41,6 +41,10 @@ def is_complete(info: dict, logs: str) -> bool:
     return state not in ACTIVE_STATES and "artifacts:" in logs
 
 
+def failed(logs: str) -> bool:
+    return "Traceback (most recent call last):" in logs or "No solution found" in logs
+
+
 def artifact_ready(artifact: str) -> bool:
     bucket = os.environ["HF_BUCKET"].removeprefix("hf://buckets/")
     target = f"hf://buckets/{bucket}/models-under-pressure/{artifact}"
@@ -88,6 +92,9 @@ def monitor(args: argparse.Namespace) -> None:
                     args.log,
                     f"instance={instance_id} state={state} phase={phase(logs)}",
                 )
+                if failed(logs) and destroy(client, instance_id, args.log):
+                    remaining.remove(instance_id)
+                    continue
                 if state.lower() not in ACTIVE_STATES:
                     completion = is_complete(info, logs)
                     artifact = artifacts.get(str(instance_id))
