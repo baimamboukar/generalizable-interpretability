@@ -1,0 +1,6 @@
+study,figure,model,dataset,behavior,metric,paper_value,paper_reference,replication_value,delta,status
+Disentangle Sycophancy,Figure 1,Qwen3-30B-A3B-Instruct-2507,math_factorial,SyA vs GA,AUROC,0.97,"paper text: L20-L30 near-perfect separation",,,,pending_env_recovery
+Disentangle Sycophancy,Figure 1,Qwen3-30B-A3B-Instruct-2507,math_factorial,SyPr,layer,8,"paper text: separable by layer 8",,,,pending_env_recovery
+Disentangle Sycophancy,Figure 2,Qwen3-30B-A3B-Instruct-2507,all factorial datasets,SyA vs GA,cosine,0.99,"paper text: L2-L10",,,,pending_env_recovery
+Disentangle Sycophancy,Figure 2,Qwen3-30B-A3B-Instruct-2507,all factorial datasets,SyA vs GA,cosine,0.07,"paper text: layer 25",,,,pending_env_recovery
+Disentangle Sycophancy,Figure 2,Qwen3-30B-A3B-Instruct-2507,all factorial datasets,SyPr vs agreement,cosine,,"paper text: largely orthogonal across layers",,,,pending_env_recovery

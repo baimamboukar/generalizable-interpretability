@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/cincynlp/disentangle-sycophancy",
+  "commit": "217b89808d07e978a7c8fac37e8ff363e29ad8ef",
+  "paper": "https://arxiv.org/abs/2509.21305",
+  "paper_version": "v3",
+  "venue_status": "ICLR 2026 under review",
+  "python": "3.12 (.python-version; pyproject requires >=3.11)",
+  "environment_lock": "external/disentangle-sycophancy/uv.lock",
+  "environment_lock_mode": "frozen",
+  "baseline_model": "Qwen/Qwen3-30B-A3B-Instruct-2507"
+}
