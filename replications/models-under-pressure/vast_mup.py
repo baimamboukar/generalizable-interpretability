@@ -12,6 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT = ROOT / "external" / "models-under-pressure"
+RUNTIME = ROOT / "replications" / "models-under-pressure" / "runtime"
 TRAIN = PROJECT / "data/training/prompts_4x/train.jsonl"
 VALIDATION = PROJECT / "data/training/prompts_4x/test.jsonl"
 EVALS = tuple(
@@ -28,6 +29,9 @@ EVALS = tuple(
 
 
 def command(parts: tuple[str, ...]) -> list[str]:
+    if parts[0] == "exp":
+        script = PROJECT / "src/models_under_pressure/scripts/run_experiment.py"
+        return [sys.executable, str(script), *parts[1:]]
     return [str(Path(sys.executable).with_name("mup")), *parts]
 
 
@@ -35,6 +39,11 @@ def run(args: argparse.Namespace, *parts: str) -> None:
     bin_dir = str(Path(sys.executable).parent)
     env = os.environ | {
         "PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}",
+        "PYTHONPATH": os.pathsep.join(
+            part
+            for part in (str(RUNTIME), os.environ.get("PYTHONPATH"))
+            if part
+        ),
         "DOUBLE_CHECK_CONFIG": "false",
     }
     subprocess.run(command(parts), cwd=PROJECT, env=env, check=True)
