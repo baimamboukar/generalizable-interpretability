@@ -7,10 +7,14 @@ import os
 import sys
 from pathlib import Path
 
-from dotenv import load_dotenv
+from dotenv import dotenv_values, load_dotenv
 import boto3
 
-REPO = Path(__file__).resolve().parents[2] / "external" / "models-under-pressure"
+ROOT = Path(__file__).resolve().parents[2]
+REPO = ROOT / "external" / "models-under-pressure"
+for key, value in dotenv_values(ROOT / ".env").items():
+    if value:
+        os.environ.setdefault(key, value)
 load_dotenv(REPO / ".env")
 
 run_id = sys.argv[1] if len(sys.argv) > 1 else "llama70b_layer31_softmax"
