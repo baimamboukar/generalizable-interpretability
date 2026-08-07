@@ -1,0 +1,18 @@
+{
+  "repository": "https://github.com/ApolloResearch/deception-detection",
+  "commit": "f8ec4010e74927394709dffa22b97bdf8cd5a62f",
+  "paper": "https://arxiv.org/abs/2508.19505",
+  "paper_version": "v2",
+  "venue": "arXiv (cs.AI)",
+  "year": 2025,
+  "notes": "Repository set to existing ApolloResearch code link referenced in paper metadata for prior version; please verify this matches 2508.19505 main branch release and adjust if needed.",
+  "default_probe_models": [
+    "qwen2.5-3b",
+    "deepseek-r1-1.5b"
+  ],
+  "judge_models": [
+    "gpt-4o",
+    "gpt-4o-mini"
+  ],
+  "default_openrouter_entrypoint": "main.py"
+}
