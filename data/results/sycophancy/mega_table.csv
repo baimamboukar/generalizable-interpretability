@@ -1,0 +1,3 @@
+paper,figure,model,component,metric,paper_value,replication_mean,replication_sd,delta,paper_peak_layer,replication_peak_layer,seeds,verdict
+Sycophancy Hides Linearly in the Attention Heads,10,Llama-3.2-3B-Instruct,MLP,peak_validation_accuracy,0.9809,0.7913486005,0.0217032088,-0.1895513995,13,13,"3407;3408;3409",not_reproduced
+Sycophancy Hides Linearly in the Attention Heads,10,Llama-3.2-3B-Instruct,residual_stream,peak_validation_accuracy,0.9847,0.7926208651,0.0188277972,-0.1920791349,12,12,"3407;3408;3409",not_reproduced
