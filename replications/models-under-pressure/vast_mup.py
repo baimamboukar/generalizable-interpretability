@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT = ROOT / "external" / "models-under-pressure"
 TRAIN = PROJECT / "data/training/prompts_4x/train.jsonl"
+VALIDATION = PROJECT / "data/training/prompts_4x/test.jsonl"
 EVALS = tuple(
     PROJECT / "data/evals/test" / name
     for name in (
@@ -55,7 +56,7 @@ def extract(args: argparse.Namespace) -> None:
     run(args, "datasets", "download")
     model = LLMModel.load(args.model, batch_size=args.batch_size)
     store = ActivationStore()
-    for dataset_path in (TRAIN, *EVALS):
+    for dataset_path in (TRAIN, VALIDATION, *EVALS):
         dataset = LabelledDataset.load_from(dataset_path)
         for layer in args.layers:
             spec = ActivationsSpec(
@@ -124,6 +125,7 @@ def collect(
         "layers": args.layers,
         "probes": ["attention", "softmax"],
         "train_dataset": str(TRAIN.relative_to(PROJECT)),
+        "validation_dataset": str(VALIDATION.relative_to(PROJECT)),
         "eval_datasets": [str(path.relative_to(PROJECT)) for path in EVALS],
     }
     (output / "run.json").write_text(json.dumps(summary, indent=2) + "\n")
