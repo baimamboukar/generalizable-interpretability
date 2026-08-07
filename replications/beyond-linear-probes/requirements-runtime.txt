@@ -1,0 +1,9 @@
+accelerate
+datasets
+einops
+numpy
+python-dotenv
+scikit-learn
+torchmetrics
+tqdm
+transformers

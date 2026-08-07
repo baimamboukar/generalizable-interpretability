@@ -1,0 +1,21 @@
+dataset,model,layer,method,val_f1_pct,test_f1_pct,source
+WildGuard,gemma,32,linear,97.83,88.03,Table 1
+WildGuard,gemma,32,bilinear,98.10,88.79,Table 1
+WildGuard,gemma,32,mlp,98.31,88.49,Table 1
+WildGuard,gemma,32,ee_mlp,98.22,88.39,Table 1
+WildGuard,gemma,32,tpc_order5,98.34,88.86,Table 1
+WildGuard,qwen3,32,linear,95.77,85.53,Table 1
+WildGuard,qwen3,32,bilinear,97.10,84.87,Table 1
+WildGuard,qwen3,32,mlp,97.57,85.48,Table 1
+WildGuard,qwen3,32,ee_mlp,97.52,85.24,Table 1
+WildGuard,qwen3,32,tpc_order5,97.62,85.57,Table 1
+WildGuard,gpt-oss,16,linear,97.37,86.70,Table 1
+WildGuard,gpt-oss,16,bilinear,97.50,87.13,Table 1
+WildGuard,gpt-oss,16,mlp,98.21,87.86,Table 1
+WildGuard,gpt-oss,16,ee_mlp,98.08,87.31,Table 1
+WildGuard,gpt-oss,16,tpc_order5,98.13,88.05,Table 1
+WildGuard,llama3,16,linear,95.10,83.24,Table 1
+WildGuard,llama3,16,bilinear,96.70,84.78,Table 1
+WildGuard,llama3,16,mlp,97.12,83.77,Table 1
+WildGuard,llama3,16,ee_mlp,96.92,83.84,Table 1
+WildGuard,llama3,16,tpc_order5,97.18,84.48,Table 1

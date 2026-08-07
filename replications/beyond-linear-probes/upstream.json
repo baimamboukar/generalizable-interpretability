@@ -1,0 +1,70 @@
+{
+  "repository": "https://github.com/james-oldfield/tpc",
+  "commit": "e50d3c4f1bd01c90c08e571c1500d8b4aa62bd13",
+  "paper": "https://arxiv.org/abs/2509.26238",
+  "venue": "ICLR 2026",
+  "models": {
+    "gemma": {
+      "id": "google/gemma-3-27b-it",
+      "layers": [32, 40],
+      "extractor": "extract/extract_features_gemma.py"
+    },
+    "qwen3": {
+      "id": "Qwen/Qwen3-30B-A3B-Base",
+      "layers": [32, 40],
+      "extractor": "extract/extract_features_qwen3_base.py"
+    },
+    "gpt-oss": {
+      "id": "openai/gpt-oss-20b",
+      "layers": [16, 20],
+      "extractor": "extract/extract_features_gptoss.py"
+    },
+    "llama3": {
+      "id": "meta-llama/Llama-3.2-3B",
+      "layers": [16, 20],
+      "extractor": "extract/extract_features_llama_base.py"
+    }
+  },
+  "datasets": {
+    "WildGuard": {
+      "source": "allenai/wildguardmix",
+      "source_configs": ["wildguardtrain", "wildguardtest"]
+    },
+    "BeaverTrails": {
+      "paper_name": "BeaverTails",
+      "source": "PKU-Alignment/BeaverTails",
+      "source_configs": ["330k_train", "330k_test"]
+    }
+  },
+  "paper_settings": {
+    "pooling": "mean",
+    "max_order": 5,
+    "rank": 64,
+    "seeds": 5,
+    "batch_size": 1024,
+    "epochs": 50,
+    "progressive_training": true,
+    "learning_rates": [0.001, 0.0005, 0.0001],
+    "weight_decays": [0.01, 0.1, 1.0],
+    "dropout_rates": [0.0, 0.2, 0.5],
+    "linear_probe_C": [100, 10, 1, 0.1, 0.01, 0.001],
+    "feature_scaling": "sklearn StandardScaler",
+    "optimizer": "AdamW defaults",
+    "scheduler": "ReduceLROnPlateau factor=0.5",
+    "gradient_clip": 1.0,
+    "reported_gpu": "NVIDIA A100 40GB"
+  },
+  "baseline_targets": {
+    "main_figure": "Figure 2",
+    "static_table": "Table 1",
+    "layer_sweep": "Appendix Tables 5-7",
+    "wildguard_train_sequences": 86800,
+    "wildguard_test_sequences": 1700
+  },
+  "release_gaps": [
+    "No upstream dependency lockfile was released",
+    "Extraction scripts hard-code /data/scratch/acw663/poly-monitor/activation-cache",
+    "Model revisions are not pinned",
+    "The Qwen3 WildGuard extractor writes wildguard_train/test names while sweep_monitors.py reads train/test names"
+  ]
+}
