@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/voidism/Lookback-Lens",
+  "commit": "e0a1fa3a898fbf6512af7be5567dea8ffe7a6620",
+  "paper": "https://aclanthology.org/2024.emnlp-main.84/",
+  "venue": "EMNLP 2024",
+  "python": "3.9.5",
+  "cuda": "11.7",
+  "artifact_url": "https://www.dropbox.com/scl/fi/a87iv6xw9xma6ppc5pw2h/step1and2.tar.bz?rlkey=j382rsrwu2wnfwj7sn14ai3qw&dl=1",
+  "artifact_bytes": 1145476342,
+  "artifact_sha256": "3c306d4dff9e2ae279250b423d16aa7e32b60fb601cab68cc553e2ed006295b1"
+}

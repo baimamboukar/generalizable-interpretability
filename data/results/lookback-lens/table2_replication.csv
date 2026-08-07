@@ -1,0 +1,13 @@
+model,setting,source,target,split,metric,paper,replication,delta
+Llama-2-7B-Chat,predefined,nq-7b,cnndm-7b,train,AUROC,0.983,0.9870001496121998,0.004000149612199855
+Llama-2-7B-Chat,predefined,nq-7b,cnndm-7b,test,AUROC,0.912,0.9141999180882796,0.0021999180882795732
+Llama-2-7B-Chat,predefined,nq-7b,cnndm-7b,transfer,AUROC,0.853,0.853079869468617,0.0000798694686170
+Llama-2-7B-Chat,predefined,cnndm-7b,nq-7b,train,AUROC,0.977,0.9844187838500918,0.00741878385009187
+Llama-2-7B-Chat,predefined,cnndm-7b,nq-7b,test,AUROC,0.888,0.8720421485461892,-0.01595785145381079
+Llama-2-7B-Chat,predefined,cnndm-7b,nq-7b,transfer,AUROC,0.820,0.8200067879275451,0.0000067879275452
+Llama-2-7B-Chat,sliding-window-8,nq-7b,cnndm-7b,train,AUROC,0.883,0.885448802154091,0.00244880215409105
+Llama-2-7B-Chat,sliding-window-8,nq-7b,cnndm-7b,test,AUROC,0.871,0.8660763919606502,-0.00492360803934977
+Llama-2-7B-Chat,sliding-window-8,nq-7b,cnndm-7b,transfer,AUROC,0.661,0.6582732417002835,-0.00272675829971658
+Llama-2-7B-Chat,sliding-window-8,cnndm-7b,nq-7b,train,AUROC,0.862,0.8643794611609914,0.00237946116099141
+Llama-2-7B-Chat,sliding-window-8,cnndm-7b,nq-7b,test,AUROC,0.853,0.8470316075537185,-0.00596839244628145
+Llama-2-7B-Chat,sliding-window-8,cnndm-7b,nq-7b,transfer,AUROC,0.660,0.66062755672639,0.00062755672638992

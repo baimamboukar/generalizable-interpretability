@@ -1,0 +1,13 @@
+model,setting,source,target,split,metric,paper
+Llama-2-7B-Chat,predefined,nq-7b,cnndm-7b,train,AUROC,0.983
+Llama-2-7B-Chat,predefined,nq-7b,cnndm-7b,test,AUROC,0.912
+Llama-2-7B-Chat,predefined,nq-7b,cnndm-7b,transfer,AUROC,0.853
+Llama-2-7B-Chat,predefined,cnndm-7b,nq-7b,train,AUROC,0.977
+Llama-2-7B-Chat,predefined,cnndm-7b,nq-7b,test,AUROC,0.888
+Llama-2-7B-Chat,predefined,cnndm-7b,nq-7b,transfer,AUROC,0.820
+Llama-2-7B-Chat,sliding-window-8,nq-7b,cnndm-7b,train,AUROC,0.883
+Llama-2-7B-Chat,sliding-window-8,nq-7b,cnndm-7b,test,AUROC,0.871
+Llama-2-7B-Chat,sliding-window-8,nq-7b,cnndm-7b,transfer,AUROC,0.661
+Llama-2-7B-Chat,sliding-window-8,cnndm-7b,nq-7b,train,AUROC,0.862
+Llama-2-7B-Chat,sliding-window-8,cnndm-7b,nq-7b,test,AUROC,0.853
+Llama-2-7B-Chat,sliding-window-8,cnndm-7b,nq-7b,transfer,AUROC,0.660

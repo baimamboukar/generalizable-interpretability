@@ -1,0 +1,29 @@
+group,model_key,model,value,setting,source,target,split,metric
+Paper,paper,Original paper,0.853,predefined,nq-7b,cnndm-7b,transfer,AUROC
+Baseline,llama-2-7b,Llama 2 7B replication,0.853079869468617,predefined,nq-7b,cnndm-7b,transfer,AUROC
+Paper,paper,Original paper,0.820,predefined,cnndm-7b,nq-7b,transfer,AUROC
+Baseline,llama-2-7b,Llama 2 7B replication,0.8200067879275451,predefined,cnndm-7b,nq-7b,transfer,AUROC
+Paper,paper,Original paper,0.661,sliding-window-8,nq-7b,cnndm-7b,transfer,AUROC
+Baseline,llama-2-7b,Llama 2 7B replication,0.6582732417002835,sliding-window-8,nq-7b,cnndm-7b,transfer,AUROC
+Paper,paper,Original paper,0.660,sliding-window-8,cnndm-7b,nq-7b,transfer,AUROC
+Baseline,llama-2-7b,Llama 2 7B replication,0.66062755672639,sliding-window-8,cnndm-7b,nq-7b,transfer,AUROC
+Extension,llama-3.1-8b,Llama 3.1 8B,0.8801871181262729,predefined,nq-7b,cnndm-7b,transfer,AUROC
+Extension,llama-3.1-8b,Llama 3.1 8B,0.8072857088984702,predefined,cnndm-7b,nq-7b,transfer,AUROC
+Extension,llama-3.1-8b,Llama 3.1 8B,0.6929737538844893,sliding-window-8,nq-7b,cnndm-7b,transfer,AUROC
+Extension,llama-3.1-8b,Llama 3.1 8B,0.6959416510562695,sliding-window-8,cnndm-7b,nq-7b,transfer,AUROC
+Extension,qwen3-8b,Qwen3 8B,0.8636030943343825,predefined,nq-7b,cnndm-7b,transfer,AUROC
+Extension,qwen3-8b,Qwen3 8B,0.8111895528766987,predefined,cnndm-7b,nq-7b,transfer,AUROC
+Extension,qwen3-8b,Qwen3 8B,0.6305535298098228,sliding-window-8,nq-7b,cnndm-7b,transfer,AUROC
+Extension,qwen3-8b,Qwen3 8B,0.6863699163913457,sliding-window-8,cnndm-7b,nq-7b,transfer,AUROC
+Extension,gemma-2-9b,Gemma 2 9B,0.885404612571746,predefined,nq-7b,cnndm-7b,transfer,AUROC
+Extension,gemma-2-9b,Gemma 2 9B,0.8021897575022163,predefined,cnndm-7b,nq-7b,transfer,AUROC
+Extension,gemma-2-9b,Gemma 2 9B,0.6704331128857584,sliding-window-8,nq-7b,cnndm-7b,transfer,AUROC
+Extension,gemma-2-9b,Gemma 2 9B,0.7145785993445692,sliding-window-8,cnndm-7b,nq-7b,transfer,AUROC
+Extension,glm-4-9b,GLM-4 9B,0.8478999837992964,predefined,nq-7b,cnndm-7b,transfer,AUROC
+Extension,glm-4-9b,GLM-4 9B,0.7825038810604252,predefined,cnndm-7b,nq-7b,transfer,AUROC
+Extension,glm-4-9b,GLM-4 9B,0.6555950612985288,sliding-window-8,nq-7b,cnndm-7b,transfer,AUROC
+Extension,glm-4-9b,GLM-4 9B,0.6691026438520878,sliding-window-8,cnndm-7b,nq-7b,transfer,AUROC
+Extension,phi-4,Phi-4 14B,0.8713866645065729,predefined,nq-7b,cnndm-7b,transfer,AUROC
+Extension,phi-4,Phi-4 14B,0.8308230833532361,predefined,cnndm-7b,nq-7b,transfer,AUROC
+Extension,phi-4,Phi-4 14B,0.6706713523655043,sliding-window-8,nq-7b,cnndm-7b,transfer,AUROC
+Extension,phi-4,Phi-4 14B,0.6660933724114221,sliding-window-8,cnndm-7b,nq-7b,transfer,AUROC
