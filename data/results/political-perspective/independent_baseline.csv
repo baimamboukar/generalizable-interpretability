@@ -1,0 +1,4 @@
+model,metric,paper,replication,delta,paper_layer,replication_layer,paper_head,replication_head
+Llama-2-7B-Chat,peak single-head CV Spearman,0.8536,0.8536126615085637,0.000012661508563716062,15,15,18,18
+Mistral-7B-Instruct-v0.1,peak single-head CV Spearman,0.8463,0.8461679424237016,-0.00013205757629841663,16,16,3,3
+Vicuna-7B-v1.5,peak single-head CV Spearman,0.8612,0.8610865008427937,-0.00011349915720626491,24,24,8,8

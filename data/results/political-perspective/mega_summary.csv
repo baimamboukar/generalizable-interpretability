@@ -1,0 +1,9 @@
+group,family,model,parameters_b,paper_peak,observed_peak,delta_from_paper,peak_layer,peak_head,num_layers,num_attention_heads,num_probes
+baseline replication,Llama,Vicuna-7B-v1.5,7.0,0.8612,0.8610865008427937,-0.00011349915720626491,24,8,32,32,1024
+baseline replication,Mistral,Mistral-7B-Instruct-v0.1,7.0,0.8463,0.8461679424237016,-0.00013205757629841663,16,3,32,32,1024
+baseline replication,Llama,Llama-2-7B-Chat,7.0,0.8536,0.8536126615085637,0.000012661508563716062,15,18,32,32,1024
+extension,Qwen,Qwen/Qwen3-8B,8.2,,0.8252048958903362,,17,8,36,32,1152
+extension,GLM,zai-org/GLM-4-9B-0414,9.0,,0.8068751182440473,,22,24,40,32,1280
+extension,Gemma,google/gemma-2-9b-it,9.0,,0.8949081904131522,,33,10,42,16,672
+extension,Phi,microsoft/phi-4,14.0,,0.8713656850672877,,19,29,40,40,1600
+extension,Gemma,google/gemma-2-27b-it,27.0,,0.8792830078402256,,15,12,46,32,1472

@@ -1,0 +1,8 @@
+model,target,metric,paper_value,paper_layer,paper_head
+Llama-2-7B-Chat,Figure 2,peak single-head CV Spearman,0.8536,15,18
+Mistral-7B-Instruct-v0.1,Figure 2,peak single-head CV Spearman,0.8463,16,3
+Vicuna-7B-v1.5,Figure 2,peak single-head CV Spearman,0.8612,24,8
+Llama-2-7B-Chat,Table A3 K=32,ensemble CV Spearman,0.8703,,
+Mistral-7B-Instruct-v0.1,Table A3 K=32,ensemble CV Spearman,0.8636,,
+Vicuna-7B-v1.5,Table A3 K=32,ensemble CV Spearman,0.8851,,
+Llama-2-7B-Chat,Figure 3 news transfer,news Spearman,0.798,,

@@ -1,0 +1,7 @@
+model,target,metric,paper,replication,delta
+Llama-2-7B-Chat,Table A3 K=32,Spearman correlation,0.8703,0.8699564786163264,-0.0003435213836735507
+Mistral-7B-Instruct-v0.1,Table A3 K=32,Spearman correlation,0.8636,0.8631304814877956,-0.0004695185122044476
+Vicuna-7B-v1.5,Table A3 K=32,Spearman correlation,0.8851,0.88506396024648,-3.6039753519956363e-05
+Llama-2-7B-Chat,Figure 3 news,Spearman correlation,0.798,0.803560986216558,0.005560986216557984
+Mistral-7B-Instruct-v0.1,Figure 3 news,Spearman correlation,,0.7833226511873321,
+Vicuna-7B-v1.5,Figure 3 news,Spearman correlation,,0.7282789324621125,
