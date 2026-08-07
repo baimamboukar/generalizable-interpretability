@@ -70,7 +70,7 @@ def extract(args: argparse.Namespace) -> None:
 
 def evaluate(args: argparse.Namespace) -> None:
     run(args, "datasets", "download")
-    for probe in ("attention", "softmax"):
+    for probe in ("softmax", "attention"):
         for layer in args.layers:
             run(
                 args,
