@@ -1,0 +1,26 @@
+{
+  "repository": "https://github.com/XavierZhang2002/ICR_Probe",
+  "commit": "40ec490e762cadbac6bcefdc24a8f0d5974e8448",
+  "paper": "https://arxiv.org/abs/2507.16488",
+  "venue": "ACL 2025",
+  "models": [
+    "meta-llama/Meta-Llama-3-8B-Instruct",
+    "Qwen/Qwen2.5-7B-Instruct",
+    "google/gemma-2-9b-it"
+  ],
+  "datasets": [
+    "HaluEval QA",
+    "SQuAD",
+    "HotpotQA",
+    "TriviaQA rc.nocontext"
+  ],
+  "paper_settings": {
+    "instances_per_dataset": 10000,
+    "train_fraction": 0.8,
+    "top_k": 20,
+    "batch_size": 32,
+    "epochs": 50,
+    "learning_rate": 0.0005,
+    "dropout": 0.3
+  }
+}

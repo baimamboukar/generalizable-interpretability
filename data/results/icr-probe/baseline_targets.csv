@@ -1,0 +1,73 @@
+paper,table,result_type,model,method,dataset,metric,value
+ICR Probe,1,paper,gemma-2-9b-it,PPL,HaluEval,auroc,0.5546
+ICR Probe,1,paper,gemma-2-9b-it,PPL,SQuAD,auroc,0.5419
+ICR Probe,1,paper,gemma-2-9b-it,PPL,HotpotQA,auroc,0.7196
+ICR Probe,1,paper,gemma-2-9b-it,PPL,TriviaQA,auroc,0.7765
+ICR Probe,1,paper,gemma-2-9b-it,LN-Entropy,HaluEval,auroc,0.7451
+ICR Probe,1,paper,gemma-2-9b-it,LN-Entropy,SQuAD,auroc,0.6531
+ICR Probe,1,paper,gemma-2-9b-it,LN-Entropy,HotpotQA,auroc,0.7172
+ICR Probe,1,paper,gemma-2-9b-it,LN-Entropy,TriviaQA,auroc,0.7200
+ICR Probe,1,paper,gemma-2-9b-it,LLM-check,HaluEval,auroc,0.5683
+ICR Probe,1,paper,gemma-2-9b-it,LLM-check,SQuAD,auroc,0.5713
+ICR Probe,1,paper,gemma-2-9b-it,LLM-check,HotpotQA,auroc,0.5600
+ICR Probe,1,paper,gemma-2-9b-it,LLM-check,TriviaQA,auroc,0.5821
+ICR Probe,1,paper,gemma-2-9b-it,SAPLMA,HaluEval,auroc,0.8101
+ICR Probe,1,paper,gemma-2-9b-it,SAPLMA,SQuAD,auroc,0.7175
+ICR Probe,1,paper,gemma-2-9b-it,SAPLMA,HotpotQA,auroc,0.8193
+ICR Probe,1,paper,gemma-2-9b-it,SAPLMA,TriviaQA,auroc,0.7751
+ICR Probe,1,paper,gemma-2-9b-it,SEP,HaluEval,auroc,0.6429
+ICR Probe,1,paper,gemma-2-9b-it,SEP,SQuAD,auroc,0.6417
+ICR Probe,1,paper,gemma-2-9b-it,SEP,HotpotQA,auroc,0.6356
+ICR Probe,1,paper,gemma-2-9b-it,SEP,TriviaQA,auroc,0.7834
+ICR Probe,1,paper,gemma-2-9b-it,ICR Probe,HaluEval,auroc,0.8436
+ICR Probe,1,paper,gemma-2-9b-it,ICR Probe,SQuAD,auroc,0.8142
+ICR Probe,1,paper,gemma-2-9b-it,ICR Probe,HotpotQA,auroc,0.8409
+ICR Probe,1,paper,gemma-2-9b-it,ICR Probe,TriviaQA,auroc,0.8001
+ICR Probe,1,paper,qwen2.5-7b-instruct,PPL,HaluEval,auroc,0.5439
+ICR Probe,1,paper,qwen2.5-7b-instruct,PPL,SQuAD,auroc,0.5303
+ICR Probe,1,paper,qwen2.5-7b-instruct,PPL,HotpotQA,auroc,0.6125
+ICR Probe,1,paper,qwen2.5-7b-instruct,PPL,TriviaQA,auroc,0.6974
+ICR Probe,1,paper,qwen2.5-7b-instruct,LN-Entropy,HaluEval,auroc,0.7371
+ICR Probe,1,paper,qwen2.5-7b-instruct,LN-Entropy,SQuAD,auroc,0.6497
+ICR Probe,1,paper,qwen2.5-7b-instruct,LN-Entropy,HotpotQA,auroc,0.6855
+ICR Probe,1,paper,qwen2.5-7b-instruct,LN-Entropy,TriviaQA,auroc,0.7004
+ICR Probe,1,paper,qwen2.5-7b-instruct,LLM-check,HaluEval,auroc,0.5292
+ICR Probe,1,paper,qwen2.5-7b-instruct,LLM-check,SQuAD,auroc,0.5700
+ICR Probe,1,paper,qwen2.5-7b-instruct,LLM-check,HotpotQA,auroc,0.5445
+ICR Probe,1,paper,qwen2.5-7b-instruct,LLM-check,TriviaQA,auroc,0.5552
+ICR Probe,1,paper,qwen2.5-7b-instruct,SAPLMA,HaluEval,auroc,0.7799
+ICR Probe,1,paper,qwen2.5-7b-instruct,SAPLMA,SQuAD,auroc,0.6929
+ICR Probe,1,paper,qwen2.5-7b-instruct,SAPLMA,HotpotQA,auroc,0.7750
+ICR Probe,1,paper,qwen2.5-7b-instruct,SAPLMA,TriviaQA,auroc,0.8225
+ICR Probe,1,paper,qwen2.5-7b-instruct,SEP,HaluEval,auroc,0.6578
+ICR Probe,1,paper,qwen2.5-7b-instruct,SEP,SQuAD,auroc,0.6363
+ICR Probe,1,paper,qwen2.5-7b-instruct,SEP,HotpotQA,auroc,0.6470
+ICR Probe,1,paper,qwen2.5-7b-instruct,SEP,TriviaQA,auroc,0.7520
+ICR Probe,1,paper,qwen2.5-7b-instruct,ICR Probe,HaluEval,auroc,0.8003
+ICR Probe,1,paper,qwen2.5-7b-instruct,ICR Probe,SQuAD,auroc,0.7456
+ICR Probe,1,paper,qwen2.5-7b-instruct,ICR Probe,HotpotQA,auroc,0.7917
+ICR Probe,1,paper,qwen2.5-7b-instruct,ICR Probe,TriviaQA,auroc,0.7684
+ICR Probe,1,paper,llama-3-8b-instruct,PPL,HaluEval,auroc,0.5920
+ICR Probe,1,paper,llama-3-8b-instruct,PPL,SQuAD,auroc,0.6399
+ICR Probe,1,paper,llama-3-8b-instruct,PPL,HotpotQA,auroc,0.6721
+ICR Probe,1,paper,llama-3-8b-instruct,PPL,TriviaQA,auroc,0.7012
+ICR Probe,1,paper,llama-3-8b-instruct,LN-Entropy,HaluEval,auroc,0.6508
+ICR Probe,1,paper,llama-3-8b-instruct,LN-Entropy,SQuAD,auroc,0.6306
+ICR Probe,1,paper,llama-3-8b-instruct,LN-Entropy,HotpotQA,auroc,0.6593
+ICR Probe,1,paper,llama-3-8b-instruct,LN-Entropy,TriviaQA,auroc,0.5860
+ICR Probe,1,paper,llama-3-8b-instruct,LLM-check,HaluEval,auroc,0.5206
+ICR Probe,1,paper,llama-3-8b-instruct,LLM-check,SQuAD,auroc,0.5411
+ICR Probe,1,paper,llama-3-8b-instruct,LLM-check,HotpotQA,auroc,0.5491
+ICR Probe,1,paper,llama-3-8b-instruct,LLM-check,TriviaQA,auroc,0.5417
+ICR Probe,1,paper,llama-3-8b-instruct,SAPLMA,HaluEval,auroc,0.7238
+ICR Probe,1,paper,llama-3-8b-instruct,SAPLMA,SQuAD,auroc,0.7107
+ICR Probe,1,paper,llama-3-8b-instruct,SAPLMA,HotpotQA,auroc,0.7701
+ICR Probe,1,paper,llama-3-8b-instruct,SAPLMA,TriviaQA,auroc,0.7650
+ICR Probe,1,paper,llama-3-8b-instruct,SEP,HaluEval,auroc,0.7378
+ICR Probe,1,paper,llama-3-8b-instruct,SEP,SQuAD,auroc,0.7201
+ICR Probe,1,paper,llama-3-8b-instruct,SEP,HotpotQA,auroc,0.6541
+ICR Probe,1,paper,llama-3-8b-instruct,SEP,TriviaQA,auroc,0.7116
+ICR Probe,1,paper,llama-3-8b-instruct,ICR Probe,HaluEval,auroc,0.7603
+ICR Probe,1,paper,llama-3-8b-instruct,ICR Probe,SQuAD,auroc,0.7634
+ICR Probe,1,paper,llama-3-8b-instruct,ICR Probe,HotpotQA,auroc,0.7982
+ICR Probe,1,paper,llama-3-8b-instruct,ICR Probe,TriviaQA,auroc,0.7325
