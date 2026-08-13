@@ -40,6 +40,7 @@ class VastRunner:
         gpu: str,
         min_vram: float,
         min_cpu: int,
+        min_ram: float,
         max_price: float,
         disk: float,
         image: str,
@@ -66,14 +67,12 @@ class VastRunner:
             query=(
                 f"gpu_name={gpu} num_gpus=1 rentable=true "
                 f"reliability>0.98 disk_space>={disk} "
-                f"cpu_cores_effective>={min_cpu} gpu_ram>={min_vram}"
+                f"cpu_cores_effective>={min_cpu} cpu_ram>={min_ram} "
+                f"gpu_ram>={min_vram}"
             ),
             order="dph_total",
             limit=20,
             storage=disk,
-        )
-        offer = next(
-            row for row in offers if float(row["dph_total"]) <= max_price
         )
         script = self._script(bucket, bundle_path, command, label)
         selected = {
@@ -81,16 +80,27 @@ class VastRunner:
             for key in env_keys
             if key in os.environ
         }
-        result = self.client.create_instance(
-            id=int(offer["id"]),
-            image=image,
-            disk=disk,
-            label=label,
-            env=selected,
-            runtype="args",
-            args=["bash", "-lc", script],
-            cancel_unavail=True,
-        )
+        errors = []
+        for offer in offers:
+            if float(offer["dph_total"]) > max_price:
+                continue
+            try:
+                result = self.client.create_instance(
+                    id=int(offer["id"]),
+                    image=image,
+                    disk=disk,
+                    label=label,
+                    env=selected,
+                    runtype="args",
+                    args=["bash", "-lc", script],
+                    cancel_unavail=True,
+                )
+                break
+            except Exception as error:
+                errors.append(f"offer {offer['id']}: {type(error).__name__}")
+        else:
+            detail = ", ".join(errors) or "no offer within price cap"
+            raise RuntimeError(f"Unable to create Vast instance: {detail}")
         result["offer"] = {
             "id": offer["id"],
             "gpu": offer["gpu_name"],

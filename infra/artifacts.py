@@ -44,18 +44,30 @@ def sync(path: Path) -> None:
         api().sync_bucket(source=str(path), dest=bucket(), quiet=False)
 
 
+def pull(path: Path, prefix: str = "") -> None:
+    source = bucket().rstrip("/")
+    if prefix:
+        source = f"{source}/{prefix.strip('/')}"
+    path.mkdir(parents=True, exist_ok=True)
+    api().sync_bucket(source=source, dest=str(path), quiet=False)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("action", choices=["create", "check", "sync"])
+    parser.add_argument("action", choices=["create", "check", "sync", "pull"])
     parser.add_argument("--path", type=Path)
+    parser.add_argument("--prefix", default="")
     args = parser.parse_args()
     if args.action == "create":
         create()
     elif args.action == "check":
         check()
-    else:
+    elif args.action == "sync":
         path = args.path or Path(os.environ.get("GI_ARTIFACT_DIR", "artifacts"))
         sync(path)
+    else:
+        path = args.path or Path(os.environ.get("GI_ARTIFACT_DIR", "artifacts"))
+        pull(path, args.prefix)
 
 
 if __name__ == "__main__":

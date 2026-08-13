@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+import hashlib
+import json
 import os
 from pathlib import Path
 import subprocess
+import tempfile
 import time
 
 from vastai import VastAI
@@ -13,6 +16,7 @@ from infra.env import load_project_env
 
 
 ACTIVE_STATES = {"running", "loading", "created"}
+TERMINAL_STATES = {"exited", "stopped", "destroyed"}
 
 
 def timestamp() -> str:
@@ -45,6 +49,10 @@ def failed(logs: str) -> bool:
     return "Traceback (most recent call last):" in logs or "No solution found" in logs
 
 
+def terminal(logs: str) -> bool:
+    return "Sync completed." in logs
+
+
 def artifact_ready(artifact: str) -> bool:
     bucket = os.environ["HF_BUCKET"].removeprefix("hf://buckets/")
     target = f"hf://buckets/{bucket}/models-under-pressure/{artifact}"
@@ -54,6 +62,32 @@ def artifact_ready(artifact: str) -> bool:
         text=True,
     )
     return result.returncode == 0 and "run.json" in result.stdout
+
+
+def hf_artifact_ready(artifact: str) -> bool:
+    bucket = os.environ["HF_BUCKET"].rstrip("/")
+    relative = artifact.lstrip("/")
+    if relative.startswith("artifacts/"):
+        relative = relative.removeprefix("artifacts/")
+    target = f"{bucket}/{relative}"
+    with tempfile.TemporaryDirectory() as directory:
+        destination = Path(directory) / Path(relative).name
+        result = subprocess.run(
+            ["hf", "buckets", "cp", target, str(destination)],
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode != 0 or not destination.exists():
+            return False
+        if destination.name != "run.json":
+            return True
+        state = json.loads(destination.read_text())
+        return state.get("stage") not in {
+            "prepared",
+            "extracted",
+            "labeled",
+            "compacted",
+        }
 
 
 def destroy(client: VastAI, instance_id: int, log: Path) -> bool:
@@ -66,7 +100,7 @@ def destroy(client: VastAI, instance_id: int, log: Path) -> bool:
             except Exception:
                 append(log, f"instance={instance_id} destroyed=true")
                 return True
-            if not info or info.get("instances") is None or "id" not in info:
+            if not info or "id" not in info:
                 append(log, f"instance={instance_id} destroyed=true")
                 return True
     append(log, f"instance={instance_id} destroyed=false")
@@ -77,13 +111,19 @@ def monitor(args: argparse.Namespace) -> None:
     load_project_env()
     client = VastAI(api_key=os.environ["VAST_API_KEY"])
     artifacts = dict(spec.split("=", 1) for spec in args.artifact)
+    hf_artifacts = dict(spec.split("=", 1) for spec in args.hf_artifact)
     remaining = set(args.instance)
+    last_log_hash: dict[int, str] = {}
+    idle_checks: dict[int, int] = {}
     checks = 0
     while remaining:
         checks += 1
         for instance_id in tuple(remaining):
             try:
                 info = client.show_instance(instance_id)
+                if not info:
+                    append(args.log, f"instance={instance_id} state=unavailable")
+                    continue
                 logs = client.logs(instance_id, tail="12000")
                 state = str(
                     info.get("actual_status", info.get("cur_state", "unknown"))
@@ -92,45 +132,76 @@ def monitor(args: argparse.Namespace) -> None:
                     args.log,
                     f"instance={instance_id} state={state} phase={phase(logs)}",
                 )
-                if failed(logs) and destroy(client, instance_id, args.log):
+                log_hash = hashlib.sha256(logs.encode()).hexdigest()
+                if last_log_hash.get(instance_id) == log_hash:
+                    idle_checks[instance_id] = idle_checks.get(instance_id, 0) + 1
+                else:
+                    idle_checks[instance_id] = 0
+                    last_log_hash[instance_id] = log_hash
+                artifact = artifacts.get(str(instance_id))
+                if artifact is not None and artifact_ready(artifact):
+                    append(args.log, f"instance={instance_id} artifact_ready=true")
+                    if destroy(client, instance_id, args.log):
+                        remaining.remove(instance_id)
+                    continue
+                hf_artifact = hf_artifacts.get(str(instance_id))
+                if hf_artifact is not None and hf_artifact_ready(hf_artifact):
+                    append(log=args.log, message=f"instance={instance_id} artifact_ready=true")
+                    if destroy(client, instance_id, args.log):
+                        remaining.remove(instance_id)
+                    continue
+                if failed(logs) and (
+                    state.lower() in TERMINAL_STATES or terminal(logs)
+                ):
+                    append(args.log, f"instance={instance_id} failure=terminal")
+                    if destroy(client, instance_id, args.log):
+                        remaining.remove(instance_id)
+                    continue
+                if (
+                    args.max_idle_checks is not None
+                    and state.lower() in ACTIVE_STATES
+                    and idle_checks[instance_id] >= args.max_idle_checks
+                    and destroy(client, instance_id, args.log)
+                ):
+                    append(args.log, f"instance={instance_id} destroyed=idle")
                     remaining.remove(instance_id)
                     continue
-                if state.lower() not in ACTIVE_STATES:
+                if state.lower() in TERMINAL_STATES:
                     completion = is_complete(info, logs)
-                    artifact = artifacts.get(str(instance_id))
-                    ready = artifact is not None and artifact_ready(artifact)
                     append(
                         args.log,
                         " ".join(
                             [
                                 f"instance={instance_id}",
                                 f"completion_marker={completion}",
-                                f"artifact_ready={ready}",
+                                "artifact_ready=false",
                             ]
                         ),
                     )
-                    if (ready or not completion) and destroy(
-                        client, instance_id, args.log
-                    ):
+                    if destroy(client, instance_id, args.log):
                         remaining.remove(instance_id)
             except Exception as error:
-                append(args.log, f"instance={instance_id} watch_error={error!r}")
+                append(
+                    args.log,
+                    f"instance={instance_id} watch_error={type(error).__name__}",
+                )
         if args.once or not remaining or (
             args.max_checks is not None and checks >= args.max_checks
         ):
             return
-        for _ in range(args.interval_minutes * 15):
-            time.sleep(60)
+        time.sleep(args.interval_minutes * 60)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--instance", type=int, action="append", required=True)
     parser.add_argument("--artifact", action="append", default=[])
+    parser.add_argument("--hf-artifact", action="append", default=[])
     parser.add_argument("--interval-minutes", type=int, default=15)
     parser.add_argument("--log", type=Path, required=True)
     parser.add_argument("--once", action="store_true")
     parser.add_argument("--max-checks", type=int)
+    parser.add_argument("--max-idle-checks", type=int)
     monitor(parser.parse_args())
 
 

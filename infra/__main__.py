@@ -65,6 +65,7 @@ def run_vast(args: argparse.Namespace) -> None:
         gpu=args.gpu,
         min_vram=args.min_vram,
         min_cpu=args.min_cpu,
+        min_ram=args.min_ram,
         max_price=args.max_price,
         disk=args.disk,
         image=args.image,
@@ -92,6 +93,7 @@ def parser() -> argparse.ArgumentParser:
     vast.add_argument("--gpu", default="A100_PCIE")
     vast.add_argument("--min-vram", type=float, default=0)
     vast.add_argument("--min-cpu", type=int, default=8)
+    vast.add_argument("--min-ram", type=float, default=0)
     vast.add_argument("--max-price", type=float, default=2)
     vast.add_argument("--disk", type=float, default=100)
     vast.add_argument(
