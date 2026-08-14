@@ -683,11 +683,12 @@ def baseline_extension_overview(
     models: list[tuple[str, str, str]],
     extensions: list[tuple[str, str, str, str]],
 ) -> Path:
-    figure, axes = plt.subplots(1, 2, figsize=(17.8, 8.2), facecolor="white")
-    figure.subplots_adjust(left=0.07, right=0.985, top=0.70, bottom=0.21, wspace=0.15)
+    figure, axes = plt.subplots(1, 2, figsize=(17.8, 8.6), facecolor="white")
+    figure.subplots_adjust(left=0.07, right=0.985, top=0.64, bottom=0.21, wspace=0.15)
     labels = [model[2] for model in models] + [model[2] for model in extensions]
     x = np.arange(len(labels), dtype=float)
-    width = 0.34
+    width = 0.28
+    pair_offset = 0.18
 
     for axis, experiment, title in zip(
         axes,
@@ -705,32 +706,33 @@ def baseline_extension_overview(
                 np.mean([float(row["replication_mean"]) for row in selected]) * 100
             )
             paper_bar = axis.bar(
-                index - width / 2,
+                index - pair_offset,
                 paper_value,
                 width,
                 color=PAPER,
                 zorder=3,
             )[0]
             result_bar = axis.bar(
-                index + width / 2,
+                index + pair_offset,
                 replication_value,
                 width,
                 color=MODEL_COLORS[key],
                 zorder=3,
             )[0]
-            for bar, value in (
-                (paper_bar, paper_value),
-                (result_bar, replication_value),
+            for bar, value, x_shift, y_shift in (
+                (paper_bar, paper_value, -0.025, 0.9),
+                (result_bar, replication_value, 0.025, 2.0),
             ):
                 axis.text(
-                    bar.get_x() + bar.get_width() / 2,
-                    value - 1.5,
+                    bar.get_x() + bar.get_width() / 2 + x_shift,
+                    value + y_shift,
                     f"{value:.2f}%",
                     ha="center",
-                    va="top",
-                    fontsize=8.2,
+                    va="bottom",
+                    fontsize=7.0,
                     fontweight=600,
-                    color="white",
+                    color=TEXT,
+                    clip_on=False,
                 )
 
         offset = len(models)
@@ -751,8 +753,9 @@ def baseline_extension_overview(
                 f"{value:.2f}%",
                 ha="center",
                 va="bottom",
-                fontsize=8.4,
+                fontsize=7.2,
                 fontweight=600,
+                clip_on=False,
             )
 
         if models and extensions:
@@ -779,7 +782,7 @@ def baseline_extension_overview(
                 fontweight=600,
             )
 
-        axis.set_title(title, fontsize=14, fontweight=600, loc="left", pad=28)
+        axis.set_title(title, fontsize=14, fontweight=600, loc="left", pad=18)
         axis.set_ylim(35, 107)
         axis.set_yticks(
             (40, 50, 60, 70, 80, 90, 100),
@@ -824,16 +827,17 @@ def baseline_extension_overview(
         handles=legend_handles,
         loc="upper left",
         bbox_to_anchor=(0.052, 0.845),
-        ncol=3,
+        ncol=4,
         frameon=False,
         handlelength=1.45,
-        columnspacing=1.8,
+        columnspacing=1.35,
+        fontsize=9.2,
     )
     figure.text(
         0.055,
         0.04,
-        "Unseen tasks averages all sampled layers and token positions. Unseen instruction types uses the earliest sampled layer, matching Table 1. "
-        "Single-class held-out folds have undefined AUROC and are excluded; coverage is retained in results_long.csv. Dashed line = chance (50%).",
+        "Unseen tasks average all sampled layers and token positions. Unseen instruction types use the earliest sampled layer, matching Table 1. "
+        "Dashed line = chance (50%).",
         fontsize=8.7,
         color=MUTED,
         ha="left",
@@ -926,8 +930,7 @@ def extension_layer_profiles(
     figure.text(
         0.055,
         0.04,
-        "Each bar averages the three token-position probes at one layer. AUROC summaries use valid folds only; coverage is retained in results_long.csv. "
-        "Dashed line = chance (50%).",
+        "Each bar averages the three token-position probes at one layer. Dashed line = chance (50%).",
         fontsize=8.7,
         color=MUTED,
         ha="left",
