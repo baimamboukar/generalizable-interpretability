@@ -30,6 +30,34 @@ The primary factor is policy architecture. Dataset and evaluation protocol were 
 
 Full results are in reports/political-perspective.md.
 
+## Internal Instruction Following
+
+Internal Instruction Following trains bias-free linear sigmoid probes on
+response-token hidden states to predict whether an answer satisfies its
+instruction. The four-model baseline reproduces the paper's central split:
+strong transfer to unseen tasks but near-chance transfer to unseen instruction
+types. We extended the same protocol to Qwen3 14B, GLM 4.7 Flash, and Gemma 4
+12B at four relative depths.
+
+Unseen-task transfer remains strong at 0.8971 for Qwen, 0.6867 for GLM, and
+0.6975 for Gemma. Failure is concentrated in unseen instruction types, where
+paper-aligned early-layer AUROC falls to 0.5223, 0.4267, and 0.4382. Qwen has
+only three valid leave-one-type-out folds and Gemma has four: two Qwen
+instruction types become entirely positive and one Gemma type becomes entirely
+negative.
+
+The primary factor is the interaction between model policy and data. Every
+model generates and labels its own answers, so the model-family change also
+changes class balance and evaluation support. The probe consequently captures
+instruction-specific behavioral correlates rather than a stable cross-family
+direction. Layer organization is a secondary factor because later GLM and Gemma
+layers recover stronger cells than the paper-aligned early layer. A fixed
+Llama-2 prompt template is a plausible additional confound, but the current
+results do not isolate it. Fixed-response and native-template controls are
+required before attributing the failure solely to architecture.
+
+Full results are in reports/internal-instruction-following.md.
+
 ## Scope Note
 
 Studies where the baseline was not reproduced and no cross model test was performed are excluded from this analysis. Studies where cross model generalization was tested and succeeded, including PRISM, Implicit Personalization, and Lookback Lens, are also excluded because they did not fail to generalize.

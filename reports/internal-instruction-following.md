@@ -2,6 +2,9 @@
 
 [Paper](https://arxiv.org/abs/2410.14516) · ICLR 2025 · [Released code](https://github.com/apple/ml-internal-llms-instruction-following)
 
+See also: [Generalization analysis](generalization.md) — taxonomy of why
+instruction-type transfer fails across model families.
+
 This ICLR 2025 paper tests whether an instruction-tuned model's hidden state
 predicts whether its eventual answer will follow an instruction. It trains a
 bias-free linear sigmoid probe on first-, middle-, and last-response-token
@@ -81,6 +84,27 @@ on-policy answers, and the tables retain the resulting coverage.
 ![Baseline and extension overview](../figures/internal-instruction-following/baseline_vs_extensions.png)
 
 ![Extension layer profiles](../figures/internal-instruction-following/extension_layer_profiles.png)
+
+## Generalization failure analysis
+
+The failure is concentrated in unseen instruction types, not unseen tasks.
+Qwen, GLM, and Gemma retain 0.8971, 0.6867, and 0.6975 mean unseen-task AUROC,
+respectively. Their paper-aligned early-layer unseen-type results fall to
+0.5223, 0.4267, and 0.4382. The original baselines were already close to chance
+on this test, so the extension does not show a new universal failure. It shows
+that the paper's main limitation persists across model families and becomes
+less stable.
+
+The clearest observed mechanism is model-dependent on-policy label shift. Each
+model generates its own answers and therefore changes both the activations and
+the IFEval success distribution. Qwen produces two all-positive instruction
+types, Gemma produces one all-negative type, and those held-out AUROCs become
+undefined. The probe therefore appears to learn instruction-specific behavioral
+correlates rather than a model-invariant instruction-following direction. Layer
+sensitivity is a second factor: later GLM and Gemma cells outperform the
+paper-aligned early layer. The fixed Llama-2 prompt template may also contribute,
+but this remains a hypothesis. Fixed-response and native-template ablations are
+needed to separate architecture effects from policy-induced data shift.
 
 ## Reproducibility boundaries
 
