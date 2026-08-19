@@ -14,7 +14,39 @@ The probe is trained on synthetic examples generated and judged by GPT-4o. The e
 
 The audit also found reproducibility caveats. The generator's `high_stakes` flag and final GPT-4o label disagree on roughly 4–5% of released training rows; the paper's C.3/C.4 confidence cutoffs are inconsistent; the paper lists 1,513 Aya test examples while the current balanced artifact contains 1,242; and balanced selection uses unseeded `random.sample`, so regeneration can select different rows. The paper itself attributes errors to context noise in Mental Health, deployment-context dependence in ToolACE, and culturally nuanced Aya examples (the weakest GPT-4o and manual agreement with 75%). These findings support a provenance and context, and label-shift hypothesis.
 
-We used the authors' released modified HF artifacts for the synthetic set (8,000 train/2,000 test), Anthropic HH-RLHF (1,028/2,984), ToolACE (328/734), MT Samples (278/604), MTS Dialog (274/86), and Mental Health (540 test); counts match the paper. These are not untouched source datasets: they were GPT-4o relabeled, filtered, balanced, and sometimes system/context-transformed. Aya Redteaming is not exact: the paper reports 1,513 test examples, while our HF artifact has 1,242. Anthropic also uses HH-RLHF’s train split. Therefore, six released versions match; Aya has a version/size mismat
+We used the authors' released modified HF artifacts for the synthetic set (8,000 train/2,000 test), Anthropic HH-RLHF (1,028/2,984), ToolACE (328/734), MT Samples (278/604), MTS Dialog (274/86), and Mental Health (540 test); counts match the paper. These are not untouched source datasets: they were GPT-4o relabeled, filtered, balanced, and sometimes system/context-transformed. Aya Redteaming is not exact: the paper reports 1,513 test examples, while our HF artifact has 1,242. Anthropic also uses HH-RLHF’s train split. Therefore, six released versions match; Aya has a version/size mismatch.
+
+### Cross-model layer audit
+
+We expanded the layer screen after the first Qwen3 runs suggested weak transfer.
+The decision rule was to request a dense all-layer sweep only when the best
+sampled layer remained below 0.85 mean AUROC across the six evaluation sets.
+
+| Model | Probe | Best sampled layer | Mean AUROC |
+| :--- | :--- | ---: | ---: |
+| Llama-3.3-70B baseline | Attention | 31 | 0.9184 |
+| Llama-3.3-70B baseline | Softmax | 31 | 0.9244 |
+| Qwen2.5-32B-Instruct | Attention | 42 | 0.9325 |
+| Qwen2.5-32B-Instruct | Softmax | 25 | 0.9114 |
+| Gemma-4-31B-IT | Attention | 42 | 0.9310 |
+| Gemma-4-31B-IT | Softmax | 42 | 0.9400 |
+| Qwen3-32B | Attention | 54 | 0.9290 |
+| Qwen3-32B | Softmax | 42 | 0.9012 |
+
+The five added Qwen3 layers were 25, 37, 42, 54, and 60, complementing the
+original layers 32 and 47. The expanded screen changes the earlier verdict:
+Qwen3 does not show a model-wide probe-training failure. Both probe classes
+cross the screening threshold at suitable layers, although softmax remains
+substantially more layer-sensitive, falling to 0.7667 at layer 47 and 0.7624
+at layer 60. Layer selection is therefore a major confounder, and none of the
+three newly screened models currently requires an all-layer sweep under the
+predefined rule.
+
+![Cross-model layer screen](../figures/model-under-pressure/model_layer_mean_screen.png)
+
+The plotting-ready results are stored in
+`data/results/model-under-pressure/model_layer_sweeps.csv` and
+`data/results/model-under-pressure/qwen3_32b_layer_screen.csv`.
 
 ### Replication overview
 

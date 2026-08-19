@@ -1,0 +1,141 @@
+model,probe,layer,dataset,auroc
+Qwen2.5-32B-Instruct,attention,23,anthropic_hh_balanced,0.83479181
+Qwen2.5-32B-Instruct,attention,23,toolace_balanced,0.87627052
+Qwen2.5-32B-Instruct,attention,23,mt_balanced,0.96624052
+Qwen2.5-32B-Instruct,attention,23,mts_balanced,0.98674959
+Qwen2.5-32B-Instruct,attention,23,mental_health_balanced,0.89371056
+Qwen2.5-32B-Instruct,attention,23,aya_redteaming_balanced,0.80730783
+Qwen2.5-32B-Instruct,attention,23,mean,0.89417847
+Qwen2.5-32B-Instruct,attention,25,anthropic_hh_balanced,0.84943313
+Qwen2.5-32B-Instruct,attention,25,toolace_balanced,0.88684302
+Qwen2.5-32B-Instruct,attention,25,mt_balanced,0.96939827
+Qwen2.5-32B-Instruct,attention,25,mts_balanced,0.99188751
+Qwen2.5-32B-Instruct,attention,25,mental_health_balanced,0.92433471
+Qwen2.5-32B-Instruct,attention,25,aya_redteaming_balanced,0.81903506
+Qwen2.5-32B-Instruct,attention,25,mean,0.90682195
+Qwen2.5-32B-Instruct,attention,33,anthropic_hh_balanced,0.90218925
+Qwen2.5-32B-Instruct,attention,33,toolace_balanced,0.88546949
+Qwen2.5-32B-Instruct,attention,33,mt_balanced,0.97074141
+Qwen2.5-32B-Instruct,attention,33,mts_balanced,1.00000000
+Qwen2.5-32B-Instruct,attention,33,mental_health_balanced,0.68860082
+Qwen2.5-32B-Instruct,attention,33,aya_redteaming_balanced,0.85280222
+Qwen2.5-32B-Instruct,attention,33,mean,0.88330053
+Qwen2.5-32B-Instruct,attention,42,anthropic_hh_balanced,0.95261794
+Qwen2.5-32B-Instruct,attention,42,toolace_balanced,0.88251082
+Qwen2.5-32B-Instruct,attention,42,mt_balanced,0.98371782
+Qwen2.5-32B-Instruct,attention,42,mts_balanced,0.99675500
+Qwen2.5-32B-Instruct,attention,42,mental_health_balanced,0.86580247
+Qwen2.5-32B-Instruct,attention,42,aya_redteaming_balanced,0.91335465
+Qwen2.5-32B-Instruct,attention,42,mean,0.93245978
+Qwen2.5-32B-Instruct,attention,50,anthropic_hh_balanced,0.89586665
+Qwen2.5-32B-Instruct,attention,50,toolace_balanced,0.89624617
+Qwen2.5-32B-Instruct,attention,50,mt_balanced,0.96767686
+Qwen2.5-32B-Instruct,attention,50,mts_balanced,0.97458085
+Qwen2.5-32B-Instruct,attention,50,mental_health_balanced,0.65720165
+Qwen2.5-32B-Instruct,attention,50,aya_redteaming_balanced,0.83971103
+Qwen2.5-32B-Instruct,attention,50,mean,0.87188053
+Qwen2.5-32B-Instruct,softmax,23,anthropic_hh_balanced,0.87065848
+Qwen2.5-32B-Instruct,softmax,23,toolace_balanced,0.88417391
+Qwen2.5-32B-Instruct,softmax,23,mt_balanced,0.94514495
+Qwen2.5-32B-Instruct,softmax,23,mts_balanced,0.95294754
+Qwen2.5-32B-Instruct,softmax,23,mental_health_balanced,0.84884088
+Qwen2.5-32B-Instruct,softmax,23,aya_redteaming_balanced,0.79798439
+Qwen2.5-32B-Instruct,softmax,23,mean,0.88329169
+Qwen2.5-32B-Instruct,softmax,25,anthropic_hh_balanced,0.87409347
+Qwen2.5-32B-Instruct,softmax,25,toolace_balanced,0.88363563
+Qwen2.5-32B-Instruct,softmax,25,mt_balanced,0.95705232
+Qwen2.5-32B-Instruct,softmax,25,mts_balanced,0.97755544
+Qwen2.5-32B-Instruct,softmax,25,mental_health_balanced,0.95060357
+Qwen2.5-32B-Instruct,softmax,25,aya_redteaming_balanced,0.82563057
+Qwen2.5-32B-Instruct,softmax,25,mean,0.91142850
+Qwen2.5-32B-Instruct,softmax,33,anthropic_hh_balanced,0.91767442
+Qwen2.5-32B-Instruct,softmax,33,toolace_balanced,0.87730624
+Qwen2.5-32B-Instruct,softmax,33,mt_balanced,0.97191461
+Qwen2.5-32B-Instruct,softmax,33,mts_balanced,0.98620876
+Qwen2.5-32B-Instruct,softmax,33,mental_health_balanced,0.65339506
+Qwen2.5-32B-Instruct,softmax,33,aya_redteaming_balanced,0.87449338
+Qwen2.5-32B-Instruct,softmax,33,mean,0.88016541
+Qwen2.5-32B-Instruct,softmax,42,anthropic_hh_balanced,0.95598330
+Qwen2.5-32B-Instruct,softmax,42,toolace_balanced,0.87160793
+Qwen2.5-32B-Instruct,softmax,42,mt_balanced,0.98229793
+Qwen2.5-32B-Instruct,softmax,42,mts_balanced,0.98756084
+Qwen2.5-32B-Instruct,softmax,42,mental_health_balanced,0.75076818
+Qwen2.5-32B-Instruct,softmax,42,aya_redteaming_balanced,0.89370684
+Qwen2.5-32B-Instruct,softmax,42,mean,0.90698750
+Qwen2.5-32B-Instruct,softmax,50,anthropic_hh_balanced,0.90291699
+Qwen2.5-32B-Instruct,softmax,50,toolace_balanced,0.85113484
+Qwen2.5-32B-Instruct,softmax,50,mt_balanced,0.95888886
+Qwen2.5-32B-Instruct,softmax,50,mts_balanced,0.98756084
+Qwen2.5-32B-Instruct,softmax,50,mental_health_balanced,0.68998628
+Qwen2.5-32B-Instruct,softmax,50,aya_redteaming_balanced,0.84250637
+Qwen2.5-32B-Instruct,softmax,50,mean,0.87216570
+Gemma 4 31B IT,attention,21,anthropic_hh_balanced,0.90151833
+Gemma 4 31B IT,attention,21,toolace_balanced,0.88409595
+Gemma 4 31B IT,attention,21,mt_balanced,0.95820359
+Gemma 4 31B IT,attention,21,mts_balanced,0.99783667
+Gemma 4 31B IT,attention,21,mental_health_balanced,0.68972565
+Gemma 4 31B IT,attention,21,aya_redteaming_balanced,0.87535428
+Gemma 4 31B IT,attention,21,mean,0.88445575
+Gemma 4 31B IT,attention,27,anthropic_hh_balanced,0.93284560
+Gemma 4 31B IT,attention,27,toolace_balanced,0.87309283
+Gemma 4 31B IT,attention,27,mt_balanced,0.98598197
+Gemma 4 31B IT,attention,27,mts_balanced,0.94889129
+Gemma 4 31B IT,attention,27,mental_health_balanced,0.53727023
+Gemma 4 31B IT,attention,27,aya_redteaming_balanced,0.91129185
+Gemma 4 31B IT,attention,27,mean,0.86489563
+Gemma 4 31B IT,attention,33,anthropic_hh_balanced,0.93843955
+Gemma 4 31B IT,attention,33,toolace_balanced,0.88575533
+Gemma 4 31B IT,attention,33,mt_balanced,0.98098219
+Gemma 4 31B IT,attention,33,mts_balanced,0.98539751
+Gemma 4 31B IT,attention,33,mental_health_balanced,0.82052812
+Gemma 4 31B IT,attention,33,aya_redteaming_balanced,0.91486123
+Gemma 4 31B IT,attention,33,mean,0.92099399
+Gemma 4 31B IT,attention,42,anthropic_hh_balanced,0.92773995
+Gemma 4 31B IT,attention,42,toolace_balanced,0.89931991
+Gemma 4 31B IT,attention,42,mt_balanced,0.98803781
+Gemma 4 31B IT,attention,42,mts_balanced,0.98053002
+Gemma 4 31B IT,attention,42,mental_health_balanced,0.89320988
+Gemma 4 31B IT,attention,42,aya_redteaming_balanced,0.89716213
+Gemma 4 31B IT,attention,42,mean,0.93099995
+Gemma 4 31B IT,attention,51,anthropic_hh_balanced,0.92492040
+Gemma 4 31B IT,attention,51,toolace_balanced,0.88349828
+Gemma 4 31B IT,attention,51,mt_balanced,0.95432766
+Gemma 4 31B IT,attention,51,mts_balanced,0.97539210
+Gemma 4 31B IT,attention,51,mental_health_balanced,0.78808642
+Gemma 4 31B IT,attention,51,aya_redteaming_balanced,0.90956615
+Gemma 4 31B IT,attention,51,mean,0.90596517
+Gemma 4 31B IT,softmax,21,anthropic_hh_balanced,0.90965399
+Gemma 4 31B IT,softmax,21,toolace_balanced,0.84525091
+Gemma 4 31B IT,softmax,21,mt_balanced,0.92364370
+Gemma 4 31B IT,softmax,21,mts_balanced,0.96836128
+Gemma 4 31B IT,softmax,21,mental_health_balanced,0.92601509
+Gemma 4 31B IT,softmax,21,aya_redteaming_balanced,0.82489284
+Gemma 4 31B IT,softmax,21,mean,0.89963630
+Gemma 4 31B IT,softmax,27,anthropic_hh_balanced,0.91053716
+Gemma 4 31B IT,softmax,27,toolace_balanced,0.50023016
+Gemma 4 31B IT,softmax,27,mt_balanced,0.92439476
+Gemma 4 31B IT,softmax,27,mts_balanced,0.82044348
+Gemma 4 31B IT,softmax,27,mental_health_balanced,0.50000000
+Gemma 4 31B IT,softmax,27,aya_redteaming_balanced,0.82452592
+Gemma 4 31B IT,softmax,27,mean,0.74668858
+Gemma 4 31B IT,softmax,33,anthropic_hh_balanced,0.93685559
+Gemma 4 31B IT,softmax,33,toolace_balanced,0.81796212
+Gemma 4 31B IT,softmax,33,mt_balanced,0.93023332
+Gemma 4 31B IT,softmax,33,mts_balanced,0.96078962
+Gemma 4 31B IT,softmax,33,mental_health_balanced,0.94922497
+Gemma 4 31B IT,softmax,33,aya_redteaming_balanced,0.84399480
+Gemma 4 31B IT,softmax,33,mean,0.90651007
+Gemma 4 31B IT,softmax,42,anthropic_hh_balanced,0.96124146
+Gemma 4 31B IT,softmax,42,toolace_balanced,0.85981038
+Gemma 4 31B IT,softmax,42,mt_balanced,0.96104886
+Gemma 4 31B IT,softmax,42,mts_balanced,0.99405084
+Gemma 4 31B IT,softmax,42,mental_health_balanced,0.95524691
+Gemma 4 31B IT,softmax,42,aya_redteaming_balanced,0.90842390
+Gemma 4 31B IT,softmax,42,mean,0.93997039
+Gemma 4 31B IT,softmax,51,anthropic_hh_balanced,0.95563425
+Gemma 4 31B IT,softmax,51,toolace_balanced,0.77762104
+Gemma 4 31B IT,softmax,51,mt_balanced,0.90293737
+Gemma 4 31B IT,softmax,51,mts_balanced,0.98161168
+Gemma 4 31B IT,softmax,51,mental_health_balanced,0.93679698
+Gemma 4 31B IT,softmax,51,aya_redteaming_balanced,0.89415285
+Gemma 4 31B IT,softmax,51,mean,0.90812570

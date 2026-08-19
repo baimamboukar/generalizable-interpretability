@@ -26,6 +26,7 @@ EVALS = tuple(
         "aya_redteaming_balanced.jsonl",
     )
 )
+os.environ.setdefault("MUP_LOCAL_ACTIVATIONS", "1")
 
 
 def command(parts: tuple[str, ...]) -> list[str]:
@@ -54,7 +55,55 @@ def remove_temporary_tensors() -> None:
         path.unlink(missing_ok=True)
 
 
+def artifact_uri(args: argparse.Namespace) -> str:
+    bucket = os.environ["HF_BUCKET"]
+    if not bucket.startswith("hf://buckets/"):
+        bucket = f"hf://buckets/{bucket}"
+    return f"{bucket.rstrip('/')}/models-under-pressure/{args.artifact_name}"
+
+
+def checkpoint_activations(args: argparse.Namespace, activation_root: Path) -> None:
+    subprocess.run(
+        [
+            "uvx",
+            "--from",
+            "huggingface_hub",
+            "hf",
+            "buckets",
+            "sync",
+            str(activation_root),
+            f"{artifact_uri(args)}/activations",
+        ],
+        check=True,
+    )
+
+
+def restore_activations(args: argparse.Namespace, activation_root: Path) -> None:
+    if (activation_root / "manifest.json").exists():
+        return
+    subprocess.run(
+        [
+            "uvx",
+            "--from",
+            "huggingface_hub",
+            "hf",
+            "buckets",
+            "sync",
+            f"{artifact_uri(args)}/activations",
+            str(activation_root),
+        ],
+        check=True,
+    )
+
+
 def extract(args: argparse.Namespace) -> None:
+    from models_under_pressure import r2
+
+    r2.download_file = lambda _bucket, _key, path: Path(path).exists()
+    r2.upload_file = lambda _bucket, _key, _path: True
+    r2.list_bucket_files = lambda _bucket: []
+    r2.delete_file = lambda _bucket, _key: True
+
     from models_under_pressure.activation_store import ActivationStore, ActivationsSpec
     from models_under_pressure.interfaces.dataset import LabelledDataset
     from models_under_pressure.model import LLMModel
@@ -62,6 +111,9 @@ def extract(args: argparse.Namespace) -> None:
     activation_root = PROJECT / "data/activations"
     for name in ("activations", "input_ids", "attention_masks", "_hf"):
         (activation_root / name).mkdir(parents=True, exist_ok=True)
+    manifest = activation_root / "manifest.json"
+    if not manifest.exists():
+        manifest.write_text('{"rows": []}\n')
     run(args, "datasets", "download")
     model = LLMModel.load(args.model, batch_size=args.batch_size)
     store = ActivationStore()
@@ -80,10 +132,12 @@ def extract(args: argparse.Namespace) -> None:
             )
             store.save(args.model, dataset_path, [layer], activations, inputs)
             remove_temporary_tensors()
+            checkpoint_activations(args, activation_root)
             gc.collect()
 
 
 def evaluate(args: argparse.Namespace) -> None:
+    restore_activations(args, PROJECT / "data/activations")
     run(args, "datasets", "download")
     for probe in ("softmax", "attention"):
         for layer in args.layers:
@@ -123,11 +177,7 @@ def collect(
                     raise FileNotFoundError(result)
                 shutil.copy2(result, destination / result.name)
     if include_activations:
-        source = PROJECT / "data/activations"
-        destination = output / "activations"
-        if destination.exists():
-            shutil.rmtree(destination)
-        shutil.copytree(source, destination)
+        checkpoint_activations(args, PROJECT / "data/activations")
     summary = {
         "model": args.model,
         "model_config": args.model_config,
@@ -136,6 +186,7 @@ def collect(
         "train_dataset": str(TRAIN.relative_to(PROJECT)),
         "validation_dataset": str(VALIDATION.relative_to(PROJECT)),
         "eval_datasets": [str(path.relative_to(PROJECT)) for path in EVALS],
+        "activations": f"{artifact_uri(args)}/activations",
     }
     (output / "run.json").write_text(json.dumps(summary, indent=2) + "\n")
     print(f"artifacts: {output}")
