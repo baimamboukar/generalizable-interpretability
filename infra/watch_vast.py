@@ -17,6 +17,7 @@ from infra.env import load_project_env
 
 ACTIVE_STATES = {"running", "loading", "created"}
 TERMINAL_STATES = {"exited", "stopped", "destroyed"}
+TERMINAL_ARTIFACT_STAGES = {"complete", "evaluated", "finished", "trained"}
 
 
 def timestamp() -> str:
@@ -31,12 +32,37 @@ def append(path: Path, message: str) -> None:
         handle.write(line + "\n")
 
 
+def normalize_logs(value: object) -> str:
+    if isinstance(value, str):
+        return value
+    if value is None:
+        return ""
+    return json.dumps(value, sort_keys=True, default=str)
+
+
 def phase(logs: str) -> str:
+    layer_markers = [
+        line.strip()
+        for line in logs.splitlines()
+        if "train-all-layers:" in line or "test-all-layers:" in line
+    ]
+    if layer_markers:
+        return layer_markers[-1]
     markers = [line for line in logs.splitlines() if "extracting:" in line]
     if markers:
         return markers[-1].strip()
     if "evaluate_probe" in logs:
         return "evaluating probes"
+    for marker, label in (
+        ("##### Training the early exit MLP", "training early-exit MLP"),
+        ("##### Static MLPs", "training static MLPs"),
+        ("##### Linear probe", "evaluating linear probe"),
+        ("##### Bilinear probe", "training bilinear probe"),
+        ("##### Poly probe", "training polynomial probe"),
+        ("activation batches", "extracting activations"),
+    ):
+        if marker in logs:
+            return label
     return "starting"
 
 
@@ -82,12 +108,7 @@ def hf_artifact_ready(artifact: str) -> bool:
         if destination.name != "run.json":
             return True
         state = json.loads(destination.read_text())
-        return state.get("stage") not in {
-            "prepared",
-            "extracted",
-            "labeled",
-            "compacted",
-        }
+        return state.get("stage") in TERMINAL_ARTIFACT_STAGES
 
 
 def destroy(client: VastAI, instance_id: int, log: Path) -> bool:
@@ -122,15 +143,24 @@ def monitor(args: argparse.Namespace) -> None:
             try:
                 info = client.show_instance(instance_id)
                 if not info:
-                    append(args.log, f"instance={instance_id} state=unavailable")
+                    append(args.log, f"instance={instance_id} destroyed=true")
+                    remaining.remove(instance_id)
                     continue
-                logs = client.logs(instance_id, tail="12000")
+                logs = normalize_logs(client.logs(instance_id, tail="12000"))
                 state = str(
                     info.get("actual_status", info.get("cur_state", "unknown"))
                 )
                 append(
                     args.log,
-                    f"instance={instance_id} state={state} phase={phase(logs)}",
+                    " ".join(
+                        [
+                            f"instance={instance_id}",
+                            f"state={state}",
+                            f"gpu_util={info.get('gpu_util')}",
+                            f"cpu_util={info.get('cpu_util')}",
+                            f"phase={phase(logs)}",
+                        ]
+                    ),
                 )
                 log_hash = hashlib.sha256(logs.encode()).hexdigest()
                 if last_log_hash.get(instance_id) == log_hash:
@@ -146,14 +176,15 @@ def monitor(args: argparse.Namespace) -> None:
                     continue
                 hf_artifact = hf_artifacts.get(str(instance_id))
                 if hf_artifact is not None and hf_artifact_ready(hf_artifact):
-                    append(log=args.log, message=f"instance={instance_id} artifact_ready=true")
+                    append(args.log, f"instance={instance_id} artifact_ready=true")
                     if destroy(client, instance_id, args.log):
                         remaining.remove(instance_id)
                     continue
-                if failed(logs) and (
-                    state.lower() in TERMINAL_STATES or terminal(logs)
-                ):
-                    append(args.log, f"instance={instance_id} failure=terminal")
+                if terminal(logs):
+                    append(
+                        args.log,
+                        f"instance={instance_id} terminal_sync=true success={not failed(logs)}",
+                    )
                     if destroy(client, instance_id, args.log):
                         remaining.remove(instance_id)
                     continue

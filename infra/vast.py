@@ -26,6 +26,16 @@ EXCLUDED = {
     "tmp",
     "__pycache__",
 }
+EXTERNAL_EXCLUDED = {
+    ".git",
+    ".venv",
+    ".cache",
+    "artifacts",
+    "outputs",
+    "results",
+    "tmp",
+    "__pycache__",
+}
 
 
 class VastRunner:
@@ -41,6 +51,7 @@ class VastRunner:
         min_vram: float,
         min_cpu: int,
         min_ram: float,
+        min_cuda: float,
         max_price: float,
         disk: float,
         image: str,
@@ -68,7 +79,7 @@ class VastRunner:
                 f"gpu_name={gpu} num_gpus=1 rentable=true "
                 f"reliability>0.98 disk_space>={disk} "
                 f"cpu_cores_effective>={min_cpu} cpu_ram>={min_ram} "
-                f"gpu_ram>={min_vram}"
+                f"gpu_ram>={min_vram} cuda_max_good>={min_cuda}"
             ),
             order="dph_total",
             limit=20,
@@ -107,6 +118,7 @@ class VastRunner:
             "price_per_hour": offer["dph_total"],
         }
         result["bundle"] = f"hf://buckets/{bucket}/{bundle_path}"
+        result.pop("instance_api_key", None)
         return result
 
     @staticmethod
@@ -150,7 +162,7 @@ class VastRunner:
         def clean(member: tarfile.TarInfo):
             parts = Path(member.name).parts
             is_external = parts[:1] == ("external",)
-            excluded = EXCLUDED - {"data"} if is_external else EXCLUDED
+            excluded = EXTERNAL_EXCLUDED if is_external else EXCLUDED
             if excluded.intersection(parts) or member.name.endswith(".pyc"):
                 return None
             return member
