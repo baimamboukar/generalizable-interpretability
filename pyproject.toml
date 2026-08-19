@@ -9,3 +9,7 @@ dependencies = [
   "vastai>=1.4,<2",
   "wandb>=0.19,<1",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["infra", "replications"]
+norecursedirs = ["artifacts", "external"]
