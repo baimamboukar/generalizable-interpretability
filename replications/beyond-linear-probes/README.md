@@ -64,7 +64,9 @@ python replications/beyond-linear-probes/plot.py
 ```
 
 The plot reads the synced results under `artifacts/beyond-linear-probes` and
-writes `figures/beyond-linear-probes/paper_vs_replication.{png,pdf}`.
+writes `figures/beyond-linear-probes/paper_vs_replication.png`. Pass `--pdf`
+only when a PDF export is needed. A selected-model comparison can be generated
+with `--models llama3`.
 
 The same command can be transported through the project Vast adapter. Pass
 `--external tpc` so the upstream checkout is bundled, and pass only the
@@ -86,3 +88,14 @@ revisions, and hard-codes `/data/scratch/acw663/poly-monitor/activation-cache`.
 Its Qwen3 WildGuard extractor also writes `wildguard_train/test` while the
 released monitor reads `train/test`; the wrapper reports this mismatch instead
 of silently renaming files. These are release diagnostics, not source changes.
+
+## Verified baseline
+
+The Llama-3.2-3B layer-16 WildGuardMix run reproduced all five Table 1 test-F1
+values within 0.44 percentage points. The mean absolute difference was 0.20
+points. Results, verification hashes, and the paper comparison are recorded in
+`data/results/beyond-linear-probes/baseline_replication.csv`,
+`artifacts/beyond-linear-probes`, and `reports/beyond-linear-probes.md`.
+
+The released training files require Python 3.12 syntax, but no Python version
+or dependency lockfile was published.

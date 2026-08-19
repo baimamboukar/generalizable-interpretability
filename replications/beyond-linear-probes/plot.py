@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import math
 import pickle
 from pathlib import Path
 
@@ -96,7 +97,7 @@ def result_path(results: Path, model: str, layer: int, method: str) -> Path:
         "llama3": "Llama-3.2-3B",
     }[model]
     directory = results / "numbers" / "wildguard" / (
-        f"{model_name}-L{layer}-mean-progressive-maxorder-5_rank-64"
+        f"{model_name}-L{layer}-mean--progressive-maxorder-5_rank-64"
     )
     return directory / FILES[method]
 
@@ -105,10 +106,17 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--results-dir", type=Path, default=DEFAULT_RESULTS)
     parser.add_argument("--output-dir", type=Path, default=OUTPUT)
+    parser.add_argument(
+        "--models",
+        nargs="+",
+        choices=tuple(MODEL_LABELS),
+        default=list(MODEL_LABELS),
+    )
+    parser.add_argument("--pdf", action="store_true")
     args = parser.parse_args()
     setup_font()
     paper = load_targets()
-    models = list(MODEL_LABELS)
+    models = args.models
     layers = {model: min(layer for m, layer, _ in paper if m == model) for model in models}
 
     values: dict[tuple[str, str], float] = {}
@@ -123,11 +131,20 @@ def main() -> None:
     if missing:
         raise SystemExit("Missing baseline result files; run the baseline first:\n" + "\n".join(map(str, missing)))
 
-    figure, axes = plt.subplots(2, 2, figsize=(14.2, 9.0), sharey=True)
-    figure.subplots_adjust(left=0.08, right=0.98, top=0.74, bottom=0.15, hspace=0.42, wspace=0.12)
+    columns = 1 if len(models) == 1 else 2
+    rows = math.ceil(len(models) / columns)
+    figure, axes = plt.subplots(
+        rows,
+        columns,
+        figsize=(8.4 * columns, 6.0 * rows),
+        sharey=True,
+        squeeze=False,
+    )
+    plot_top = 0.65 if rows == 1 else 0.74
+    figure.subplots_adjust(left=0.08, right=0.98, top=plot_top, bottom=0.17, hspace=0.42, wspace=0.12)
     x = np.arange(len(METHODS))
     width = 0.34
-    for axis, model in zip(axes.flat, models, strict=True):
+    for axis, model in zip(axes.flat, models):
         layer = layers[model]
         paper_values = [paper[(model, layer, method)] for method in METHODS]
         replication_values = [values[(model, method)] for method in METHODS]
@@ -154,6 +171,9 @@ def main() -> None:
                     va="bottom",
                     fontsize=9.5,
                 )
+
+    for axis in list(axes.flat)[len(models):]:
+        axis.remove()
 
     figure.text(0.06, 0.94, "Beyond Linear Probes: paper versus replication", fontsize=25, fontweight=600, ha="left")
     figure.text(
@@ -182,7 +202,8 @@ def main() -> None:
     )
     args.output_dir.mkdir(parents=True, exist_ok=True)
     figure.savefig(args.output_dir / "paper_vs_replication.png", dpi=240, facecolor="white", bbox_inches="tight")
-    figure.savefig(args.output_dir / "paper_vs_replication.pdf", facecolor="white", bbox_inches="tight")
+    if args.pdf:
+        figure.savefig(args.output_dir / "paper_vs_replication.pdf", facecolor="white", bbox_inches="tight")
     plt.close(figure)
 
 

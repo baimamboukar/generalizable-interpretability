@@ -1,0 +1,57 @@
+{
+  "dataset": {
+    "id": "allenai/wildguardmix",
+    "revision": "d29c47f41c8b51348b5c8e8c81c039b3132b66d1",
+    "train_config": "wildguardtrain",
+    "train_split": "train",
+    "test_config": "wildguardtest",
+    "test_split": "test"
+  },
+  "models": {
+    "glm4-9b": {
+      "id": "zai-org/GLM-4-9B-0414",
+      "revision": "645b8482494e31b6b752272bf7f7f273ef0f3caf",
+      "layers": [16, 23, 30],
+      "train_layer": 23,
+      "hidden_size": 4096,
+      "num_hidden_layers": 40,
+      "batch_size": 2,
+      "prompt_style": "chat"
+    },
+    "phi4-14b": {
+      "id": "microsoft/phi-4",
+      "revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25",
+      "layers": [16, 23, 30],
+      "train_layer": 23,
+      "hidden_size": 5120,
+      "num_hidden_layers": 40,
+      "batch_size": 1,
+      "prompt_style": "chat"
+    },
+    "mistral-small-24b": {
+      "id": "mistralai/Mistral-Small-24B-Instruct-2501",
+      "revision": "9527884be6e5616bdd54de542f9ae13384489724",
+      "layers": [16, 23, 30],
+      "train_layer": 23,
+      "hidden_size": 5120,
+      "num_hidden_layers": 40,
+      "batch_size": 1,
+      "prompt_style": "chat"
+    }
+  },
+  "extraction": {
+    "max_length": 2048,
+    "pool_type": "mean",
+    "dtype": "bfloat16",
+    "seed": 42
+  },
+  "training": {
+    "rank": 64,
+    "max_order": 5,
+    "max_epochs": 50,
+    "pool_type": "mean",
+    "train_mode": "progressive",
+    "batch_size": 1024,
+    "seeds": 5
+  }
+}

@@ -2,9 +2,13 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+from importlib.metadata import PackageNotFoundError, version
+import hashlib
 import json
+import math
 import os
 from pathlib import Path
+import pickle
 import shutil
 import subprocess
 import sys
@@ -20,7 +24,7 @@ UPSTREAM_CACHE = Path("/data/scratch/acw663/poly-monitor/activation-cache")
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from infra.env import load_project_env
+from infra.env import load_project_env  # noqa: E402
 
 MODELS = MANIFEST["models"]
 DATASETS = tuple(MANIFEST["datasets"])
@@ -31,6 +35,14 @@ REQUIRED_FILES = (
     "utils.py",
     "sweep.sh",
 )
+RESULT_FILES = (
+    "poly-vals.pkl",
+    "bi-vals.pkl",
+    "linear-vals.pkl",
+    "mlp-vals.pkl",
+    "eemlp-matched-vals.pkl",
+)
+
 
 def load() -> None:
     load_project_env()
@@ -49,6 +61,32 @@ def source_commit() -> str:
     return MANIFEST["commit"]
 
 
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def source_digest() -> str:
+    digest = hashlib.sha256()
+    files = sorted(
+        path
+        for path in SOURCE.rglob("*")
+        if path.is_file()
+        and ".git" not in path.parts
+        and "__pycache__" not in path.parts
+        and "results" not in path.relative_to(SOURCE).parts
+        and path.suffix != ".pyc"
+    )
+    for path in files:
+        digest.update(path.relative_to(SOURCE).as_posix().encode())
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
 def verify_source() -> None:
     if not SOURCE.is_dir():
         raise FileNotFoundError(
@@ -59,6 +97,17 @@ def verify_source() -> None:
         raise RuntimeError(
             f"Expected upstream commit {MANIFEST['commit']}, found {source_commit()}"
         )
+    if source_digest() != MANIFEST["source_digest"]:
+        raise RuntimeError(
+            "The bundled upstream source does not match the audited release tree"
+        )
+    if (SOURCE / ".git").exists():
+        tracked_diff = subprocess.run(
+            ["git", "-C", str(SOURCE), "diff", "--quiet", "HEAD", "--"],
+            check=False,
+        ).returncode
+        if tracked_diff:
+            raise RuntimeError("The upstream checkout has tracked source changes")
     missing = [path for path in REQUIRED_FILES if not (SOURCE / path).is_file()]
     if missing:
         raise RuntimeError(f"Missing upstream files: {missing}")
@@ -73,6 +122,8 @@ def inspect() -> None:
                 "repository": MANIFEST["repository"],
                 "commit": source_commit() if SOURCE.exists() else None,
                 "expected_commit": MANIFEST["commit"],
+                "source_digest": source_digest() if SOURCE.exists() else None,
+                "expected_source_digest": MANIFEST["source_digest"],
                 "models": MANIFEST["models"],
                 "datasets": MANIFEST["datasets"],
                 "paper_settings": MANIFEST["paper_settings"],
@@ -87,7 +138,64 @@ def inspect() -> None:
     )
 
 
-def preflight() -> None:
+def package_versions() -> dict[str, str | None]:
+    packages = (
+        "accelerate",
+        "datasets",
+        "einops",
+        "huggingface-hub",
+        "numpy",
+        "scikit-learn",
+        "torch",
+        "torchmetrics",
+        "tqdm",
+        "transformers",
+    )
+    resolved = {}
+    for package in packages:
+        try:
+            resolved[package] = version(package)
+        except PackageNotFoundError:
+            resolved[package] = None
+    return resolved
+
+
+def resolved_sources(model: str, dataset: str) -> dict[str, str]:
+    from huggingface_hub import HfApi
+
+    api = HfApi(token=os.environ.get("HF_TOKEN"))
+    return {
+        "model": MODELS[model]["id"],
+        "model_revision": api.model_info(MODELS[model]["id"]).sha,
+        "dataset": MANIFEST["datasets"][dataset]["source"],
+        "dataset_revision": api.dataset_info(
+            MANIFEST["datasets"][dataset]["source"]
+        ).sha,
+    }
+
+
+def compile_smoke_test() -> dict[str, str]:
+    import torch
+
+    compiler = shutil.which("cc") or shutil.which("gcc")
+    if not compiler:
+        raise RuntimeError("A C compiler is required by the released torch.compile extractor")
+    if not torch.cuda.is_available():
+        raise RuntimeError("CUDA is required for activation extraction")
+    compiled = torch.compile(lambda value: value.square() + 1, mode="reduce-overhead")
+    value = compiled(torch.ones(4, device="cuda"))
+    torch.cuda.synchronize()
+    if not torch.allclose(value, torch.full_like(value, 2)):
+        raise RuntimeError("torch.compile smoke test returned an invalid value")
+    return {
+        "compiler": compiler,
+        "gpu": torch.cuda.get_device_name(0),
+        "cuda": torch.version.cuda or "unknown",
+        "torchdynamo_disabled": os.environ.get("TORCHDYNAMO_DISABLE", "0"),
+    }
+
+
+def preflight(model: str, dataset: str) -> None:
     verify_source()
     packages = (
         "datasets",
@@ -99,18 +207,29 @@ def preflight() -> None:
         "tqdm",
         "transformers",
     )
+    imports = {
+        package: importlib.util.find_spec(package) is not None
+        for package in packages
+    }
+    missing = [package for package, available in imports.items() if not available]
+    missing_env = [key for key in ("HF_TOKEN", "HF_BUCKET") if not os.environ.get(key)]
+    if missing:
+        raise RuntimeError(f"Missing runtime packages: {', '.join(missing)}")
+    if missing_env:
+        raise RuntimeError(f"Missing environment variables: {', '.join(missing_env)}")
     print(
         json.dumps(
             {
                 "commit": source_commit(),
+                "source_digest": source_digest(),
                 "python": sys.version.split()[0],
-                "imports": {
-                    package: importlib.util.find_spec(package) is not None
-                    for package in packages
-                },
-                "hf_token_configured": bool(os.environ.get("HF_TOKEN")),
-                "source_dependency_lock": False,
-                "model_revisions_pinned": False,
+                "imports": imports,
+                "packages": package_versions(),
+                "sources": resolved_sources(model, dataset),
+                "compile_smoke_test": compile_smoke_test(),
+                "hf_token_configured": True,
+                "hf_bucket_configured": True,
+                "environment_basis": "replication pin; no author lockfile released",
                 "activation_cache_parent_exists": UPSTREAM_CACHE.parent.exists(),
             },
             indent=2,
@@ -152,14 +271,22 @@ def copy_tree(source: Path, destination: Path) -> None:
         shutil.copytree(source, destination, dirs_exist_ok=True)
 
 
-def persist(dataset: str | None = None) -> None:
+def persist(dataset: str | None = None, model: str | None = None) -> None:
     if dataset:
         copy_tree(cache_dataset(dataset), ARTIFACTS / "activation-cache" / dataset)
     copy_tree(SOURCE / "results", ARTIFACTS / "results")
     metadata = {
         "source_commit": source_commit(),
+        "source_digest": source_digest(),
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "paper": MANIFEST["paper"],
+        "python": sys.version.split()[0],
+        "packages": package_versions(),
+        "sources": resolved_sources(model, dataset) if model and dataset else None,
+        "environment_basis": "replication pin; no author lockfile released",
+        "execution_overrides": {
+            "TORCHDYNAMO_DISABLE": os.environ.get("TORCHDYNAMO_DISABLE", "0")
+        },
     }
     (ARTIFACTS / "run_metadata.json").parent.mkdir(parents=True, exist_ok=True)
     (ARTIFACTS / "run_metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
@@ -211,7 +338,7 @@ def extract(model: str, dataset: str) -> None:
     verify_source()
     ensure_cache(dataset)
     run_upstream([sys.executable, str(extractor(model, dataset))])
-    persist(dataset)
+    persist(dataset, model)
 
 
 def train(
@@ -267,7 +394,62 @@ def train(
             dataset,
         ]
     )
-    persist(dataset)
+    persist(dataset, model)
+
+
+def result_directory(model: str, dataset: str, layer: int) -> Path:
+    model_name = MODELS[model]["id"].split("/")[-1]
+    dataset_dir = "wildguard" if dataset == "WildGuard" else "beaver"
+    pool_type = "mean-" if dataset == "WildGuard" else "mean-330k_"
+    return (
+        SOURCE
+        / "results"
+        / "numbers"
+        / dataset_dir
+        / f"{model_name}-L{layer}-{pool_type}-progressive-maxorder-5_rank-64"
+    )
+
+
+def result_values(value: object) -> list[float]:
+    if hasattr(value, "tolist"):
+        return result_values(value.tolist())
+    if isinstance(value, (list, tuple)):
+        return [item for child in value for item in result_values(child)]
+    return [float(value)]
+
+
+def verify_results(model: str, dataset: str, layer: int) -> None:
+    directory = result_directory(model, dataset, layer)
+    missing = [name for name in RESULT_FILES if not (directory / name).is_file()]
+    if missing:
+        raise FileNotFoundError(f"Missing result files: {', '.join(missing)}")
+    files = {}
+    for name in RESULT_FILES:
+        path = directory / name
+        with path.open("rb") as handle:
+            payload = pickle.load(handle)
+        values = payload.get("y_vals_test")
+        if values is None:
+            raise RuntimeError(f"{name} has no y_vals_test")
+        flattened = result_values(values)
+        if not flattened or not all(math.isfinite(value) for value in flattened):
+            raise RuntimeError(f"{name} has invalid y_vals_test")
+        files[name] = {
+            "sha256": file_sha256(path),
+            "test_values": flattened,
+        }
+    manifest = {
+        "model": MODELS[model]["id"],
+        "dataset": dataset,
+        "layer": layer,
+        "source_commit": source_commit(),
+        "source_digest": source_digest(),
+        "files": files,
+    }
+    output = ARTIFACTS / "verification" / f"{model}_{dataset}_L{layer}.json"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(manifest, indent=2) + "\n")
+    print(output)
 
 
 def baseline(args: argparse.Namespace) -> None:
@@ -291,7 +473,11 @@ def baseline(args: argparse.Namespace) -> None:
 
 def parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--stage", choices=("inspect", "preflight", "extract", "train", "baseline"), required=True)
+    parser.add_argument(
+        "--stage",
+        choices=("inspect", "preflight", "extract", "train", "verify", "baseline"),
+        required=True,
+    )
     parser.add_argument("--model", choices=tuple(MODELS))
     parser.add_argument("--dataset", choices=DATASETS, default="WildGuard")
     parser.add_argument("--layer", type=int)
@@ -310,7 +496,9 @@ def main() -> None:
     if args.stage == "inspect":
         inspect()
     elif args.stage == "preflight":
-        preflight()
+        if not args.model:
+            raise SystemExit("--model is required for preflight")
+        preflight(args.model, args.dataset)
     elif args.stage == "extract":
         if not args.model:
             raise SystemExit("--model is required for extract")
@@ -329,6 +517,10 @@ def main() -> None:
             args.train_mode,
             args.batch_size,
         )
+    elif args.stage == "verify":
+        if not args.model or args.layer is None:
+            raise SystemExit("--model and --layer are required for verify")
+        verify_results(args.model, args.dataset, args.layer)
     else:
         baseline(args)
 

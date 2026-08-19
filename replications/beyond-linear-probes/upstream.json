@@ -1,6 +1,7 @@
 {
   "repository": "https://github.com/james-oldfield/tpc",
   "commit": "e50d3c4f1bd01c90c08e571c1500d8b4aa62bd13",
+  "source_digest": "8b1fd3e52f87434c0fbed33ec8e2d3993a2ae7943343b9548d7215b0bb131e60",
   "paper": "https://arxiv.org/abs/2509.26238",
   "venue": "ICLR 2026",
   "models": {
