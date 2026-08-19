@@ -19,7 +19,9 @@ APPLE = ROOT / "external" / "internal-instruction-following"
 GOOGLE = ROOT / "external" / "google-research-ifeval"
 IFEVAL = GOOGLE / "instruction_following_eval"
 CONFIG = json.loads((HERE / "upstream.json").read_text())
-MODELS = {model["key"]: model for model in CONFIG["models"]}
+MODELS = {
+    model["key"]: model for model in [*CONFIG["models"], *CONFIG.get("controls", [])]
+}
 TOKENS = ("first", "middle", "last")
 THRESHOLD = float(CONFIG["diagnostic_metrics"]["threshold"])
 METRICS = ("auroc", *CONFIG["diagnostic_metrics"]["derived"])
@@ -49,6 +51,17 @@ def validate_extension_models() -> None:
         ]
         if len(layers) != 4 or len(set(layers)) != 4 or invalid:
             raise RuntimeError(f"Invalid extension layers for {model['key']}: {layers}")
+
+
+def validate_control_models() -> None:
+    for model in CONFIG.get("controls", []):
+        if model.get("base_model") not in MODELS:
+            raise RuntimeError(f"Unknown base model for {model['key']}")
+        if model.get("response_source") not in (None, *MODELS):
+            raise RuntimeError(f"Unknown response source for {model['key']}")
+        layers = model["layers"]
+        if len(layers) != 1 or not 0 <= layers[0] <= model["num_hidden_layers"]:
+            raise RuntimeError(f"Invalid control layer for {model['key']}: {layers}")
 
 
 def read_jsonl(path: Path) -> list[dict]:
@@ -129,6 +142,11 @@ def paths(model: dict) -> dict[str, Path]:
         "summary": root / "probe_summary.csv",
         "metrics_summary": root / "probe_metrics_summary.csv",
         "directions": root / "probe_directions.pt",
+        "layer_selection_candidates": root / "layer_selection_candidates.csv",
+        "layer_selection_runs": root / "layer_selection_runs.csv",
+        "layer_selection_predictions": root / "layer_selection_predictions.csv",
+        "layer_selection_summary": root / "layer_selection_summary.csv",
+        "layer_selection_directions": root / "layer_selection_directions.pt",
         "manifest": root / "run.json",
     }
 
@@ -211,6 +229,126 @@ def extraction_complete(target: dict[str, Path], rows: int) -> bool:
     return len(responses) == rows and len(activations) == rows
 
 
+def released_prompt(query: str) -> str:
+    return (
+        "<s>[INST] <<SYS>>\n You are a helpful assistant.\n \n<</SYS>>\n\n "
+        f"{query} [/INST] "
+    )
+
+
+def teacher_forced_positions(
+    prompt_tokens: int, response_tokens: int
+) -> dict[str, int]:
+    if prompt_tokens < 1 or response_tokens < 1:
+        raise RuntimeError("Teacher-forced prompts and responses must be non-empty")
+    steps = {
+        "first": 0,
+        "middle": response_tokens // 2,
+        "last": response_tokens - 1,
+    }
+    return {name: prompt_tokens - 1 + step for name, step in steps.items()}
+
+
+def control_prompt(model: dict, tokenizer, query: str) -> str:
+    if model.get("prompt_mode") != "native":
+        return released_prompt(query)
+    messages = [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": query},
+    ]
+    return tokenizer.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=True,
+        enable_thinking=False,
+    )
+
+
+def ensure_response_source(model: dict) -> None:
+    source_key = model.get("response_source")
+    if not source_key:
+        return
+    source = paths(MODELS[source_key])
+    if source["responses"].exists():
+        return
+    from infra.artifacts import pull
+
+    pull(source["root"], f"internal-instruction-following/{source_key}")
+    if not source["responses"].exists():
+        raise RuntimeError(f"Missing response source after pull: {source_key}")
+
+
+def extract_teacher_forced(model: dict, target: dict[str, Path]) -> None:
+    import torch
+    from tqdm import tqdm
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    ensure_response_source(model)
+    prompts = read_jsonl(target["work"] / "ifeval_simple.jsonl")
+    responses = read_jsonl(paths(MODELS[model["response_source"]])["responses"])
+    if len(prompts) != len(responses) or any(
+        prompt["prompt"] != response["prompt"]
+        for prompt, response in zip(prompts, responses, strict=True)
+    ):
+        raise RuntimeError("Fixed-response prompts do not match IFEval-simple")
+    token = os.environ["HF_TOKEN"]
+    tokenizer = AutoTokenizer.from_pretrained(
+        model["id"], revision=model["revision"], token=token
+    )
+    network = AutoModelForCausalLM.from_pretrained(
+        model["id"],
+        revision=model["revision"],
+        token=token,
+        device_map="auto",
+        trust_remote_code=True,
+    )
+    network.eval()
+    input_device = network.get_input_embeddings().weight.device
+    target["raw_activations"].mkdir(parents=True, exist_ok=True)
+    target["raw_responses"].parent.mkdir(parents=True, exist_ok=True)
+    output_rows = []
+    for index, (prompt_row, response_row) in enumerate(
+        tqdm(
+            zip(prompts, responses, strict=True),
+            total=len(prompts),
+            desc=f"teacher-forcing {model['key']}",
+        )
+    ):
+        prompt_ids = tokenizer(
+            control_prompt(model, tokenizer, prompt_row["prompt"]),
+            add_special_tokens=False,
+        )["input_ids"]
+        response_ids = tokenizer(response_row["response"], add_special_tokens=False)[
+            "input_ids"
+        ]
+        positions = teacher_forced_positions(len(prompt_ids), len(response_ids))
+        input_ids = torch.tensor(
+            [prompt_ids + response_ids], device=input_device, dtype=torch.long
+        )
+        with torch.inference_mode():
+            hidden = network(
+                input_ids=input_ids,
+                output_hidden_states=True,
+                use_cache=False,
+                return_dict=True,
+            ).hidden_states
+        record = {
+            f"output_token_{name}": {
+                f"layer_{layer}": hidden[layer][:, position : position + 1]
+                .detach()
+                .float()
+                .cpu()
+                for layer in model["layers"]
+            }
+            for name, position in positions.items()
+        }
+        with (target["raw_activations"] / f"sample_{index}.pkl").open("wb") as handle:
+            pickle.dump(record, handle)
+        output_rows.append({**prompt_row, "output": response_row["response"]})
+        del hidden, input_ids
+    write_jsonl(target["raw_responses"], output_rows)
+
+
 def training_complete(model: dict, target: dict[str, Path]) -> bool:
     required = (
         target["compact"],
@@ -252,13 +390,31 @@ def extract(model_key: str, force: bool = False) -> None:
     token = os.environ.get("HF_TOKEN")
     if not token:
         raise RuntimeError("HF_TOKEN is required")
+    if model.get("extraction_mode") == "teacher_forced":
+        extract_teacher_forced(model, target)
+        if not extraction_complete(target, dataset["rows"]):
+            raise RuntimeError("Teacher-forced extraction is incomplete")
+        rows = read_jsonl(target["raw_responses"])
+        write_jsonl(
+            target["responses"],
+            [{"prompt": row["prompt"], "response": row["output"]} for row in rows],
+        )
+        stamp(
+            target["manifest"],
+            "extracted",
+            response_rows=len(rows),
+            extraction_mode="teacher_forced",
+            response_source=model["response_source"],
+            response_tokenization="response text retokenized as causal continuation",
+        )
+        return
     env = os.environ.copy()
     runtime = str(HERE / "runtime")
     env["PYTHONPATH"] = runtime + os.pathsep + env.get("PYTHONPATH", "")
     env["GI_MODEL_REVISION"] = model["revision"]
     env["TOKENIZERS_PARALLELISM"] = "false"
     entrypoint = APPLE / "run" / "save_LLMs_activations.py"
-    if model.get("scope") == "extension":
+    if model.get("scope") in {"extension", "control"}:
         env["GI_TARGET_LAYERS"] = ",".join(map(str, model["layers"]))
         command = [
             sys.executable,
@@ -714,6 +870,202 @@ def train(model_key: str, device: str = "cuda") -> None:
     print(f"artifacts: {target['root']}")
 
 
+def select_layer(model_key: str, device: str = "cpu") -> None:
+    import torch
+    from sklearn.metrics import roc_auc_score
+
+    model = MODELS[model_key]
+    target = paths(model)
+    if not target["compact"].exists() or not target["labels"].exists():
+        raise RuntimeError("Compact activations and labels are required")
+    payload = torch.load(target["compact"], map_location="cpu", weights_only=False)
+    acts = payload["activations"]
+    labels_json = read_jsonl(target["labels"])
+    labels = torch.tensor(
+        [row["follow_all_instructions"] for row in labels_json], dtype=torch.float32
+    )
+    names = list(dict.fromkeys(row["instruction_id_list"][0] for row in labels_json))
+    instruction_ids = torch.tensor(
+        [names.index(row["instruction_id_list"][0]) for row in labels_json]
+    )
+    seed = CONFIG["paper_settings"]["instruction_probe_seed"]
+    epochs = CONFIG["paper_settings"]["epochs"]
+    inner_rows: list[dict[str, object]] = []
+    outer_rows: list[dict[str, object]] = []
+    predictions: list[dict[str, object]] = []
+    directions = {}
+    fold_summaries = []
+
+    for outer, heldout_name in enumerate(names):
+        candidate_scores: dict[tuple[int, str], list[float]] = defaultdict(list)
+        for inner, validation_name in enumerate(names):
+            if inner == outer:
+                continue
+            inner_train = (instruction_ids != outer) & (instruction_ids != inner)
+            inner_validation = instruction_ids == inner
+            validation_labels = labels[inner_validation]
+            for layer_index, layer in enumerate(model["layers"]):
+                for token_index, token in enumerate(TOKENS):
+                    values = acts[:, token_index, layer_index]
+                    torch.manual_seed(seed)
+                    probabilities, _ = fit_probe(
+                        normalize(values[inner_train]),
+                        labels[inner_train],
+                        normalize(values[inner_validation]),
+                        device,
+                        epochs,
+                    )
+                    complete = len(torch.unique(validation_labels)) > 1
+                    auc = (
+                        float(
+                            roc_auc_score(
+                                validation_labels.numpy(), probabilities.numpy()
+                            )
+                        )
+                        if complete
+                        else ""
+                    )
+                    if auc != "":
+                        candidate_scores[(layer, token)].append(auc)
+                    inner_rows.append(
+                        {
+                            "model": model["paper_name"],
+                            "outer_heldout_instruction": heldout_name,
+                            "inner_validation_instruction": validation_name,
+                            "layer": layer,
+                            "token_position": token,
+                            "n_train": int(inner_train.sum()),
+                            "n_validation": int(inner_validation.sum()),
+                            "auroc": auc,
+                            "status": "complete" if complete else "single_class",
+                        }
+                    )
+
+        layer_scores = {
+            layer: statistics.fmean(
+                score
+                for (candidate_layer, _), scores in candidate_scores.items()
+                if candidate_layer == layer
+                for score in scores
+            )
+            for layer in model["layers"]
+        }
+        selected_layer = max(model["layers"], key=layer_scores.__getitem__)
+        selected_index = model["layers"].index(selected_layer)
+        outer_train = instruction_ids != outer
+        outer_test = ~outer_train
+        test_labels = labels[outer_test]
+        outer_aurocs = []
+        for token_index, token in enumerate(TOKENS):
+            values = acts[:, token_index, selected_index]
+            torch.manual_seed(seed)
+            probabilities, direction = fit_probe(
+                normalize(values[outer_train]),
+                labels[outer_train],
+                normalize(values[outer_test]),
+                device,
+                epochs,
+            )
+            complete = len(torch.unique(test_labels)) > 1
+            auc = (
+                float(roc_auc_score(test_labels.numpy(), probabilities.numpy()))
+                if complete
+                else ""
+            )
+            if auc != "":
+                outer_aurocs.append(auc)
+            metrics = classification_metrics(test_labels, probabilities)
+            outer_rows.append(
+                {
+                    "model": model["paper_name"],
+                    "heldout_instruction": heldout_name,
+                    "selected_layer": selected_layer,
+                    "token_position": token,
+                    "inner_mean_auroc": layer_scores[selected_layer],
+                    "n_train": int(outer_train.sum()),
+                    "n_test": int(outer_test.sum()),
+                    "auroc": auc,
+                    **metrics,
+                    "status": "complete" if complete else "single_class",
+                }
+            )
+            predictions.extend(
+                prediction_rows(
+                    model,
+                    "nested_layer_selection",
+                    selected_layer,
+                    token,
+                    outer,
+                    heldout_name,
+                    torch.where(outer_test)[0],
+                    test_labels,
+                    probabilities,
+                )
+            )
+            directions[f"{heldout_name}|L{selected_layer}|{token}"] = direction
+        fold_summaries.append(
+            {
+                "model": model["paper_name"],
+                "heldout_instruction": heldout_name,
+                "selected_layer": selected_layer,
+                "inner_mean_auroc": layer_scores[selected_layer],
+                "outer_mean_auroc": statistics.fmean(outer_aurocs),
+                "valid_token_positions": len(outer_aurocs),
+            }
+        )
+
+    selected_counts = Counter(row["selected_layer"] for row in fold_summaries)
+    consensus_layer = max(
+        model["layers"],
+        key=lambda layer: (
+            selected_counts[layer],
+            statistics.fmean(
+                row["inner_mean_auroc"]
+                for row in fold_summaries
+                if row["selected_layer"] == layer
+            )
+            if selected_counts[layer]
+            else float("-inf"),
+        ),
+    )
+    summary = [
+        *fold_summaries,
+        {
+            "model": model["paper_name"],
+            "heldout_instruction": "aggregate",
+            "selected_layer": consensus_layer,
+            "inner_mean_auroc": statistics.fmean(
+                row["inner_mean_auroc"] for row in fold_summaries
+            ),
+            "outer_mean_auroc": statistics.fmean(
+                row["outer_mean_auroc"] for row in fold_summaries
+            ),
+            "valid_token_positions": sum(
+                row["valid_token_positions"] for row in fold_summaries
+            ),
+        },
+    ]
+    for path, rows in (
+        (target["layer_selection_candidates"], inner_rows),
+        (target["layer_selection_runs"], outer_rows),
+        (target["layer_selection_predictions"], predictions),
+        (target["layer_selection_summary"], summary),
+    ):
+        with path.open("w", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+            writer.writeheader()
+            writer.writerows(rows)
+    torch.save(directions, target["layer_selection_directions"])
+    stamp(
+        target["manifest"],
+        "layer_selected",
+        selected_layer=consensus_layer,
+        nested_outer_mean_auroc=summary[-1]["outer_mean_auroc"],
+        layer_selection="nested leave-one-instruction-type-out",
+    )
+    print(json.dumps(summary, indent=2))
+
+
 def aggregate() -> Path:
     output = artifact_root() / "probe_summary.csv"
     metrics_output = artifact_root() / "probe_metrics_summary.csv"
@@ -765,3 +1117,15 @@ def baseline(model_key: str, device: str, force: bool, keep_raw: bool) -> None:
     label(model_key)
     compact(model_key, keep_raw=keep_raw)
     train(model_key, device=device)
+
+
+def controls(base_model: str, device: str, force: bool, keep_raw: bool) -> None:
+    selected = [
+        model
+        for model in CONFIG.get("controls", [])
+        if model["base_model"] == base_model
+    ]
+    if not selected:
+        raise RuntimeError(f"No controls configured for {base_model}")
+    for model in selected:
+        baseline(model["key"], device, force, keep_raw)

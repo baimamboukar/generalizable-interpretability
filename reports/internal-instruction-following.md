@@ -25,7 +25,8 @@ large opposing shifts that cancel in the aggregate. Unseen-instruction-type
 aggregates remain close to the paper for all four models. The extension supports
 the central distinction: probes transfer across unseen tasks, while
 instruction-type generalization is not robust across model families, layers, or
-the on-policy label distribution.
+the on-policy label distribution. Controlled GLM ablations identify response
+policy and its induced label distribution as the strongest observed driver.
 
 This report covers the probe results in Tables 1–2. The Table 4
 representation-engineering intervention is outside the completed scope.
@@ -44,8 +45,7 @@ leave-one-type-out folds. AUROC is the paper-comparison metric; extension runs
 also retain the decision threshold, confusion matrix, accuracy, balanced
 accuracy, precision, recall, specificity, FPR, FNR, F1, and row-level scores.
 The extension deliberately preserves the release's hard-coded Llama-2 prompt
-template for every model. This keeps the probing protocol fixed but may also
-contribute to cross-family differences.
+template for every model. Controlled ablations below test that choice directly.
 
 ## Baseline replication
 
@@ -102,9 +102,31 @@ types, Gemma produces one all-negative type, and those held-out AUROCs become
 undefined. The probe therefore appears to learn instruction-specific behavioral
 correlates rather than a model-invariant instruction-following direction. Layer
 sensitivity is a second factor: later GLM and Gemma cells outperform the
-paper-aligned early layer. The fixed Llama-2 prompt template may also contribute,
-but this remains a hypothesis. Fixed-response and native-template ablations are
-needed to separate architecture effects from policy-induced data shift.
+paper-aligned early layer.
+
+### GLM causal follow-up
+
+| Condition at L47 | Responses | Prompt template | Unseen tasks | Unseen instruction types |
+| :--- | :--- | :--- | ---: | ---: |
+| Original extension | Generated GLM | Released Llama-2 | 67.83% | 48.37% |
+| Teacher-forcing check | Same GLM answers | Released Llama-2 | 67.63% | 49.61% |
+| Prompt control | Same GLM answers | Native GLM, non-thinking | 65.37% | 45.39% |
+| Response-policy control | Llama-2-13B answers | Released Llama-2 | 70.65% | 55.02% |
+
+A nested selector that excluded each outer test type chose L47 in all five
+folds, yet achieved only 48.37% unseen-type AUROC. Layer choice therefore does
+not explain the failure. Teacher-forcing the original GLM answers reproduced
+the generated-response result within 1.24 points, validating the control.
+
+Changing only the prompt template reduced unseen-type AUROC by 4.22 points.
+Holding the GLM architecture and released template fixed while substituting
+Llama-2-13B answers increased it by 5.40 points to 55.02%, close to the Llama
+baseline's 54.15%. The strongest measured explanation is thus model-dependent
+on-policy response and label shift, not the sampled layer or prompt format. This
+does not establish architecture independence; it shows that the same GLM model
+yields more transferable representations on a different response distribution.
+
+![GLM causal controls](../figures/internal-instruction-following/glm_causal_controls.png)
 
 ## Reproducibility boundaries
 
@@ -128,4 +150,6 @@ pinned Google IFEval evaluator.
 - Plotting-ready AUROC table: `data/results/internal-instruction-following/results_long.csv`
 - Full available diagnostics: `data/results/internal-instruction-following/metrics_long.csv`
 - Per-run results: `data/results/internal-instruction-following/run_metrics.csv`; legacy baseline rows explicitly mark unavailable confusion matrices
+- GLM causal controls: `data/results/internal-instruction-following/glm_causal_controls.csv`
+- Leakage-free GLM layer selection: `data/results/internal-instruction-following/glm_layer_selection.csv`
 - Row-level scores, predictions, and directions from the diagnostic runs: public Hugging Face artifact bucket

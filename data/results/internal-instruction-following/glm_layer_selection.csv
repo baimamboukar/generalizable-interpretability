@@ -1,0 +1,7 @@
+model,heldout_instruction,selected_layer,inner_mean_auroc,outer_mean_auroc,valid_token_positions
+GLM-4.7-Flash,keywords:forbidden_words,47,0.4880518620646113,0.5255915637860084,3
+GLM-4.7-Flash,keywords:existence,47,0.456952107812488,0.5499855949294151,3
+GLM-4.7-Flash,keywords:frequency,47,0.47793039516333474,0.4485222868217054,3
+GLM-4.7-Flash,detectable_content:number_placeholders,47,0.5292034137118068,0.33828382838283827,3
+GLM-4.7-Flash,startend:end_checker,47,0.4703771973001465,0.556244168999067,3
+GLM-4.7-Flash,aggregate,47,0.48450299521047746,0.4837254885838068,15

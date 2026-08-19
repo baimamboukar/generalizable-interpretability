@@ -3,13 +3,12 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
+import matplotlib.pyplot as plt
+import numpy as np
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
-import matplotlib.pyplot as plt
 from matplotlib import font_manager
 from matplotlib.patches import Patch
-import numpy as np
-
 
 ROOT = Path(__file__).resolve().parents[2]
 TARGETS = ROOT / "data/results/internal-instruction-following/paper_targets.csv"
@@ -19,6 +18,12 @@ COMPARISON = (
 RESULTS_LONG = ROOT / "data/results/internal-instruction-following/results_long.csv"
 RUN_METRICS = ROOT / "data/results/internal-instruction-following/run_metrics.csv"
 METRICS_LONG = ROOT / "data/results/internal-instruction-following/metrics_long.csv"
+CAUSAL_CONTROLS = (
+    ROOT / "data/results/internal-instruction-following/glm_causal_controls.csv"
+)
+LAYER_SELECTION = (
+    ROOT / "data/results/internal-instruction-following/glm_layer_selection.csv"
+)
 ARTIFACTS = ROOT / "artifacts/internal-instruction-following"
 OUTPUT = ROOT / "figures/internal-instruction-following"
 FONT = Path.home() / "Library/Fonts/SpaceGrotesk-Variable.ttf"
@@ -47,6 +52,36 @@ EXTENSIONS = {
     "glm4.7-flash": ("GLM-4.7-Flash", "GLM-4.7-Flash", "#E45756"),
     "gemma4-12b": ("Gemma-4-12B-it", "Gemma-4-12B-IT", "#2F6BFF"),
 }
+GLM_CONTROLS = (
+    (
+        "glm4.7-flash",
+        "Generated GLM\nreleased template",
+        "released_llama2",
+        "on_policy",
+        "#E45756",
+    ),
+    (
+        "glm4.7-flash-teacher-released",
+        "Teacher-forced GLM\nreleased template",
+        "released_llama2",
+        "glm_on_policy_fixed",
+        "#7B8794",
+    ),
+    (
+        "glm4.7-flash-native",
+        "Teacher-forced GLM\nnative template",
+        "native",
+        "glm_on_policy_fixed",
+        "#159D82",
+    ),
+    (
+        "glm4.7-flash-fixed-llama2-13b",
+        "Teacher-forced Llama\nreleased template",
+        "released_llama2",
+        "llama2_13b_fixed",
+        "#D99A24",
+    ),
+)
 EXPERIMENTS = ("task_generalization", "instruction_type_generalization")
 LAYER_ORDER = {"early": 0, "middle": 1, "last": 2}
 TOKEN_ORDER = {"first": 0, "middle": 1, "last": 2}
@@ -181,7 +216,7 @@ def write_long_results(
     ]
     RESULTS_LONG.parent.mkdir(parents=True, exist_ok=True)
     with RESULTS_LONG.open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(output)
     return RESULTS_LONG
@@ -192,8 +227,7 @@ def write_diagnostic_results(
     extensions: list[tuple[str, str, str, str]],
 ) -> tuple[Path, Path]:
     available = [
-        ("baseline_replication", key, paper_name)
-        for key, paper_name, _ in models
+        ("baseline_replication", key, paper_name) for key, paper_name, _ in models
     ] + [("extension", key, model_name) for key, model_name, _, _ in extensions]
     run_fields = [
         "scope",
@@ -255,7 +289,7 @@ def write_diagnostic_results(
                     }
                 )
     with RUN_METRICS.open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=run_fields)
+        writer = csv.DictWriter(stream, fieldnames=run_fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(run_rows)
     metric_fields = [
@@ -275,7 +309,7 @@ def write_diagnostic_results(
         "status",
     ]
     with METRICS_LONG.open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=metric_fields)
+        writer = csv.DictWriter(stream, fieldnames=metric_fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(metric_rows)
     return RUN_METRICS, METRICS_LONG
@@ -353,7 +387,7 @@ def build_comparison(models: list[tuple[str, str, str]]) -> list[dict[str, str]]
     ]
     COMPARISON.parent.mkdir(parents=True, exist_ok=True)
     with COMPARISON.open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     return rows
@@ -941,6 +975,125 @@ def extension_layer_profiles(
     return path
 
 
+def glm_causal_controls() -> Path | None:
+    if any(
+        not (ARTIFACTS / key / "probe_summary.csv").exists() for key, *_ in GLM_CONTROLS
+    ):
+        return None
+    output_rows = []
+    for key, label, prompt, responses, _ in GLM_CONTROLS:
+        for experiment in EXPERIMENTS:
+            rows = [
+                row
+                for row in extension_rows(key)
+                if row["experiment"] == experiment and int(row["layer"]) == 47
+            ]
+            valid = sum(int(row["runs"]) for row in rows)
+            output_rows.append(
+                {
+                    "model": "GLM-4.7-Flash",
+                    "condition": label.replace("\n", " "),
+                    "model_key": key,
+                    "experiment": experiment,
+                    "layer": 47,
+                    "prompt_template": prompt,
+                    "response_policy": responses,
+                    "mean_auroc": np.mean(
+                        [float(row["replication_mean"]) for row in rows]
+                    ),
+                    "valid_runs": valid,
+                    "expected_runs": 15,
+                }
+            )
+    CAUSAL_CONTROLS.parent.mkdir(parents=True, exist_ok=True)
+    with CAUSAL_CONTROLS.open("w", newline="") as handle:
+        writer = csv.DictWriter(
+            handle, fieldnames=list(output_rows[0]), lineterminator="\n"
+        )
+        writer.writeheader()
+        writer.writerows(output_rows)
+
+    selection_rows = read_csv(
+        ARTIFACTS / "glm4.7-flash/layer_selection_summary.csv"
+    )
+    with LAYER_SELECTION.open("w", newline="") as handle:
+        writer = csv.DictWriter(
+            handle, fieldnames=list(selection_rows[0]), lineterminator="\n"
+        )
+        writer.writeheader()
+        writer.writerows(selection_rows)
+
+    figure, axes = plt.subplots(1, 2, figsize=(14.8, 7.2), facecolor="white")
+    figure.subplots_adjust(left=0.08, right=0.985, top=0.72, bottom=0.27, wspace=0.16)
+    for axis, experiment, title in zip(
+        axes,
+        EXPERIMENTS,
+        (
+            "Generalization to unseen tasks",
+            "Generalization to unseen instruction types",
+        ),
+        strict=True,
+    ):
+        selected = [row for row in output_rows if row["experiment"] == experiment]
+        values = [float(row["mean_auroc"]) * 100 for row in selected]
+        labels = [
+            next(label for key, label, *_ in GLM_CONTROLS if key == row["model_key"])
+            for row in selected
+        ]
+        colors = [entry[-1] for entry in GLM_CONTROLS]
+        positions = np.arange(len(GLM_CONTROLS))
+        bars = axis.bar(positions, values, width=0.62, color=colors, zorder=3)
+        axis.bar_label(
+            bars,
+            labels=[f"{value:.2f}%" for value in values],
+            padding=4,
+            fontsize=9.2,
+            fontweight=600,
+            color=TEXT,
+        )
+        axis.set_title(title, fontsize=13.2, fontweight=600, loc="left", pad=16)
+        axis.set_ylim(35, 103)
+        axis.set_yticks(
+            (40, 50, 60, 70, 80, 90, 100),
+            [f"{value}%" for value in (40, 50, 60, 70, 80, 90, 100)],
+        )
+        axis.set_xticks(positions, labels)
+        axis.axhline(50, color=CHANCE, linestyle=(0, (3, 4)), linewidth=0.9, zorder=1)
+        axis.grid(axis="y", color=GRID, linewidth=0.75, zorder=0)
+        axis.tick_params(axis="both", length=0, pad=7, labelsize=8.8)
+        axis.spines["bottom"].set_color("#C9CED3")
+        axis.set_ylabel("Mean AUROC", labelpad=8)
+    figure.text(
+        0.055,
+        0.95,
+        "GLM instruction-following probes: causal controls",
+        fontsize=21,
+        fontweight=600,
+        ha="left",
+    )
+    figure.text(
+        0.055,
+        0.895,
+        "Leakage-free selected layer L47 · same IFEval items, probe architecture, and evaluator",
+        fontsize=10.2,
+        color=MUTED,
+        ha="left",
+    )
+    figure.text(
+        0.055,
+        0.055,
+        "The first bar is the original extension. The two middle bars use identical GLM answers, isolating prompt format; the final bar substitutes Llama-2-13B answers. "
+        "Bars average first, middle, and last response-token probes; dashed line = chance (50%).",
+        fontsize=8.5,
+        color=MUTED,
+        ha="left",
+    )
+    path = OUTPUT / "glm_causal_controls.png"
+    figure.savefig(path, dpi=260, bbox_inches="tight", facecolor="white")
+    plt.close(figure)
+    return path
+
+
 def main() -> None:
     setup()
     models = available_models()
@@ -956,6 +1109,9 @@ def main() -> None:
     if extensions:
         paths.append(baseline_extension_overview(rows, models, extensions))
         paths.append(extension_layer_profiles(extensions))
+    control_path = glm_causal_controls()
+    if control_path:
+        paths.append(control_path)
     summaries(rows, models)
     print(COMPARISON)
     print(long_results)

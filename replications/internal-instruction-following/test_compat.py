@@ -31,6 +31,7 @@ class CompatibilityTest(unittest.TestCase):
 
     def test_extension_layer_configuration(self) -> None:
         compat.validate_extension_models()
+        compat.validate_control_models()
         expected = {
             "glm4.7-flash": [20, 29, 38, 47],
             "qwen3-14b": [16, 24, 32, 40],
@@ -47,6 +48,17 @@ class CompatibilityTest(unittest.TestCase):
         )
         source = (compat.HERE / "runtime" / "upstream_entrypoint.py").read_text()
         self.assertIn("GI_TARGET_LAYERS", source)
+
+    def test_teacher_forced_positions_match_generation_steps(self) -> None:
+        self.assertEqual(
+            compat.released_prompt("test"),
+            "<s>[INST] <<SYS>>\n You are a helpful assistant.\n \n"
+            "<</SYS>>\n\n test [/INST] ",
+        )
+        self.assertEqual(
+            compat.teacher_forced_positions(5, 4),
+            {"first": 4, "middle": 6, "last": 7},
+        )
 
     def test_compaction(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -123,6 +135,7 @@ class CompatibilityTest(unittest.TestCase):
                     target["compact"],
                 )
                 compat.train("llama2-7b", device="cpu")
+                compat.select_layer("llama2-7b", device="cpu")
                 with target["summary"].open() as handle:
                     self.assertEqual(len(list(csv.DictReader(handle))), 18)
                 with target["metrics_summary"].open() as handle:
@@ -144,6 +157,10 @@ class CompatibilityTest(unittest.TestCase):
                 with target["predictions"].open() as handle:
                     self.assertTrue(list(csv.DictReader(handle)))
                 self.assertTrue(compat.training_complete(model, target))
+                with target["layer_selection_summary"].open() as handle:
+                    selection = list(csv.DictReader(handle))
+                self.assertEqual(len(selection), 6)
+                self.assertIn(int(selection[-1]["selected_layer"]), model["layers"])
                 compat.baseline("llama2-7b", "cpu", False, False)
                 self.assertEqual(compat.read_jsonl(target["labels"]), labels)
             finally:

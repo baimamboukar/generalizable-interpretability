@@ -1,0 +1,9 @@
+model,condition,model_key,experiment,layer,prompt_template,response_policy,mean_auroc,valid_runs,expected_runs
+GLM-4.7-Flash,Generated GLM released template,glm4.7-flash,task_generalization,47,released_llama2,on_policy,0.6783035602053639,15,15
+GLM-4.7-Flash,Generated GLM released template,glm4.7-flash,instruction_type_generalization,47,released_llama2,on_policy,0.4837254885838069,15,15
+GLM-4.7-Flash,Teacher-forced GLM released template,glm4.7-flash-teacher-released,task_generalization,47,released_llama2,glm_on_policy_fixed,0.6762842098552994,15,15
+GLM-4.7-Flash,Teacher-forced GLM released template,glm4.7-flash-teacher-released,instruction_type_generalization,47,released_llama2,glm_on_policy_fixed,0.4961085756435932,15,15
+GLM-4.7-Flash,Teacher-forced GLM native template,glm4.7-flash-native,task_generalization,47,native,glm_on_policy_fixed,0.6536514235485064,15,15
+GLM-4.7-Flash,Teacher-forced GLM native template,glm4.7-flash-native,instruction_type_generalization,47,native,glm_on_policy_fixed,0.45390194849286214,15,15
+GLM-4.7-Flash,Teacher-forced Llama released template,glm4.7-flash-fixed-llama2-13b,task_generalization,47,released_llama2,llama2_13b_fixed,0.706512333285198,15,15
+GLM-4.7-Flash,Teacher-forced Llama released template,glm4.7-flash-fixed-llama2-13b,instruction_type_generalization,47,released_llama2,llama2_13b_fixed,0.5501538009954907,15,15

@@ -129,6 +129,7 @@ def preflight(model_key: str | None) -> None:
     if not os.environ.get("HF_TOKEN"):
         raise RuntimeError("HF_TOKEN is required")
     compat.validate_extension_models()
+    compat.validate_control_models()
     models = [compat.MODELS[model_key]] if model_key else list(compat.MODELS.values())
     from huggingface_hub import HfApi
 
@@ -141,7 +142,7 @@ def preflight(model_key: str | None) -> None:
             "scope": model.get("scope", "baseline"),
             "layers": model["layers"],
         }
-        if model.get("scope") == "extension":
+        if model.get("scope") in {"extension", "control"}:
             import transformers
             from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer
 
@@ -163,6 +164,10 @@ def preflight(model_key: str | None) -> None:
                     "tokenizer": type(tokenizer).__name__,
                 }
             )
+            if model.get("prompt_mode") == "native" and not getattr(
+                tokenizer, "chat_template", None
+            ):
+                raise RuntimeError(f"Native chat template missing for {model['key']}")
             released_layers = compat.upstream_saved_layers(model["num_hidden_layers"])
             access[model["key"]].update(
                 {
@@ -203,6 +208,8 @@ def main() -> None:
             "label",
             "compact",
             "train",
+            "select-layer",
+            "controls",
             "baseline",
             "aggregate",
         ),
@@ -234,6 +241,10 @@ def main() -> None:
         compat.compact(args.model, keep_raw=args.keep_raw)
     elif args.stage == "train":
         compat.train(args.model, device=args.device)
+    elif args.stage == "select-layer":
+        compat.select_layer(args.model, device="cpu")
+    elif args.stage == "controls":
+        compat.controls(args.model, args.device, args.force, args.keep_raw)
     else:
         compat.baseline(args.model, args.device, args.force, args.keep_raw)
 

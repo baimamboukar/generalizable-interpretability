@@ -87,6 +87,53 @@
       "scope": "extension"
     }
   ],
+  "controls": [
+    {
+      "key": "glm4.7-flash-teacher-released",
+      "paper_name": "GLM-4.7-Flash (teacher-forced, released template)",
+      "base_model": "glm4.7-flash",
+      "id": "zai-org/GLM-4.7-Flash",
+      "revision": "7dd20894a642a0aa287e9827cb1a1f7f91386b67",
+      "architecture": "Glm4MoeLiteForCausalLM",
+      "num_hidden_layers": 47,
+      "weight_gb": 62.444,
+      "layers": [47],
+      "scope": "control",
+      "prompt_mode": "released_llama2",
+      "extraction_mode": "teacher_forced",
+      "response_source": "glm4.7-flash"
+    },
+    {
+      "key": "glm4.7-flash-native",
+      "paper_name": "GLM-4.7-Flash (native template)",
+      "base_model": "glm4.7-flash",
+      "id": "zai-org/GLM-4.7-Flash",
+      "revision": "7dd20894a642a0aa287e9827cb1a1f7f91386b67",
+      "architecture": "Glm4MoeLiteForCausalLM",
+      "num_hidden_layers": 47,
+      "weight_gb": 62.444,
+      "layers": [47],
+      "scope": "control",
+      "prompt_mode": "native",
+      "extraction_mode": "teacher_forced",
+      "response_source": "glm4.7-flash"
+    },
+    {
+      "key": "glm4.7-flash-fixed-llama2-13b",
+      "paper_name": "GLM-4.7-Flash (fixed Llama-2-13B responses)",
+      "base_model": "glm4.7-flash",
+      "id": "zai-org/GLM-4.7-Flash",
+      "revision": "7dd20894a642a0aa287e9827cb1a1f7f91386b67",
+      "architecture": "Glm4MoeLiteForCausalLM",
+      "num_hidden_layers": 47,
+      "weight_gb": 62.444,
+      "layers": [47],
+      "scope": "control",
+      "prompt_mode": "released_llama2",
+      "extraction_mode": "teacher_forced",
+      "response_source": "llama2-13b"
+    }
+  ],
   "dataset": {
     "name": "IFEval-simple",
     "paper_rows": 500,
