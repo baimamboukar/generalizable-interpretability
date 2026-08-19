@@ -38,5 +38,6 @@ was destroyed and verified gone. The corrected launch now uses the upstream
 lockfile with `uv --frozen` (current uv otherwise requests a lock metadata
 refresh) and does not change the authors' source or `--dtype float32` flag.
 
-Targets: `data/results/disentangle-sycophancy/baseline_targets.csv`  
+Targets: `data/results/disentangle-sycophancy/baseline_targets.csv`
+
 Runner: `replications/disentangle-sycophancy/run.py`
