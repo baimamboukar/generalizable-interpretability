@@ -20,16 +20,57 @@ Candidate studies are mined from the proceedings of seven major venues and filte
 
 | Paper                                                                                            | Scope                                   |                 Status                 |                                                                               Replication report                                                                               |
 | :----------------------------------------------------------------------------------------------- | :-------------------------------------- | :------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| **Detecting High-Stakes Interactions with Activation Probes**                                    | Attention and softmax probes                 |          Replicated + extended           | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/model-under-pressure.md) |
+| **Detecting High-Stakes Interactions with Activation Probes**                                    | Attention and softmax probes                 |     Replicated + extended + re-audited   | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/model-under-pressure.md) |
 | **Among Us: A Sandbox for Measuring and Detecting Agentic Deception**                            | Linear deception probes                      | Baseline not reproduced; extended        |       [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/among-us.md)       |
 | **PRISM: Prompt-Guided Internal States for Hallucination Detection**                             | Prompt-guided factuality probes               |          Replicated + extended           |         [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/prism.md)        |
 | **Sycophancy Hides Linearly in the Attention Heads**                                             | Attention-head, MLP, and residual probes      |       Baseline not reproduced            |      [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/sycophancy.md)     |
-| **Reading Between the Prompts: How Stereotypes Shape LLM's Implicit Personalization**            | Multiclass demographic probes                |       Reduced baseline replicated        | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/implicit-personalization.md) |
+| **Reading Between the Prompts: How Stereotypes Shape LLM's Implicit Personalization**            | Multiclass demographic probes                |  Reduced baseline replicated + extended  | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/implicit-personalization.md) |
 | **Monitoring Latent World States in Language Models with Propositional Probes**                  | Compositional propositional probes            | Closed: missing evaluation artifacts     | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/propositional-probes.md) |
 | **ICR Probe: Tracking Hidden State Dynamics for Reliable Hallucination Detection in LLMs**       | Cross-layer hallucination probes              |       Closed: incomplete release         |      [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/icr-probe.md)      |
 | **LayerNavigator: Finding Promising Intervention Layers for Efficient Activation Steering**      | Layer selection for activation steering      |                  Setup                   |   [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/layer-navigator.md)    |
 | **Neural Chameleons: Language Models Can Learn to Hide Their Thoughts from Activation Monitors** | Probe-aware model organism                   | Released demo verified; baseline blocked |  [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/neural-chameleons.md)   |
 | **Do LLMs “Know” Internally When They Follow Instructions?**                                    | Linear instruction-following probes          |     Main claim replicated + extended     | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/internal-instruction-following.md) |
+| **Beyond Linear Probes: Dynamic Safety Monitoring for Language Models**                          | Truncated polynomial safety probes            | Baseline replicated; extension in progress | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/beyond-linear-probes.md) |
+| **Lookback Lens: Detecting Contextual Hallucinations in Large Language Models Using Only Attention Maps** | Attention-map hallucination probes       |          Replicated + extended           | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/lookback-lens.md) |
+| **Linear Representations of Political Perspective Emerge in Large Language Models**              | Attention-head ridge probes                   |          Replicated + extended           | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/political-perspective.md) |
+| **When Truthful Representations Flip Under Deceptive Instructions**                              | Layer-wise truth probes                       |       Standby: release mismatch          | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/truthful-representation-flip.md) |
+| **Sycophancy Is Not One Thing: Causal Separation of Sycophantic Behaviors in LLMs**              | Difference-in-means behavioral probes         |       Baseline rerun pending             | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/disentangle-sycophancy.md) |
+| **Caught in the Act: A Mechanistic Approach to Detecting Deception**                              | Residual-stream deception probes              |       Standby: release unverified        | [![View replication report](https://img.shields.io/badge/View-Replication%20Report-1565c0?style=for-the-badge&logo=markdown&logoColor=white)](reports/caught-in-the-act.md) |
+
+Cross-paper findings and failure diagnoses are summarized in the [generalization analysis](reports/generalization.md).
+
+## Running Replications
+
+Install the shared provider SDKs and create the local environment:
+
+```bash
+cp .env.example .env
+uv sync --frozen
+```
+
+Each study keeps its source-preserving wrapper and exact commands under
+`replications/<study>/`. Start with the study's `inspect` and `preflight`
+stages; for example:
+
+```bash
+uv run python replications/beyond-linear-probes/run.py --stage inspect
+uv run python replications/beyond-linear-probes/run.py \
+  --stage preflight --model llama3 --dataset WildGuard
+```
+
+Commands can run locally or through the shared Modal and Vast SDK adapters:
+
+```bash
+uv run python -m infra local -- <command>
+uv run python -m infra modal --gpu A100-80GB --external <checkout> -- <command>
+uv run python -m infra vast \
+  --label <run-name> --gpu H100_SXM --max-price 3 \
+  --external <checkout> --env-key HF_TOKEN --env-key HF_BUCKET -- <command>
+```
+
+Provider credentials stay in `.env`. Raw activations, checkpoints, caches, and
+synced run artifacts remain outside Git; only compact result tables, final
+figures, reports, and reproducibility metadata are versioned.
 
 
 ## Reproduction Shortlist
