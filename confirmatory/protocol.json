@@ -1,0 +1,199 @@
+{
+  "schema_version": "1.0.0",
+  "frozen_at": "2026-08-23",
+  "status": "analysis_frozen_after_exploration_with_prospective_holdouts_sealed",
+  "title": "A Probe Is Not a Monitor",
+  "primary_claim": "Target-model decodability can remain high while layer selection, probe architecture, response policy, and operating thresholds fail to port.",
+  "estimands": {
+    "baseline_reproducibility": "Agreement with the paper under the paper model, data, feature site, probe, and evaluation protocol.",
+    "method_portability": "Performance after retraining the published probe family on target-model activations.",
+    "selection_portability": "Performance when the source layer or head selection rule is fixed before target-test evaluation.",
+    "operating_point_portability": "Performance of development-frozen thresholds on target test data.",
+    "frozen_monitor_transfer": "Reuse of learned source-probe parameters across models; not claimed by the current experiments."
+  },
+  "corpus": {
+    "primary_anchors": [
+      {
+        "id": "models-under-pressure",
+        "report": "reports/model-under-pressure.md",
+        "role": "layer selection, probe-family ranking, and operating-point portability"
+      },
+      {
+        "id": "internal-instruction-following",
+        "report": "reports/internal-instruction-following.md",
+        "role": "response-policy, label-support, prompt-template, and normalization controls"
+      },
+      {
+        "id": "political-perspective",
+        "report": "reports/political-perspective.md",
+        "role": "nested head and layer selection under equal search budgets"
+      }
+    ],
+    "positive_controls": [
+      {
+        "id": "prism",
+        "report": "reports/prism.md"
+      },
+      {
+        "id": "lookback-lens",
+        "report": "reports/lookback-lens.md"
+      },
+      {
+        "id": "beyond-linear-probes",
+        "report": "reports/beyond-linear-probes.md"
+      }
+    ],
+    "baseline_reproducibility_only": [
+      {
+        "id": "among-us",
+        "report": "reports/among-us.md"
+      },
+      {
+        "id": "sycophancy",
+        "report": "reports/sycophancy.md"
+      }
+    ],
+    "supporting_evidence": [
+      {
+        "id": "implicit-personalization",
+        "report": "reports/implicit-personalization.md",
+        "role": "identity-attribute decodability sanity check; not evidence for the unreproduced stereotype-personalization claim"
+      }
+    ],
+    "artifact_audit_only": [
+      "propositional-probes",
+      "icr-probe",
+      "truthful-representation-flip",
+      "caught-in-the-act",
+      "neural-chameleons",
+      "reasoning-trajectory",
+      "disentangle-sycophancy",
+      "test-awareness-steering",
+      "layer-navigator"
+    ]
+  },
+  "layer_selection": {
+    "paper_relative_depth": {
+      "source_layer": 31,
+      "source_depth": 80,
+      "rule": "round(source_layer / source_depth * target_depth)"
+    },
+    "sparse_grids": "Frozen by each study-specific protocol; the root protocol does not override model-specific candidate layers.",
+    "dev_selected": "Choose the layer maximizing the prespecified development aggregate within each training seed; evaluate it once on test.",
+    "oracle_test": "Maximum test performance across candidates; diagnostic upper bound only and excluded from headline claims."
+  },
+  "binary_evaluation": {
+    "primary_metrics_by_estimand": {
+      "ranking": "auroc",
+      "operating_point": "test_tpr_at_dev_fpr_0_01_threshold"
+    },
+    "secondary_metrics": [
+      "auprc",
+      "accuracy",
+      "balanced_accuracy",
+      "precision",
+      "recall",
+      "f1",
+      "brier",
+      "ece",
+      "tn",
+      "fp",
+      "fn",
+      "tp",
+      "roc_tpr_at_fpr_0_01",
+      "roc_tpr_at_fpr_0_05",
+      "test_fpr_at_dev_fpr_0_01_threshold",
+      "test_tpr_at_dev_fpr_0_05_threshold",
+      "test_fpr_at_dev_fpr_0_05_threshold",
+      "n_positive",
+      "n_negative",
+      "fpr_resolution"
+    ],
+    "training_seeds_by_study": {
+      "models-under-pressure": [
+        41,
+        42,
+        43
+      ],
+      "internal-instruction-following": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "thresholds": [
+      {
+        "name": "dev_youden",
+        "selection": "maximize Youden J on development data",
+        "test_use": "frozen"
+      },
+      {
+        "name": "dev_fpr_0.01",
+        "selection": "maximize development TPR subject to FPR <= 0.01",
+        "test_use": "frozen"
+      },
+      {
+        "name": "dev_fpr_0.05",
+        "selection": "maximize development TPR subject to FPR <= 0.05",
+        "test_use": "frozen"
+      }
+    ]
+  },
+  "regression_evaluation": {
+    "primary_metric": "spearman",
+    "secondary_metrics": [
+      "pearson",
+      "mae",
+      "rmse"
+    ],
+    "selection_seeds": [
+      0,
+      1,
+      2
+    ],
+    "fixed_candidate_budget_per_seed": 512
+  },
+  "uncertainty": {
+    "confidence_level": 0.95,
+    "bootstrap_replicates_by_study": {
+      "models-under-pressure_full_pipeline": 1000,
+      "internal-instruction-following": 1000,
+      "political-perspective_conditional": 2000,
+      "political-perspective_full_pipeline": 200
+    },
+    "cluster_units": {
+      "models-under-pressure": "released source-example ID; one retained row per available source ID, so higher-order dependence cannot be estimated from the released artifact",
+      "internal-instruction-following": "task or instruction type, matching the held-out estimand",
+      "political-perspective": "politician for congressional evaluation and document for news transfer"
+    },
+    "aggregation_rule": "Aggregate within seed before across-seed inference; do not treat model-layer-dataset cells as independent."
+  },
+  "confirmatory_holdouts": [
+    {
+      "id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "revision": "68faf511d618ef198fef186659617cfd2eb8e33a",
+      "status": "sealed_no_task_evaluation",
+      "notes": "Text backbone only; multimodal wrapper compatibility must be validated without inspecting task outcomes."
+    },
+    {
+      "id": "allenai/OLMo-2-0325-32B-Instruct",
+      "revision": "b96024342a77a69aa0dda815c3454a671f477463",
+      "status": "sealed_no_task_evaluation",
+      "notes": "Standard causal-language-model interface; task outcomes remain untouched."
+    }
+  ],
+  "claim_rules": [
+    "Previously inspected model results are retrospective reanalysis, not preregistered confirmation.",
+    "Only sealed model revisions evaluated after this freeze may be called prospective confirmatory holdouts.",
+    "Threshold-free test ROC operating points and performance at development-frozen thresholds are distinct metrics and must not be conflated.",
+    "Low-FPR outputs must retain negative-class count, false-positive count, achieved FPR, and empirical FPR resolution.",
+    "No study or condition may be removed because its result is positive, negative, or null.",
+    "Baseline failure, method-portability failure, selection-portability failure, and frozen-monitor failure are distinct outcomes.",
+    "Oracle test selection cannot support a generalization claim.",
+    "A cross-model difference requires uncertainty and a paired or nested comparison, not a raw point-estimate threshold.",
+    "Undefined metrics caused by single-class folds must be retained and reported as support failures.",
+    "All confirmatory outputs must retain row identifiers, labels, scores, probabilities, predictions, thresholds, seeds, and provenance."
+  ]
+}

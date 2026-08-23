@@ -10,6 +10,16 @@ dependencies = [
   "wandb>=0.19,<1",
 ]
 
+[project.optional-dependencies]
+test = [
+  "numpy>=1.26,<3",
+  "pandas>=2.2,<3",
+  "pytest>=8,<9",
+  "scikit-learn>=1.5,<2",
+  "scipy>=1.13,<2",
+  "torch>=2.2,<3",
+]
+
 [tool.pytest.ini_options]
-testpaths = ["infra", "replications"]
+testpaths = ["confirmatory", "infra", "replications"]
 norecursedirs = ["artifacts", "external"]
