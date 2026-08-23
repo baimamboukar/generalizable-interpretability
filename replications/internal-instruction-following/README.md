@@ -80,3 +80,42 @@ The four layers are spaced at approximately 40%, 60%, 80%, and 100% relative
 depth. The same extraction, labeling, and probe pipeline is used. Each run saves
 the full confusion matrix and threshold-derived diagnostic metrics alongside
 AUROC. Compute runs are launched explicitly through the shared provider wrapper.
+
+## Submission analysis
+
+The paper comparison remains unchanged. A separate analysis compares the
+released notebook's split-wise normalization with train-fitted normalization,
+selects thresholds on a held-out development subset, and freezes them for test.
+
+```bash
+uv run python replications/internal-instruction-following/run.py \
+  --stage submission-plan
+
+uv run python replications/internal-instruction-following/run.py \
+  --stage submission-analysis --model glm4.7-flash \
+  --normalization both --device cpu
+
+uv run python replications/internal-instruction-following/run.py \
+  --stage submission-controls --model qwen3-14b \
+  --normalization both --device cuda
+```
+
+The analysis writes `submission_runs.csv`, row-level
+`submission_predictions.csv`, task- and instruction-clustered bootstrap
+intervals, and a provenance manifest. The control stage also writes paired
+response-policy, prompt-template, normalization, and interaction contrasts.
+Metrics include AUROC, AUPRC, balanced accuracy, precision, recall, F1, Brier
+score, ECE, confusion counts, and TPR at 1% and 5% FPR.
+
+GLM-4.7-Flash, Qwen3-14B, and Gemma-4-12B-it each have a complete 2 x 2 control
+matrix:
+
+| Factor | Conditions |
+| :--- | :--- |
+| Prompt template | Released Llama-2 template; target-native template |
+| Response policy | Target on-policy responses; fixed Llama-2-13B responses |
+
+`submission-controls` runs the four crossed controls for one base model, then
+computes both normalization analyses for each control. `submission-plan` reports
+which analyses can run from local artifacts and which conditions still require
+GPU activation extraction. It does not launch compute.

@@ -13,6 +13,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
 import compat  # noqa: E402
+import submission  # noqa: E402
 
 from infra.env import load_project_env  # noqa: E402
 
@@ -210,13 +211,23 @@ def main() -> None:
             "train",
             "select-layer",
             "controls",
+            "submission-controls",
             "baseline",
             "aggregate",
+            "submission-plan",
+            "submission-analysis",
+            "submission-compare",
         ),
         required=True,
     )
     parser.add_argument("--model", choices=tuple(compat.MODELS))
     parser.add_argument("--device", default="cuda")
+    parser.add_argument(
+        "--normalization",
+        choices=("both", *submission.NORMALIZATION_MODES),
+        default="both",
+    )
+    parser.add_argument("--bootstrap-samples", type=int)
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--keep-raw", action="store_true")
     args = parser.parse_args()
@@ -228,6 +239,9 @@ def main() -> None:
         return
     if args.stage == "aggregate":
         compat.aggregate()
+        return
+    if args.stage == "submission-plan":
+        print(json.dumps(submission.plan(), indent=2))
         return
     if not args.model:
         parser.error(f"--model is required for --stage {args.stage}")
@@ -245,6 +259,35 @@ def main() -> None:
         compat.select_layer(args.model, device="cpu")
     elif args.stage == "controls":
         compat.controls(args.model, args.device, args.force, args.keep_raw)
+    elif args.stage == "submission-controls":
+        compat.controls(args.model, args.device, args.force, args.keep_raw)
+        controls = [
+            model["key"]
+            for model in compat.CONFIG.get("controls", [])
+            if model["base_model"] == args.model
+        ]
+        for model_key in controls:
+            submission.analyze(
+                model_key,
+                device=args.device,
+                normalization=args.normalization,
+                bootstrap_samples=args.bootstrap_samples,
+            )
+        print(json.dumps(submission.compare_controls(args.model), indent=2))
+    elif args.stage == "submission-analysis":
+        print(
+            json.dumps(
+                submission.analyze(
+                    args.model,
+                    device=args.device,
+                    normalization=args.normalization,
+                    bootstrap_samples=args.bootstrap_samples,
+                ),
+                indent=2,
+            )
+        )
+    elif args.stage == "submission-compare":
+        print(json.dumps(submission.compare_controls(args.model), indent=2))
     else:
         compat.baseline(args.model, args.device, args.force, args.keep_raw)
 

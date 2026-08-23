@@ -93,6 +93,16 @@ def tree_digest(root: Path) -> str | None:
     return digest.hexdigest()
 
 
+def file_digest(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def git_commit(root: Path) -> str | None:
     if not (root / ".git").exists():
         return None
@@ -209,7 +219,21 @@ def prepare(model_key: str) -> dict[str, object]:
         model=model,
         paper=CONFIG["paper"],
         protocol=CONFIG["paper_settings"],
-        dataset=dataset,
+        dataset={
+            **dataset,
+            "path": str(APPLE / "data" / "ifeval_simple.jsonl"),
+            "sha256": file_digest(APPLE / "data" / "ifeval_simple.jsonl"),
+        },
+        condition={
+            "prompt_mode": model.get("prompt_mode", "released_llama2"),
+            "prompt_provenance": model.get(
+                "prompt_provenance",
+                "released hard-coded Llama-2 instruction template",
+            ),
+            "response_source": model.get("response_source", model_key),
+            "response_policy": model.get("response_policy", f"on_policy_{model_key}"),
+            "extraction_mode": model.get("extraction_mode", "released_generation"),
+        },
         source={
             "apple_commit": CONFIG["commit"],
             "apple_digest": CONFIG["source_digest"],
@@ -405,7 +429,11 @@ def extract(model_key: str, force: bool = False) -> None:
             response_rows=len(rows),
             extraction_mode="teacher_forced",
             response_source=model["response_source"],
+            response_policy=model.get("response_policy"),
+            prompt_mode=model.get("prompt_mode", "released_llama2"),
+            prompt_provenance=model.get("prompt_provenance"),
             response_tokenization="response text retokenized as causal continuation",
+            responses_sha256=file_digest(target["responses"]),
         )
         return
     env = os.environ.copy()
@@ -444,7 +472,19 @@ def extract(model_key: str, force: bool = False) -> None:
         target["responses"],
         [{"prompt": row["prompt"], "response": row["output"]} for row in rows],
     )
-    stamp(target["manifest"], "extracted", response_rows=len(rows))
+    stamp(
+        target["manifest"],
+        "extracted",
+        response_rows=len(rows),
+        response_source=model.get("response_source", model_key),
+        response_policy=model.get("response_policy", f"on_policy_{model_key}"),
+        prompt_mode=model.get("prompt_mode", "released_llama2"),
+        prompt_provenance=model.get(
+            "prompt_provenance",
+            "released hard-coded Llama-2 instruction template",
+        ),
+        responses_sha256=file_digest(target["responses"]),
+    )
 
 
 def label(model_key: str) -> None:
@@ -476,6 +516,7 @@ def label(model_key: str) -> None:
         "labeled",
         label_rows=len(rows),
         success_rate=sum(row["follow_all_instructions"] for row in rows) / len(rows),
+        labels_sha256=file_digest(target["labels"]),
     )
 
 
@@ -523,6 +564,7 @@ def compact(model_key: str, keep_raw: bool = False) -> None:
         "compacted",
         activation_shape=list(activations.shape),
         raw_activations_retained=keep_raw,
+        activations_sha256=file_digest(target["compact"]),
     )
 
 
