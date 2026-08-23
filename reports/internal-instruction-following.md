@@ -104,6 +104,21 @@ correlates rather than a model-invariant instruction-following direction. Layer
 sensitivity is a second factor: later GLM and Gemma cells outperform the
 paper-aligned early layer.
 
+### Normalization control
+
+| Model | Evaluation | Released split-wise | Train-fitted | Difference |
+| :--- | :--- | ---: | ---: | ---: |
+| Qwen3-14B | Unseen tasks | 88.985% | 88.984% | -0.002 pp |
+| Qwen3-14B | Unseen instruction types | 51.007% | 50.598% | -0.409 pp |
+| Gemma-4-12B-IT | Unseen tasks | 70.128% | 70.121% | -0.007 pp |
+| Gemma-4-12B-IT | Unseen instruction types | 48.923% | 48.615% | -0.308 pp |
+
+These means aggregate the valid layer, token-position, and split cells; folds
+with one label remain recorded as undefined. Fitting normalization parameters
+only on training data leaves the qualitative result unchanged. The release's
+split-wise normalization is therefore a specification weakness, but it does
+not explain the cross-instruction-type result.
+
 ### GLM causal follow-up
 
 | Condition at L47 | Responses | Prompt template | Unseen tasks | Unseen instruction types |
@@ -127,6 +142,12 @@ does not establish architecture independence; it shows that the same GLM model
 yields more transferable representations on a different response distribution.
 
 ![GLM causal controls](../figures/internal-instruction-following/glm_causal_controls.png)
+
+The same factorial response-policy and prompt-template controls are frozen for
+Qwen3-14B and Gemma-4-12B-IT. They also compare the released per-split
+normalization with normalization fitted on training data only. These conditions
+are pending and the cross-family mechanism claim remains provisional until
+they are complete.
 
 ## Reproducibility boundaries
 

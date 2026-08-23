@@ -1,63 +1,85 @@
-# Generalization Analysis
+# Cross-paper generalization analysis
 
-This document summarizes why probing methods failed to generalize across models in this project. Only studies where a cross model generalization test was executed are included. Studies where the baseline could not be replicated and the generalization test was therefore skipped are not included.
+This analysis uses the complete frozen corpus rather than selecting only
+failures. It separates four questions: whether a paper baseline reproduces,
+whether the published probe family remains decodable after target-model
+retraining, whether a layer or head selection rule ports without test-set
+search, and whether a development-frozen operating threshold remains useful.
+Previously inspected models are retrospective evidence. The two sealed model
+revisions in `confirmatory/protocol.json` are reserved for prospective tests.
+
+## Current pattern
+
+The evidence does not support a universal claim that probes fail on new model
+families. Target-specific retraining often recovers strong ranking performance.
+The recurring weakness is the portability of the surrounding measurement
+procedure: layer or head selection, prompt and response policy, label support,
+probe-family ranking, and operating thresholds. The confirmatory analyses are
+therefore designed to distinguish missing target-model decodability from a
+selection or calibration failure.
 
 ## Models Under Pressure
 
-The paper proposes attention and softmax probes at layer 31 of Llama 3.3 70B to detect high stakes interactions. The baseline was replicated on six balanced datasets. Attention reached a mean AUROC of 0.9184 and softmax reached 0.9244, both within the reported range. The same probes were then trained and evaluated on Qwen3 32B, DeepSeek R1 Distill Qwen 32B, and GLM 4 32B at multiple relative depths.
+The Llama-3.3-70B headline was reproduced, with an important specification
+gap: the paper describes pre-layer-normalization residual activations while the
+released hook records the layer-normalization output. Exploratory extension
+results initially made Qwen3 look weak at layers 32 and 47. Expanding the
+screen changed that conclusion: Qwen3 reached 0.9290 attention AUROC at layer
+54 and 0.9012 softmax AUROC at layer 42. Qwen2.5 and Gemma also had sampled
+layers above 0.91 for both probes.
 
-Attention generalized in three of nine tested configurations. DeepSeek at relative depths 0.44 and 0.56 and GLM at 0.66 remained within 0.02 of the baseline. All other depths fell below that threshold, including both Qwen depths and deeper DeepSeek and GLM layers. Softmax generalized in only one of six configurations. DeepSeek at 0.69 remained within threshold, while all Qwen and remaining DeepSeek and GLM layers fell substantially below, with Qwen at 0.50 and 0.73 showing the largest decline and a true positive rate at one percent false positive rate of zero.
-
-Four factors explain the pattern. First, dataset variation contributes but does not dominate. The mental health subset is the weakest outlier in both baseline and extensions, yet the gap between models at the same depth exceeds the gap between datasets. Second, policy and training recipe contribute as a secondary factor. Distilled DeepSeek transfers better than base Qwen at comparable depth and scale, which suggests that supervision influences where the relevant signal resides. Third, policy architecture is a primary factor. The optimal relative depth shifts across families. The original optimum at 0.39 does not transfer, and no single depth predicts success across Llama, Qwen, and GLM. Fourth, probe architecture is a primary factor for the softmax family. Softmax probes are consistently less robust than attention probes under the same data and optimization, which indicates that the probe formulation itself does not transfer even when the underlying representation is present.
-
-Full results are in reports/model-under-pressure.md and data/results.
-
-## Among Us
-
-Among Us trains bias free linear probes on Phi-4 at layer 20 to detect deceptive reasoning. In domain learning was strong, but cross dataset generalization fell from a reported mean of 0.8468 to 0.7339 in replication. Cross model generalization was then tested on Llama 3.1 8B, Gemma 2 27B, and Qwen2.5 32B with the same probe at three relative depths. Gemma at 0.48 reached 0.8011 and exceeded the reconstructed Phi-4 baseline, while the best Llama and Qwen configurations remained below it at 0.7617 and 0.7277. In domain AUROC approached 0.98 in every family, while cross dataset AUROC plateaued near 0.66 to 0.75.
-
-The dominant factors are dataset and artifact completeness. Transfer fails across deception corpora even within the original model, and released checkpoints score near chance on the reconstructed cache. Distribution shift between training and evaluation deception datasets explains the plateau. Policy and architecture modulate the magnitude of the plateau but do not restore transfer.
-
-Full results are in reports/among-us.md and data/results/among-us/extension_probe_results.csv.
-
-## Political Perspective
-
-Political Perspective fits ridge regressions on pre layer normalization attention head outputs to predict legislative ideology. The baseline peaks were replicated exactly at 0.8536 for Llama 2 7B, 0.8463 for Mistral 7B, and 0.8612 for Vicuna 7B. Cross model generalization was tested on Qwen3 8B, GLM 4 9B, Gemma 2 9B, Gemma 2 27B, and Phi 4 with the same prompt and regularization.
-
-Generalization was uneven. Gemma 2 9B reached 0.8949 and Phi 4 reached 0.8714, both above the original range, while Qwen3 8B at 0.8252 and GLM 4 9B at 0.8069 fell below it by about 0.03 and 0.05. The peak head location also shifted from layer 15 to layer 33 across families, and scaling Gemma from 9B to 27B did not improve the peak.
-
-The primary factor is policy architecture. Dataset and evaluation protocol were held fixed, and optimization was identical, so the unevenness is attributable to differences in depth and head organization across families rather than to data or training objective alone.
-
-Full results are in reports/political-perspective.md.
+These oracle-style peaks show that the signal is decodable, but they do not
+show that the paper's layer choice ports. The best layer shifts across models,
+and softmax is especially layer-sensitive. The frozen reanalysis therefore
+compares a prespecified relative-depth rule, an equal sparse grid,
+development-only selection, and a test-oracle diagnostic across three seeds.
+It also evaluates development-frozen thresholds at 1% and 5% FPR.
 
 ## Internal Instruction Following
 
-Internal Instruction Following trains bias-free linear sigmoid probes on
-response-token hidden states to predict whether an answer satisfies its
-instruction. The four-model baseline reproduces the paper's central split:
-strong transfer to unseen tasks but near-chance transfer to unseen instruction
-types. We extended the same protocol to Qwen3 14B, GLM 4.7 Flash, and Gemma 4
-12B at four relative depths.
+The baseline reproduces the paper's qualitative split: probes transfer well to
+new tasks within known instruction types but remain near chance on unseen
+instruction types. On Qwen, GLM, and Gemma, some held-out types collapse to a
+single label because each model generates and labels its own answers. This
+makes response policy and label support part of the estimand rather than a
+minor nuisance.
 
-Unseen-task transfer remains strong at 0.8971 for Qwen, 0.6867 for GLM, and
-0.6975 for Gemma. Failure is concentrated in unseen instruction types, where
-paper-aligned early-layer AUROC falls to 0.5223, 0.4267, and 0.4382. Qwen has
-only three valid leave-one-type-out folds and Gemma has four: two Qwen
-instruction types become entirely positive and one Gemma type becomes entirely
-negative.
+The completed GLM control supports this interpretation. Substituting fixed
+Llama-2-13B answers increased unseen-type AUROC from 48.37% to 55.02%, whereas
+changing only the prompt template did not recover performance. Train-fitted
+normalization changed Qwen and Gemma unseen-type means by less than 0.41
+percentage points, excluding the release's split-wise normalization as the main
+driver. Their factorial response-policy and prompt-template controls remain
+confirmatory work; these hold the architecture fixed while crossing target
+versus fixed responses with released versus native prompt templates.
 
-The primary factor is the interaction between model policy and data. Every
-model generates and labels its own answers, so the model-family change also
-changes class balance and evaluation support. The probe consequently captures
-instruction-specific behavioral correlates rather than a stable cross-family
-direction. Layer organization is a secondary factor because later GLM and Gemma
-layers recover stronger cells than the paper-aligned early layer. A fixed
-Llama-2 prompt template is a plausible additional confound, but the current
-results do not isolate it. Fixed-response and native-template controls are
-required before attributing the failure solely to architecture.
+## Political Perspective
 
-Full results are in reports/internal-instruction-following.md.
+The three original-model baselines reproduce at paper precision. Exploratory
+extensions are mixed: Gemma and Phi match or exceed the original range, while
+Qwen and GLM are lower. Those peak comparisons are not yet architecture-fair,
+because models expose different numbers of layers and heads and therefore
+receive unequal test-set search budgets. The frozen reanalysis uses nested
+selection and the same candidate budget for every architecture. Until that
+analysis is complete, the extension supports uneven decodability but not a
+clean architecture-level failure claim.
 
-## Scope Note
+## Positive controls and denominator
 
-Studies where the baseline was not reproduced and no cross model test was performed are excluded from this analysis. Studies where cross model generalization was tested and succeeded, including PRISM, Implicit Personalization, and Lookback Lens, are also excluded because they did not fail to generalize.
+PRISM and Lookback Lens reproduce and transfer successfully in their tested
+settings. Beyond Linear Probes also transfers after retraining, although its
+proposed TPC is not the best probe on every extension model. The reduced
+Implicit Personalization experiment confirms explicit demographic-identity
+decodability across models, but does not test the paper's full stereotype or
+steering claim. Among Us and Sycophancy contribute baseline-reproducibility
+failures only. Missing-artifact and runtime-blocked studies remain in the audit
+denominator and are not counted as cross-model failures.
+
+## Submission claim boundary
+
+The defensible emerging claim is conditional: probe methods often retain
+target-model decodability, while the choices required to turn a probe into a
+monitor do not automatically port. Final claims will use development-only or
+nested selection, equal search budgets, clustered uncertainty, complete metric
+records, and the sealed holdouts. Test-oracle results remain diagnostics and
+cannot support the headline conclusion.
