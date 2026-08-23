@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "candidate_budget": 512,
+  "candidate_seeds": [0, 1, 2],
+  "top_k": 32,
+  "outer_folds": 5,
+  "inner_folds": 3,
+  "ridge_alpha": 1.0,
+  "seed": 42,
+  "conditional_bootstrap_replicates": 2000,
+  "pipeline_bootstrap_replicates": 200,
+  "head_index_base": 0,
+  "selection_metric": "mean fold-wise Spearman correlation",
+  "candidate_sampling": "layer-balanced deterministic head subsample repeated by protocol seed",
+  "search_scope": "fixed_budget",
+  "fit_intercept": false,
+  "confidence": 0.95,
+  "models": {
+    "qwen3-8b": {
+      "model_id": "Qwen/Qwen3-8B",
+      "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+    },
+    "glm4-9b": {
+      "model_id": "zai-org/GLM-4-9B-0414",
+      "revision": "645b8482494e31b6b752272bf7f7f273ef0f3caf"
+    },
+    "gemma2-9b": {
+      "model_id": "google/gemma-2-9b-it",
+      "revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819"
+    },
+    "phi4-14b": {
+      "model_id": "microsoft/phi-4",
+      "revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25"
+    },
+    "gemma2-27b": {
+      "model_id": "google/gemma-2-27b-it",
+      "revision": "aaf20e6b9f4c0fcf043f6fb2a2068419086d77b0"
+    }
+  }
+}
