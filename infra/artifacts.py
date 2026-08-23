@@ -3,8 +3,7 @@ from __future__ import annotations
 import argparse
 import os
 from pathlib import Path
-
-from huggingface_hub import HfApi
+import subprocess
 
 from infra.env import load_project_env
 
@@ -27,21 +26,19 @@ def bucket_id() -> str:
     return bucket().removeprefix("hf://buckets/")
 
 
-def api() -> HfApi:
-    return HfApi(token=os.environ.get("HF_TOKEN"))
-
-
 def check() -> None:
-    print(api().bucket_info(bucket_id()))
+    subprocess.run(["hf", "buckets", "info", bucket_id()], check=True)
 
 
 def create() -> None:
-    print(api().create_bucket(bucket_id(), private=False, exist_ok=True))
+    subprocess.run(
+        ["hf", "buckets", "create", bucket_id(), "--exist-ok"], check=True
+    )
 
 
 def sync(path: Path) -> None:
     if enabled() and path.exists():
-        api().sync_bucket(source=str(path), dest=bucket(), quiet=False)
+        subprocess.run(["hf", "buckets", "sync", str(path), bucket()], check=True)
 
 
 def pull(path: Path, prefix: str = "") -> None:
@@ -49,7 +46,7 @@ def pull(path: Path, prefix: str = "") -> None:
     if prefix:
         source = f"{source}/{prefix.strip('/')}"
     path.mkdir(parents=True, exist_ok=True)
-    api().sync_bucket(source=source, dest=str(path), quiet=False)
+    subprocess.run(["hf", "buckets", "sync", source, str(path)], check=True)
 
 
 def main() -> None:

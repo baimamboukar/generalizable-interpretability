@@ -78,8 +78,8 @@ class VastRunner:
             query=(
                 f"gpu_name={gpu} num_gpus=1 rentable=true "
                 f"reliability>0.98 disk_space>={disk} "
-                f"cpu_cores_effective>={min_cpu} cpu_ram>={min_ram} "
-                f"gpu_ram>={min_vram} cuda_max_good>={min_cuda}"
+                f"cpu_cores_effective>={min_cpu} cpu_ram>={min_ram * 1024} "
+                f"gpu_ram>={min_vram * 1024} cuda_max_good>={min_cuda}"
             ),
             order="dph_total",
             limit=20,

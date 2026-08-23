@@ -73,3 +73,6 @@ def test_launch_does_not_return_instance_credentials(tmp_path: Path) -> None:
         )
     assert result["new_contract"] == 42
     assert "instance_api_key" not in result
+    query = runner.client.search_offers.call_args.kwargs["query"]
+    assert "gpu_ram>=76800" in query
+    assert "cpu_ram>=65536" in query

@@ -92,9 +92,9 @@ def parser() -> argparse.ArgumentParser:
 
     vast = providers.add_parser("vast")
     vast.add_argument("--gpu", default="A100_PCIE")
-    vast.add_argument("--min-vram", type=float, default=0)
+    vast.add_argument("--min-vram", type=float, default=0, help="minimum GPU RAM in GiB")
     vast.add_argument("--min-cpu", type=int, default=8)
-    vast.add_argument("--min-ram", type=float, default=0)
+    vast.add_argument("--min-ram", type=float, default=0, help="minimum host RAM in GiB")
     vast.add_argument("--min-cuda", type=float, default=0)
     vast.add_argument("--max-price", type=float, default=2)
     vast.add_argument("--disk", type=float, default=100)

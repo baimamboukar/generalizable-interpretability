@@ -27,11 +27,17 @@ uv run python -m infra modal \
 uv run python -m infra vast \
   --label experiment-name \
   --gpu A100_PCIE \
+  --min-vram 75 \
+  --min-ram 128 \
   --env-key HF_TOKEN \
   --env-key HF_BUCKET \
   --env-key HF_SYNC_ENABLED \
   -- python path/to/run.py --stage baseline
 ```
+
+`--min-vram` and `--min-ram` are specified in GiB; `--disk` is specified in
+GB. The adapter converts memory requirements to the units used by the Vast
+offer API before selecting a machine.
 
 Add only the required pinned upstream checkout:
 
