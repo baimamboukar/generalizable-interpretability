@@ -804,7 +804,10 @@ def analyze(
         "analysis_script_sha256": file_digest(Path(__file__)),
         "compat_script_sha256": file_digest(compat.HERE / "compat.py"),
         "run_script_sha256": file_digest(compat.HERE / "run.py"),
-        "configuration_sha256": file_digest(compat.HERE / "upstream.json"),
+        "configuration_sha256": compat.configuration_digest(),
+        "configuration_files": [
+            str(path.relative_to(compat.ROOT)) for path in compat.CONFIG_FILES
+        ],
         "model": {
             "key": model_key,
             "id": model["id"],

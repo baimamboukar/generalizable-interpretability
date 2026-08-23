@@ -26,4 +26,23 @@ python -m unittest confirmatory.test_metrics
 python -m confirmatory.verify
 ```
 
-The machine-readable specification is in `protocol.json`; `hypotheses.csv` freezes headline comparisons and `study_registry.csv` is the corpus ledger.
+The machine-readable specification is in `protocol.json`;
+`holdout_protocol.json` fixes model-specific adapters and layer rules before
+task outcomes are inspected. `hypotheses.csv` freezes headline comparisons and
+`study_registry.csv` is the corpus ledger.
+
+Inspect the sealed primary-holdout plans without running inference:
+
+```bash
+python replications/models-under-pressure/vast_mup.py \
+  --stage plan \
+  --protocol replications/models-under-pressure/holdout_protocol.json \
+  --model-key olmo2-32b
+
+GI_IIF_CONFIG_OVERLAY=replications/internal-instruction-following/holdout_overlay.json \
+  python replications/internal-instruction-following/run.py \
+  --stage submission-plan
+```
+
+These commands expose configuration only. They do not load model weights or
+inspect holdout task outcomes.

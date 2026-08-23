@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import copy
 import hashlib
 import json
 import os
@@ -18,7 +19,32 @@ HERE = Path(__file__).resolve().parent
 APPLE = ROOT / "external" / "internal-instruction-following"
 GOOGLE = ROOT / "external" / "google-research-ifeval"
 IFEVAL = GOOGLE / "instruction_following_eval"
-CONFIG = json.loads((HERE / "upstream.json").read_text())
+BASE_CONFIG_PATH = HERE / "upstream.json"
+
+
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def load_configuration(
+    base_path: Path = BASE_CONFIG_PATH, overlay_path: Path | None = None
+) -> tuple[dict, tuple[Path, ...]]:
+    base = json.loads(base_path.read_text())
+    if overlay_path is None:
+        configured = os.environ.get("GI_IIF_CONFIG_OVERLAY")
+        overlay_path = Path(configured) if configured else None
+    if overlay_path is None:
+        return base, (base_path,)
+    overlay = json.loads(overlay_path.read_text())
+    if overlay.get("inherits_sha256") != _sha256(base_path):
+        raise RuntimeError("IIF configuration overlay does not inherit the pinned base")
+    merged = copy.deepcopy(base)
+    merged["models"].extend(overlay.get("models", []))
+    merged.setdefault("controls", []).extend(overlay.get("controls", []))
+    return merged, (base_path, overlay_path)
+
+
+CONFIG, CONFIG_FILES = load_configuration()
 MODELS = {
     model["key"]: model for model in [*CONFIG["models"], *CONFIG.get("controls", [])]
 }
@@ -100,6 +126,17 @@ def file_digest(path: Path) -> str | None:
     with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
+    return digest.hexdigest()
+
+
+def configuration_digest() -> str:
+    if len(CONFIG_FILES) == 1:
+        return _sha256(CONFIG_FILES[0])
+    digest = hashlib.sha256()
+    for path in CONFIG_FILES:
+        value = _sha256(path).encode()
+        digest.update(len(value).to_bytes(8, "big"))
+        digest.update(value)
     return digest.hexdigest()
 
 

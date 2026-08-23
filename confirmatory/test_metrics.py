@@ -77,7 +77,11 @@ class MetricsTest(unittest.TestCase):
         self.assertTrue(math.isfinite(first["estimate"]))
 
     def test_protocol_registry(self):
-        self.assertEqual(verify()["registered_studies"], 18)
+        result = verify()
+        self.assertEqual(result["registered_studies"], 18)
+        self.assertEqual(result["sealed_holdouts"], 2)
+        self.assertEqual(result["holdout_adapter_protocol"], "holdout_protocol.json")
+        self.assertEqual(result["errors"], [])
 
 
 if __name__ == "__main__":

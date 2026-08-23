@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-08-23",
+  "inherits_sha256": "5ab782316fc051389e6915f123a7909218c317f65d68a75117cb865082aa6701",
+  "models": [
+    {
+      "key": "olmo2-32b",
+      "paper_name": "OLMo-2-0325-32B-Instruct",
+      "id": "allenai/OLMo-2-0325-32B-Instruct",
+      "revision": "b96024342a77a69aa0dda815c3454a671f477463",
+      "architecture": "Olmo2ForCausalLM",
+      "num_hidden_layers": 64,
+      "weight_gb": 65.0,
+      "layers": [
+        26,
+        38,
+        51,
+        64
+      ],
+      "scope": "extension"
+    }
+  ],
+  "controls": [
+    {
+      "key": "olmo2-32b-teacher-released",
+      "paper_name": "OLMo-2-0325-32B-Instruct (on-policy responses, released template)",
+      "base_model": "olmo2-32b",
+      "id": "allenai/OLMo-2-0325-32B-Instruct",
+      "revision": "b96024342a77a69aa0dda815c3454a671f477463",
+      "architecture": "Olmo2ForCausalLM",
+      "num_hidden_layers": 64,
+      "weight_gb": 65.0,
+      "layers": [
+        64
+      ],
+      "scope": "control",
+      "prompt_mode": "released_llama2",
+      "prompt_provenance": "released hard-coded Llama-2 instruction template",
+      "extraction_mode": "teacher_forced",
+      "response_source": "olmo2-32b",
+      "response_policy": "on_policy_olmo2_32b"
+    },
+    {
+      "key": "olmo2-32b-teacher-native",
+      "paper_name": "OLMo-2-0325-32B-Instruct (on-policy responses, native template)",
+      "base_model": "olmo2-32b",
+      "id": "allenai/OLMo-2-0325-32B-Instruct",
+      "revision": "b96024342a77a69aa0dda815c3454a671f477463",
+      "architecture": "Olmo2ForCausalLM",
+      "num_hidden_layers": 64,
+      "weight_gb": 65.0,
+      "layers": [
+        64
+      ],
+      "scope": "control",
+      "prompt_mode": "native",
+      "prompt_provenance": "target tokenizer native chat template",
+      "extraction_mode": "teacher_forced",
+      "response_source": "olmo2-32b",
+      "response_policy": "on_policy_olmo2_32b"
+    },
+    {
+      "key": "olmo2-32b-fixed-llama2-13b",
+      "paper_name": "OLMo-2-0325-32B-Instruct (fixed Llama-2-13B responses)",
+      "base_model": "olmo2-32b",
+      "id": "allenai/OLMo-2-0325-32B-Instruct",
+      "revision": "b96024342a77a69aa0dda815c3454a671f477463",
+      "architecture": "Olmo2ForCausalLM",
+      "num_hidden_layers": 64,
+      "weight_gb": 65.0,
+      "layers": [
+        64
+      ],
+      "scope": "control",
+      "prompt_mode": "released_llama2",
+      "prompt_provenance": "released hard-coded Llama-2 instruction template",
+      "extraction_mode": "teacher_forced",
+      "response_source": "llama2-13b",
+      "response_policy": "fixed_llama2_13b"
+    },
+    {
+      "key": "olmo2-32b-fixed-llama2-13b-native",
+      "paper_name": "OLMo-2-0325-32B-Instruct (fixed Llama-2-13B responses, native template)",
+      "base_model": "olmo2-32b",
+      "id": "allenai/OLMo-2-0325-32B-Instruct",
+      "revision": "b96024342a77a69aa0dda815c3454a671f477463",
+      "architecture": "Olmo2ForCausalLM",
+      "num_hidden_layers": 64,
+      "weight_gb": 65.0,
+      "layers": [
+        64
+      ],
+      "scope": "control",
+      "prompt_mode": "native",
+      "prompt_provenance": "target tokenizer native chat template",
+      "extraction_mode": "teacher_forced",
+      "response_source": "llama2-13b",
+      "response_policy": "fixed_llama2_13b"
+    }
+  ]
+}

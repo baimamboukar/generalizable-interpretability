@@ -37,6 +37,46 @@ def test_activation_hook_captures_pre_layer_norm_input() -> None:
     assert cache[7] is expected
 
 
+def test_olmo2_adapter_targets_decoder_block_input() -> None:
+    class Layers:
+        def __init__(self):
+            self.layers = [Mock(), Mock()]
+
+    network = Mock()
+    network.model = Layers()
+    args = Mock(architecture_adapter="olmo2_decoder_block_input")
+    registry = type("Registry", (), {"_architectures": {}})
+    base = type("Architecture", (), {})
+
+    wrapper.register_architecture_adapter(args, registry, base)
+    architecture = registry._architectures["olmo2"]()
+    assert architecture.get_layer_norm(network, 1) is network.model.layers[1]
+    assert architecture.get_layers(network) is network.model.layers
+
+
+def test_holdout_plan_is_frozen_without_running_task_data(capsys) -> None:
+    protocol = MODULE_PATH.parent / "holdout_protocol.json"
+    original = sys.argv
+    try:
+        sys.argv = [
+            "vast_mup.py",
+            "--stage",
+            "plan",
+            "--protocol",
+            str(protocol),
+            "--model-key",
+            "olmo2-32b",
+        ]
+        wrapper.main()
+    finally:
+        sys.argv = original
+
+    plan = json.loads(capsys.readouterr().out)
+    assert plan["layers"] == [22, 25, 30, 38, 46, 54]
+    assert plan["architecture_adapter"] == "olmo2_decoder_block_input"
+    assert "decoder block input" in plan["activation_site"]
+
+
 def test_common_metrics() -> None:
     metrics = analysis.calculate_metrics(
         labels=[0, 0, 1, 1],

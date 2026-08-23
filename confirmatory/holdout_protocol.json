@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0.0",
+  "frozen_at": "2026-08-23",
+  "status": "adapters_specified_before_task_outcomes",
+  "study_adapters": {
+    "models-under-pressure": {
+      "path": "replications/models-under-pressure/holdout_protocol.json",
+      "sha256": "f065d8d191983d1d541ab441fbc5bed713c300795400b71cbd13bb6d939dfb37"
+    },
+    "internal-instruction-following": {
+      "path": "replications/internal-instruction-following/holdout_overlay.json",
+      "sha256": "84ea925a6d91b2793dbfc5a1339e174e897c3e5258266706dfff5b90c99a9480"
+    },
+    "political-perspective": {
+      "status": "blocked_until_retrospective_analysis_is_locked"
+    }
+  },
+  "primary_model": "allenai/OLMo-2-0325-32B-Instruct",
+  "secondary_model": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+  "models": {
+    "olmo2-32b": {
+      "model_id": "allenai/OLMo-2-0325-32B-Instruct",
+      "revision": "b96024342a77a69aa0dda815c3454a671f477463",
+      "architecture": "Olmo2ForCausalLM",
+      "num_hidden_layers": 64,
+      "num_attention_heads": 40,
+      "hidden_size": 5120,
+      "execution_role": "primary_prospective_holdout"
+    },
+    "mistral3-24b": {
+      "model_id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "revision": "68faf511d618ef198fef186659617cfd2eb8e33a",
+      "architecture": "Mistral3ForConditionalGeneration",
+      "num_hidden_layers": 40,
+      "num_attention_heads": 32,
+      "hidden_size": 5120,
+      "execution_role": "sealed_secondary_holdout"
+    }
+  },
+  "models_under_pressure": {
+    "seeds": [41, 42, 43],
+    "probes": ["attention", "softmax"],
+    "paper_relative_depth": 0.3875,
+    "sparse_grid_relative_depths": [0.35, 0.475, 0.6, 0.725, 0.85],
+    "models": {
+      "olmo2-32b": {
+        "paper_relative_layer": 25,
+        "sparse_grid_layers": [22, 30, 38, 46, 54],
+        "candidate_layers": [22, 25, 30, 38, 46, 54],
+        "model_config": "llama-70b",
+        "activation_site_mapping": "decoder block input; OLMo2 is post-normalization and has no input_layernorm"
+      },
+      "mistral3-24b": {
+        "paper_relative_layer": 16,
+        "sparse_grid_layers": [14, 19, 24, 29, 34],
+        "candidate_layers": [14, 16, 19, 24, 29, 34],
+        "model_config": "llama-70b",
+        "activation_site_mapping": "input to decoder block input_layernorm"
+      }
+    }
+  },
+  "internal_instruction_following": {
+    "relative_depths": [0.4, 0.6, 0.8, 1.0],
+    "token_positions": ["first", "middle", "last"],
+    "normalization_modes": ["released_splitwise", "train_fitted"],
+    "control_factors": {
+      "prompt_template": ["released_llama2", "native"],
+      "response_policy": ["on_policy", "fixed_llama2_13b"]
+    },
+    "models": {
+      "olmo2-32b": {
+        "layers": [26, 38, 51, 64],
+        "control_layer": 64
+      },
+      "mistral3-24b": {
+        "layers": [16, 24, 32, 40],
+        "control_layer": 40
+      }
+    }
+  },
+  "political_perspective": {
+    "feature_scope": "all layers and all attention heads",
+    "candidate_budget": 512,
+    "candidate_seeds": [0, 1, 2],
+    "selection": "five-fold outer and three-fold inner grouped cross-validation",
+    "top_k": [1, 32],
+    "ridge_alpha": 1.0,
+    "news_labels_used_for_selection": false
+  },
+  "release_rule": "Run the primary holdout only after all adapters pass structural tests and all retrospective analyses are locked. Do not change conditions, exclusions, layers, thresholds, or metrics after inspecting task outcomes."
+}

@@ -40,10 +40,11 @@ TEST_EVALS = tuple(
     )
 )
 EVALS = DEV_EVALS + TEST_EVALS
-ACTIVATION_SITE = (
+DEFAULT_ACTIVATION_SITE = (
     "input to decoder block input_layernorm "
     "(pre-normalization residual stream, as specified in the paper)"
 )
+ACTIVATION_SITE = DEFAULT_ACTIVATION_SITE
 os.environ.setdefault("MUP_LOCAL_ACTIVATIONS", "1")
 
 
@@ -153,8 +154,37 @@ def activation_provenance_row(
         "dataset": str(dataset_path.relative_to(PROJECT)),
         "dataset_sha256": sha256_file(dataset_path),
         "layer": layer,
-        "activation_site": ACTIVATION_SITE,
+        "activation_site": args.activation_site,
     }
+
+
+def register_architecture_adapter(
+    args: argparse.Namespace,
+    architecture_registry=None,
+    model_architecture=None,
+) -> None:
+    if args.architecture_adapter != "olmo2_decoder_block_input":
+        return
+    if architecture_registry is None or model_architecture is None:
+        from models_under_pressure.model import (
+            ArchitectureRegistry,
+            ModelArchitecture,
+        )
+
+        architecture_registry = ArchitectureRegistry
+        model_architecture = ModelArchitecture
+
+    class Olmo2Arch(model_architecture):
+        def get_layer_norm(self, model, layer_idx):
+            return model.model.layers[layer_idx]
+
+        def get_layers(self, model):
+            return model.model.layers
+
+        def set_layers(self, model, layers):
+            model.model.layers = layers
+
+    architecture_registry._architectures["olmo2"] = Olmo2Arch
 
 
 def load_activation_provenance(path: Path) -> list[dict]:
@@ -273,6 +303,7 @@ def extract(args: argparse.Namespace) -> None:
     from models_under_pressure.interfaces.dataset import LabelledDataset
     from models_under_pressure.model import HookedModel, LLMModel
 
+    register_architecture_adapter(args)
     HookedModel.make_hook = lambda self, layer: pre_layer_norm_hook(  # type: ignore[method-assign]
         self.cache, layer
     )
@@ -403,7 +434,8 @@ def collect(
         "layers": args.layers,
         "seeds": args.seeds,
         "probes": ["attention", "softmax"],
-        "activation_site": ACTIVATION_SITE,
+        "activation_site": args.activation_site,
+        "architecture_adapter": args.architecture_adapter,
         "train_dataset": str(TRAIN.relative_to(PROJECT)),
         "validation_dataset": str(VALIDATION.relative_to(PROJECT)),
         "dev_datasets": [str(path.relative_to(PROJECT)) for path in DEV_EVALS],
@@ -444,6 +476,8 @@ def main() -> None:
     parser.add_argument("--model")
     parser.add_argument("--model-revision")
     parser.add_argument("--model-config")
+    parser.add_argument("--activation-site", default=DEFAULT_ACTIVATION_SITE)
+    parser.add_argument("--architecture-adapter")
     parser.add_argument("--layers")
     parser.add_argument("--artifact-name")
     parser.add_argument("--run-id")
@@ -465,6 +499,10 @@ def main() -> None:
         args.model = model["model_id"]
         args.model_revision = model["revision"]
         args.model_config = model["model_config"]
+        args.activation_site = model.get(
+            "activation_site", protocol.get("activation_site", DEFAULT_ACTIVATION_SITE)
+        )
+        args.architecture_adapter = model.get("architecture_adapter")
         args.layers = ",".join(str(layer) for layer in model["candidate_layers"])
         args.seeds = ",".join(str(seed) for seed in protocol["seeds"])
         args.artifact_name = args.artifact_name or f"{protocol['analysis_id']}-{args.model_key}"
@@ -493,7 +531,8 @@ def main() -> None:
                     "seeds": args.seeds,
                     "artifact_name": args.artifact_name,
                     "run_id": args.run_id,
-                    "activation_site": ACTIVATION_SITE,
+                    "activation_site": args.activation_site,
+                    "architecture_adapter": args.architecture_adapter,
                 },
                 indent=2,
             )

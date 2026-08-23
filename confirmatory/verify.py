@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 from pathlib import Path
 
@@ -9,10 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL = ROOT / "confirmatory" / "protocol.json"
 REGISTRY = ROOT / "confirmatory" / "study_registry.csv"
 HYPOTHESES = ROOT / "confirmatory" / "hypotheses.csv"
+HOLDOUT_PROTOCOL = ROOT / "confirmatory" / "holdout_protocol.json"
 
 
 def verify() -> dict[str, object]:
     protocol = json.loads(PROTOCOL.read_text())
+    holdout_protocol = json.loads(HOLDOUT_PROTOCOL.read_text())
     errors: list[str] = []
     reports = []
     report_groups = (
@@ -33,6 +36,33 @@ def verify() -> dict[str, object]:
             errors.append(f"unpinned holdout revision: {model['id']}")
         if model["status"] != "sealed_no_task_evaluation":
             errors.append(f"holdout is not sealed: {model['id']}")
+    root_holdouts = {
+        model["id"]: model["revision"] for model in protocol["confirmatory_holdouts"]
+    }
+    adapter_holdouts = {
+        model["model_id"]: model["revision"]
+        for model in holdout_protocol["models"].values()
+    }
+    if root_holdouts != adapter_holdouts:
+        errors.append("holdout adapter registry differs from the root protocol")
+    if holdout_protocol["status"] != "adapters_specified_before_task_outcomes":
+        errors.append("holdout adapter protocol is not frozen")
+    if holdout_protocol["primary_model"] not in root_holdouts:
+        errors.append("primary holdout is not in the sealed registry")
+    if holdout_protocol["secondary_model"] not in root_holdouts:
+        errors.append("secondary holdout is not in the sealed registry")
+    for study, adapter in holdout_protocol["study_adapters"].items():
+        if "path" not in adapter:
+            if adapter.get("status") != "blocked_until_retrospective_analysis_is_locked":
+                errors.append(f"unresolved holdout adapter: {study}")
+            continue
+        path = ROOT / adapter["path"]
+        if not path.is_file():
+            errors.append(f"missing holdout adapter: {adapter['path']}")
+            continue
+        observed = hashlib.sha256(path.read_bytes()).hexdigest()
+        if observed != adapter["sha256"]:
+            errors.append(f"holdout adapter hash mismatch: {study}")
     with REGISTRY.open(newline="") as handle:
         registry = list(csv.DictReader(handle))
     registered = {row["study_id"] for row in registry}
@@ -69,6 +99,7 @@ def verify() -> dict[str, object]:
         "frozen_hypotheses": len(hypotheses),
         "verified_reports": len(reports),
         "sealed_holdouts": len(protocol["confirmatory_holdouts"]),
+        "holdout_adapter_protocol": HOLDOUT_PROTOCOL.name,
         "errors": errors,
     }
     if errors:

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import csv
+import hashlib
+import json
 import os
 import pickle
 import tempfile
@@ -109,6 +111,26 @@ class CompatibilityTest(unittest.TestCase):
         )
         source = (compat.HERE / "runtime" / "upstream_entrypoint.py").read_text()
         self.assertIn("GI_TARGET_LAYERS", source)
+
+    def test_holdout_overlay_is_pinned_and_complete(self) -> None:
+        overlay_path = compat.HERE / "holdout_overlay.json"
+        overlay = json.loads(overlay_path.read_text())
+        self.assertEqual(
+            overlay["inherits_sha256"],
+            hashlib.sha256(compat.BASE_CONFIG_PATH.read_bytes()).hexdigest(),
+        )
+        merged, files = compat.load_configuration(
+            compat.BASE_CONFIG_PATH, overlay_path
+        )
+        model = next(model for model in merged["models"] if model["key"] == "olmo2-32b")
+        self.assertEqual(model["layers"], [26, 38, 51, 64])
+        controls = [
+            control
+            for control in merged["controls"]
+            if control["base_model"] == "olmo2-32b"
+        ]
+        self.assertEqual(len(controls), 4)
+        self.assertEqual(len(files), 2)
 
     def test_crossed_controls_are_complete(self) -> None:
         for base_model in ("glm4.7-flash", "qwen3-14b", "gemma4-12b"):
