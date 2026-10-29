@@ -1,0 +1,24 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\begin{tabularx}{\textwidth}{@{}p{0.20\textwidth}XXXXX@{}}
+\toprule
+Study & Examples & Responses & Labels & Activation site & Extension estimand \\
+\midrule
+Detecting High-Stakes Interactions using Activation Probes & fixed & not applicable & fixed external & target-selected & diagnostic oracle \\
+Do LLMs Know Internally When They Follow Instructions? & fixed & on-policy & model-dependent & prespecified sparse & method portability with policy shift \\
+Linear Representations of Political Perspective Emerge in Large Language Models & fixed & not applicable & fixed & target-test selected & diagnostic oracle \\
+PRISM: Prompt-Guided Internal States for Hallucination Detection & fixed & not applicable & fixed & fixed final layer & method portability \\
+Lookback Lens: Detecting and Mitigating Contextual Hallucinations Using Only Attention Maps & fixed released & fixed released & fixed GPT-4o & all layers and heads & method portability \\
+Beyond Linear Probes: Dynamic Safety Monitoring for Language Models & fixed & not applicable & fixed & validation-selected & architecture portability \\
+Among Us: A Sandbox for Measuring and Detecting Agentic Deception & fixed & not applicable & fixed & target-test selected & diagnostic only after baseline failure \\
+Sycophancy Hides Linearly in the Attention Heads & fixed & not applicable & fixed & all layers & not run \\
+Reading Between the Prompts: How Stereotypes Shape LLMs' Implicit Personalization & fixed & fixed released & fixed & prespecified sparse & reduced decodability check \\
+LLMs Know More Than They Show: On the Intrinsic Representation of LLM Hallucinations & fixed & on-policy and fixed-response control & model-dependent and fixed-response control & validation-selected & method portability plus response-policy control \\
+The Hawthorne Effect in Reasoning Models: Evaluating and Steering Test Awareness & fixed released & fixed released traces & fixed released judge labels & all layers; target-test peak reported & baseline replication only \\
+Calibrating Verbal Uncertainty as a Linear Feature to Reduce Hallucinations & fixed questions & model-specific generated answers & model-dependent Llama-70B judge labels & paper-selected layer ranges & baseline replication only \\
+\bottomrule
+\end{tabularx}
+\caption{Evaluation contracts for studies with empirical evidence. Changing the model can also change responses, labels, or selection procedures.}
+\label{tab:evaluation-contracts}
+\end{table*}

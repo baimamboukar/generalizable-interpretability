@@ -1,0 +1,107 @@
+{
+  "generated_by": "scripts/build_paper_artifacts.py",
+  "outputs": {
+    "README.md": {
+      "sha256": "5653305ce5be193e19d548a321e2318d027668ea68c3602e5c0de7e402680065",
+      "size_bytes": 1975
+    },
+    "artifact_coverage.csv": {
+      "sha256": "63874dcdb783ef7dabae4e8900326ba2e35443208fc91b554fd07f667dc973e1",
+      "size_bytes": 1260
+    },
+    "artifact_readiness.csv": {
+      "sha256": "6ef75a9f90bb88547cbf83d955dac1138f19fe856287ae2dc1dd9c9ca0ee734a",
+      "size_bytes": 1004
+    },
+    "baseline_fidelity.csv": {
+      "sha256": "79477f23652d402fd144ce7eb87f7f302c012eb98b88a06e284d211dd50ccc5e",
+      "size_bytes": 63638
+    },
+    "baseline_fidelity_summary.csv": {
+      "sha256": "924058f4e71bf197d06dc84e14bd3d5541d8e2118b65dac0a3010ed26cd5e062",
+      "size_bytes": 1403
+    },
+    "claim_ledger.csv": {
+      "sha256": "104af54edf5c654b8c1cd36b9d57e3133673070d653ad7c1ea0faddbd203bed0",
+      "size_bytes": 1945
+    },
+    "cohort_accounting.csv": {
+      "sha256": "202dd1300c85f6c7966b08afb9ce9166746a427484bcaf6596c48ab1dadc5436",
+      "size_bytes": 1154
+    },
+    "cross_model_extensions.csv": {
+      "sha256": "f66e21f23436eb68733dd851f54e0520d3f229ea743b8cb4884aa803630c684f",
+      "size_bytes": 62768
+    },
+    "evaluation_contracts.csv": {
+      "sha256": "600a579bf41690272cb7a66575530dc9c0f43797caf144067ebd79ac0555c0f1",
+      "size_bytes": 2764
+    },
+    "experiment_gaps.csv": {
+      "sha256": "47d96eea4ac65212ce5bea854da0e74d4a6c7789f70f2bcac386cb42a230856d",
+      "size_bytes": 3210
+    },
+    "open_experiment_status.csv": {
+      "sha256": "c7996caa90f267a5bd8759e9fe2056ae3a040f6be723276c33c73c5e954811e1",
+      "size_bytes": 825
+    },
+    "reproducibility_audit.csv": {
+      "sha256": "373957fc6dade9f1278ad29000434ae71d8d5a1acf939410cc482787a20b36fa",
+      "size_bytes": 5533
+    },
+    "schema_audit.json": {
+      "sha256": "7312eb04e40cb436970efd1b85843fd2906d3b4f39fe8925fa51504cfe06ddc0",
+      "size_bytes": 1769
+    },
+    "study_inventory.csv": {
+      "sha256": "6670fe3930ae1988e539a5df27be42a667b28a6a9afcfadb2027f69fb50d8566",
+      "size_bytes": 15496
+    },
+    "study_verdicts.csv": {
+      "sha256": "419c9177a74a9cf284506db33c6e0e64482e247ec1c3f3c4c1f10f6d24f99e5a",
+      "size_bytes": 7337
+    },
+    "table_artifact_audits.tex": {
+      "sha256": "21e61da738e15525ba0ece1e553f4589d93752e278ca91f3deeeb6debe1c4579",
+      "size_bytes": 2551
+    },
+    "table_empirical_status.tex": {
+      "sha256": "3f380447d7d7a4f82b69d4ddfa3d72d9186a8c5b86612cf76842b3e165dce7b2",
+      "size_bytes": 2266
+    },
+    "table_evaluation_contracts.tex": {
+      "sha256": "58af24dd441aee1b465c15246af5dd914dd56f9d467aa05ca49402d39d26f337",
+      "size_bytes": 2508
+    }
+  },
+  "schema_version": "1.0.0",
+  "source_snapshot": {
+    "confirmatory/protocol.json": "25a54e0b6dc06c755cdbfbd572f3a94402b07d9eeb7e056cd4af0d6cc75b920e",
+    "confirmatory/study_registry.csv": "81ccf3d790f2049a98dfae699b403018845bc3cca45b847ddbf78dd76ddcf53f",
+    "data/probe_replication_queue.csv": "7162f99c18c935c7b69354e17df3739368e6c685a2a23073bbfc878b29abe023",
+    "data/results/paper-synthesis/evidence_long.csv": "6794fb90318f45962be4424f0db1f26e1da50b76464dff05c6c36b8bbb91a886",
+    "reports/among-us.md": "c351fa8711f05261de0e6aa45a8df1702a981d64a9a378bf663f02d7bec34df6",
+    "reports/arithmetic-error-probing.md": "67a6db30d0e3dad480917dff5c0ee257dfadcc15ee6b669a51939104a8790196",
+    "reports/beyond-linear-probes.md": "a010e2ae16086d34b852dc29e5ede9c704c5d87b267d4ac9713e8afc86986630",
+    "reports/caught-in-the-act.md": "c03f3255ea6a3032f82bc795428be04c628cdf26687320d7fdffb959ed213fb6",
+    "reports/disentangle-sycophancy.md": "329bab13f5dc1ace8afaaa820c7de946774fe176e7ab53ea163cf8a453a2820d",
+    "reports/icr-probe.md": "48a260c2bb4d3b751cc7be9ff3820aa7568cbaa49791d8f753830cce48920d42",
+    "reports/implicit-personalization.md": "733a9bfde23e081839726e70a355c1556920892d9d3a158d6a68359260be669c",
+    "reports/internal-instruction-following.md": "a7bd17e9a2bc40026e735c67db74d994cfeace04df3bf04003108a1d3cf3d5c9",
+    "reports/layer-navigator.md": "b0f910a2a44d412007ad8f1a8a0fc9fb30281495925613264ce7592a5b133e99",
+    "reports/llms-know.md": "5867cbc9ae0abe3ac076716cd6958207914d50d35d9ad9dc84fc9a8da44adaa6",
+    "reports/lookback-lens.md": "b5bc99e07c7b42f4cd8607c569fbdc98023467712b02a9f73a3ed9e343691472",
+    "reports/model-under-pressure.md": "02d1d1523676ea7750b00434371a388eed865e01837a75147971a8c3771965b5",
+    "reports/neural-chameleons.md": "79ee72364f09eec1b11469ff62ad852ffa61965461b8275a2c78c3720cde0054",
+    "reports/political-perspective.md": "80249960d71636e1a2d850ab276bae88b071df427a037a26bb18fa35b40875fa",
+    "reports/prism.md": "efd783d4877970733820858150b411a713ead5cfcdbb59c9d2972f09952572d1",
+    "reports/propositional-probes.md": "5ac7bceda456196c275badcb6969106c72d8b685621e9e1a3726c666deb9de24",
+    "reports/reasoning-trajectory.md": "2b1379bf779f4990a26e48553a6660f706abc5c45d8dedec49021ab4f64d18e4",
+    "reports/redeep.md": "e291c62c4f2c3be2a15f37785bf9fff8175ae46e212d18ffc3bd331342d3ef52",
+    "reports/sycophancy.md": "0c00a62de845274828c2edbe23d1944639f4918e6f0e89ee63cff7749279bcd5",
+    "reports/test-awareness-steering.md": "6f4bf11d3db7b465c83a6217ffbc6338a3ab160d63b783788ea6b33ae0976488",
+    "reports/thought-calibration.md": "2a0c386b52c6e80dbb33cbefa4f6fd17f7a084f36cf273e645ec640b13b0708d",
+    "reports/truthful-representation-flip.md": "9b9dce7b70a2f13461b37ce575013e2c5e43909b84851c18223d5c5639a4285a",
+    "reports/verbal-uncertainty.md": "01352d40f68351a4ada9f101f202526849aeee8b9fbcf43852a74d2e2071ef3b"
+  }
+}

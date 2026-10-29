@@ -1,0 +1,6 @@
+instance_id,gpu,vram_gib,batch_size,outcome,detail
+48204429,H100 NVL,93,16,startup_failed,missing python-dotenv runtime dependency
+48204935,H100 NVL,93,16,startup_failed,upstream src package absent from Python path
+48205676,H100 SXM,79,16,oom,first batch exhausted 79.17 GiB after 327.6 seconds
+48206638,H100 NVL,93,8,oom,first batch exhausted 93.08 GiB after 391.6 seconds
+48207944,H200 NVL,140,8,oom,first batch exhausted 139.78 GiB after 663.5 seconds

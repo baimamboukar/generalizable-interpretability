@@ -1,0 +1,4 @@
+model,peak_layer,released_log_accuracy,paper_accuracy,absolute_difference,artifact_type
+QwQ-32B,62,0.9540983606557377,0.954,0.0000983606557377,released_training_log
+Qwen3-32B,19,0.9518413597733711,0.951,0.0008413597733711,released_training_log
+DeepSeek-R1-Distill-Qwen-32B,16,0.9278131634819533,0.927,0.0008131634819533,released_training_log

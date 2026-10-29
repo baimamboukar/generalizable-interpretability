@@ -1,0 +1,9 @@
+claim_id,status,analysis_section,claim,support,exclusions,open_requirement
+C1,confirmed,baseline fidelity,"six of eight frozen central baselines were sufficiently recovered; two were not",frozen central matrix,"partial supporting and post-freeze studies",none
+C2,rejected,throughout,"activation probes generally fail across models",current evidence includes clear positive controls and non-comparable diagnostics,"no universal success or failure rate is estimated",do not use as headline
+C3,observational,cross-model results,"comparable fixed-contract extensions can preserve the replicated effect",PRISM and Lookback Lens; LLMs Know as post-freeze support,"oracle-selected and baseline-failed rows",additional prespecified target models would narrow uncertainty
+C4,candidate boundary condition,boundary conditions,"model-generated responses and labels can change the target prediction problem",Internal Instruction Following and LLMs Know policy controls,"not a causal attribution",complete fixed-response sealed control
+C5,unresolved,boundary conditions,"informative target sites exist but portable site selection is not established",Models Under Pressure and Political Perspective oracle screens,"target-test maxima cannot support portability",complete development-only and equal-budget holdouts
+C6,observational,boundary conditions,"probe architecture ranking can change by model",Beyond Linear Probes three-model extension,"one selected dataset and layer; active second baseline",complete additional paper-model baseline
+C7,confirmed,baseline fidelity,"Among Us and Sycophancy are baseline reproducibility findings only",large paper-versus-rerun deviations,"their extensions cannot establish portability failure",none
+C8,unresolved,discussion,"decodability evidence is not yet operational monitoring evidence",limited thresholds calibration and low-FPR records in legacy studies,"AUROC alone",complete registered operating-point evaluation

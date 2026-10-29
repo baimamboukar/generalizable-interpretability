@@ -1,0 +1,13 @@
+study_id,examples_across_models,responses_across_models,labels_across_models,activation_site_selection,probe_architecture,threshold_protocol,extension_estimand,interpretation
+models-under-pressure,fixed,not applicable,fixed external,target-selected,fixed,not retained,diagnostic oracle,the OLMo-2 activation site is an architecture-mapped analogue rather than the paper model's exact hook
+internal-instruction-following,fixed,on-policy,model-dependent,prespecified sparse,fixed,not retained for legacy baseline,method portability with policy shift,changing models changes response and label support; some held-out folds become single-class
+political-perspective,fixed,not applicable,fixed,target-test selected,fixed,not applicable,diagnostic oracle,target-test maxima give models with more heads and layers larger search budgets
+prism,fixed,not applicable,fixed,fixed final layer,fixed,paper default,method portability,no material gap for the tested claim
+lookback-lens,fixed released,fixed released,fixed GPT-4o,all layers and heads,fixed,paper default,method portability,13B transfer artifacts were not released; tested extension uses regenerated features
+beyond-linear-probes,fixed,not applicable,fixed,validation-selected,compared on every model,validation-selected,architecture portability,only one dataset and one baseline model-layer condition was independently rerun
+among-us,fixed,not applicable,fixed,target-test selected,fixed,paper default,diagnostic only after baseline failure,paper and code disagree on token count; released checkpoints also fail on reconstructed caches
+sycophancy,fixed,not applicable,fixed,all layers,fixed,validation accuracy,not run,"no paper checkpoints, activations, result dictionaries, or exact per-seed values"
+implicit-personalization,fixed,fixed released,fixed,prespecified sparse,fixed,paper default,reduced decodability check,the reduced run does not reproduce the main stereotype and steering claims
+llms-know,fixed,on-policy and fixed-response control,model-dependent and fixed-response control,validation-selected,fixed,validation-selected,method portability plus response-policy control,generated responses were not released; target-model site selection remains model-specific
+test-awareness-steering,fixed released,fixed released traces,fixed released judge labels,all layers; target-test peak reported,fixed,0.5,baseline replication only,peak accuracy reproduced but the selected peak layer moved from 19 to 55
+verbal-uncertainty,fixed questions,model-specific generated answers,model-dependent Llama-70B judge labels,paper-selected layer ranges,fixed,0.5,baseline replication only,"paper outputs are unreleased and stochastic, so this is a protocol replication rather than an exact artifact replay"

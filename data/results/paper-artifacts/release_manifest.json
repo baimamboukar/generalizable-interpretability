@@ -1,0 +1,125 @@
+{
+  "counts": {
+    "baseline_rows": 259,
+    "baseline_studies": 12,
+    "extension_rows": 68,
+    "extension_studies": 10,
+    "studies": 23
+  },
+  "figures": {
+    "figure1_study_accounting.png": {
+      "height": 1376,
+      "sha256": "9a4ee8e9697b86d45c3070d4e6010218537869025aae472cb84262133299681a",
+      "size_bytes": 128901,
+      "width": 2476
+    },
+    "figure2_baseline_fidelity.png": {
+      "height": 1695,
+      "sha256": "1c7a4251194352d507302c24067426f2bd3330b20a8456b1f3b87638a1813b28",
+      "size_bytes": 238028,
+      "width": 3298
+    },
+    "figure3_cross_model_portability.png": {
+      "height": 1921,
+      "sha256": "a4bc5035e8ef510dc1187f9efd2283212de2072e49deaab3a71bfd4405b1323d",
+      "size_bytes": 218984,
+      "width": 2737
+    },
+    "figure4_evaluation_contracts.png": {
+      "height": 1920,
+      "sha256": "4cfca76af3cf8b73ccc99a342669771657fa9ddce0ac0af253b6ac7b675b7f5d",
+      "size_bytes": 296862,
+      "width": 3315
+    }
+  },
+  "schema_version": "1.0.0",
+  "scripts": {
+    "build_paper_artifacts.py": {
+      "sha256": "edd806e561b6c50db4fdb27fea2d7152df1456b255374c52dee60f3771e5c960",
+      "size_bytes": 56536
+    },
+    "plot_paper_artifacts.py": {
+      "sha256": "8882810af1a20aa5e4d7a4cc19a824a3596efe08629b317d1820545ec06eee6c",
+      "size_bytes": 13802
+    },
+    "verify_paper_artifacts.py": {
+      "sha256": "f3d5e30225a9e579253fb13168159f54fd1df636c9738633b6b48c7d7f315376",
+      "size_bytes": 6502
+    }
+  },
+  "status": "verified",
+  "tables": {
+    "README.md": {
+      "sha256": "5653305ce5be193e19d548a321e2318d027668ea68c3602e5c0de7e402680065",
+      "size_bytes": 1975
+    },
+    "artifact_coverage.csv": {
+      "sha256": "63874dcdb783ef7dabae4e8900326ba2e35443208fc91b554fd07f667dc973e1",
+      "size_bytes": 1260
+    },
+    "artifact_readiness.csv": {
+      "sha256": "6ef75a9f90bb88547cbf83d955dac1138f19fe856287ae2dc1dd9c9ca0ee734a",
+      "size_bytes": 1004
+    },
+    "baseline_fidelity.csv": {
+      "sha256": "79477f23652d402fd144ce7eb87f7f302c012eb98b88a06e284d211dd50ccc5e",
+      "size_bytes": 63638
+    },
+    "baseline_fidelity_summary.csv": {
+      "sha256": "924058f4e71bf197d06dc84e14bd3d5541d8e2118b65dac0a3010ed26cd5e062",
+      "size_bytes": 1403
+    },
+    "claim_ledger.csv": {
+      "sha256": "104af54edf5c654b8c1cd36b9d57e3133673070d653ad7c1ea0faddbd203bed0",
+      "size_bytes": 1945
+    },
+    "cohort_accounting.csv": {
+      "sha256": "202dd1300c85f6c7966b08afb9ce9166746a427484bcaf6596c48ab1dadc5436",
+      "size_bytes": 1154
+    },
+    "cross_model_extensions.csv": {
+      "sha256": "f66e21f23436eb68733dd851f54e0520d3f229ea743b8cb4884aa803630c684f",
+      "size_bytes": 62768
+    },
+    "evaluation_contracts.csv": {
+      "sha256": "600a579bf41690272cb7a66575530dc9c0f43797caf144067ebd79ac0555c0f1",
+      "size_bytes": 2764
+    },
+    "experiment_gaps.csv": {
+      "sha256": "47d96eea4ac65212ce5bea854da0e74d4a6c7789f70f2bcac386cb42a230856d",
+      "size_bytes": 3210
+    },
+    "open_experiment_status.csv": {
+      "sha256": "c7996caa90f267a5bd8759e9fe2056ae3a040f6be723276c33c73c5e954811e1",
+      "size_bytes": 825
+    },
+    "reproducibility_audit.csv": {
+      "sha256": "373957fc6dade9f1278ad29000434ae71d8d5a1acf939410cc482787a20b36fa",
+      "size_bytes": 5533
+    },
+    "schema_audit.json": {
+      "sha256": "7312eb04e40cb436970efd1b85843fd2906d3b4f39fe8925fa51504cfe06ddc0",
+      "size_bytes": 1769
+    },
+    "study_inventory.csv": {
+      "sha256": "6670fe3930ae1988e539a5df27be42a667b28a6a9afcfadb2027f69fb50d8566",
+      "size_bytes": 15496
+    },
+    "study_verdicts.csv": {
+      "sha256": "419c9177a74a9cf284506db33c6e0e64482e247ec1c3f3c4c1f10f6d24f99e5a",
+      "size_bytes": 7337
+    },
+    "table_artifact_audits.tex": {
+      "sha256": "21e61da738e15525ba0ece1e553f4589d93752e278ca91f3deeeb6debe1c4579",
+      "size_bytes": 2551
+    },
+    "table_empirical_status.tex": {
+      "sha256": "3f380447d7d7a4f82b69d4ddfa3d72d9186a8c5b86612cf76842b3e165dce7b2",
+      "size_bytes": 2266
+    },
+    "table_evaluation_contracts.tex": {
+      "sha256": "58af24dd441aee1b465c15246af5dd914dd56f9d467aa05ca49402d39d26f337",
+      "size_bytes": 2508
+    }
+  }
+}

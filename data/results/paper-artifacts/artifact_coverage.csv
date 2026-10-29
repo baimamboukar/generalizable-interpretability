@@ -1,0 +1,24 @@
+study_id,paper_targets,baseline_metrics,extension_metrics,row_level_predictions,confusion_matrix,calibration,low_fpr_metrics,multi_seed_or_uncertainty
+models-under-pressure,yes,yes,yes,yes,yes,yes,yes,yes
+internal-instruction-following,yes,yes,yes,yes,partial,partial,partial,yes
+political-perspective,yes,yes,yes,yes,yes,not applicable,not applicable,partial
+prism,yes,yes,yes,no,no,no,no,no
+lookback-lens,yes,yes,yes,no,no,no,no,no
+beyond-linear-probes,yes,yes,yes,partial,no,no,no,yes
+among-us,yes,yes,yes,no,no,no,no,no
+sycophancy,yes,yes,no,no,no,no,no,yes
+implicit-personalization,yes,yes,yes,no,no,no,no,partial
+llms-know,yes,yes,yes,yes,yes,yes,yes,yes
+test-awareness-steering,yes,yes,no,yes,yes,yes,yes,no
+neural-chameleons,no,no,no,no,no,no,no,no
+propositional-probes,no,no,no,no,no,no,no,no
+icr-probe,no,no,no,no,no,no,no,no
+truthful-representation-flip,no,no,no,no,no,no,no,no
+caught-in-the-act,no,no,no,no,no,no,no,no
+reasoning-trajectory,no,no,no,no,no,no,no,no
+disentangle-sycophancy,no,no,no,no,no,no,no,no
+layer-navigator,no,no,no,no,no,no,no,no
+arithmetic-error-probing,no,no,no,no,no,no,no,no
+thought-calibration,no,no,no,no,no,no,no,no
+redeep,no,no,no,no,no,no,no,no
+verbal-uncertainty,yes,yes,no,yes,yes,yes,yes,no

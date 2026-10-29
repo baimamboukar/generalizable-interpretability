@@ -1,0 +1,9 @@
+artifact,role,status,source,intended_use
+study accounting figure,audit overview,ready,data/results/paper-artifacts/study_inventory.csv,study accounting
+baseline fidelity figure,baseline gate,ready,data/results/paper-artifacts/baseline_fidelity_summary.csv,baseline comparison
+comparable portability figure,cross-model evidence,ready,data/results/paper-artifacts/cross_model_extensions.csv,portability comparison
+evaluation contract matrix,boundary-condition map,ready,data/results/paper-artifacts/evaluation_contracts.csv,evaluation design audit
+empirical status table,study-level verdicts,ready,data/results/paper-artifacts/study_verdicts.csv,study inventory
+artifact audit table,reproducibility boundary,ready,data/results/paper-artifacts/reproducibility_audit.csv,release audit
+claim ledger,claim discipline,ready,data/results/paper-artifacts/claim_ledger.csv,evidence control
+open experiment ledger,unfinished evidence,live,data/results/paper-artifacts/open_experiment_status.csv,experiment tracking

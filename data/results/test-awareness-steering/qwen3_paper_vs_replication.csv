@@ -1,0 +1,4 @@
+evidence,model,metric,value,peak_layer,delta_to_paper
+paper_table_2,Qwen3-32B,accuracy,0.951,,0.0
+released_training_log,Qwen3-32B,accuracy,0.9518413597733711,19,0.0008413597733711864
+independent_replication,Qwen3-32B,accuracy,0.9518413597733711,55,0.0008413597733711864

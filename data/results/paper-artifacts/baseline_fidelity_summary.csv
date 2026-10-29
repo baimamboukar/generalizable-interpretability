@@ -1,0 +1,13 @@
+study_id,comparison_cells,mean_absolute_delta,median_absolute_delta,maximum_absolute_delta,mean_signed_delta,baseline_status,evidence_grade
+among-us,20,0.14324,0.0735,0.4616,-0.11293,not reproduced,D
+beyond-linear-probes,10,0.0011494,0.0005435,0.004343,-0.000171,selected Llama condition reproduced,C
+implicit-personalization,60,0.001316666667,0,0.039,-0.0005833333333,reduced selected-layer replication successful,C
+internal-instruction-following,48,0.02476662646,0.01424709,0.18035266,-0.0002587477083,qualitative and aggregate baseline reproduced; exact table partial,C
+llms-know,3,0.0225437999,0.009986663486,0.05238146427,0.01237717628,principal exact-answer claim reproduced,B
+lookback-lens,12,0.004061494935,0.002587780227,0.01595785145,-0.000867940104,successful,B
+models-under-pressure,1,0.0014,0.0014,0.0014,0.0014,headline reproduced with activation-site mismatch,C
+political-perspective,7,0.0009526120155,0.0001320575763,0.005560986217,0.0006398587632,successful,C
+prism,88,0.005969056818,6.2e-05,0.122288,0.002171784091,successful,B
+sycophancy,2,0.1908152672,0.1908152672,0.1920791349,-0.1908152672,not reproduced,D
+test-awareness-steering,1,0.0008413597734,0.0008413597734,0.0008413597734,0.0008413597734,Qwen3 selected-model baseline reproduced,C
+verbal-uncertainty,6,0.06088175605,0.05300396379,0.14,-0.02554578019,Table 2 primary baseline regenerated with mixed fidelity,C

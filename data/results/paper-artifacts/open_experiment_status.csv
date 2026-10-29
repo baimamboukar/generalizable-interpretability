@@ -1,0 +1,6 @@
+study_id,target,status,result_admitted,evidence
+models-under-pressure,sealed OLMo-2 development-only site and threshold evaluation,complete and admitted,true,data/results/model-under-pressure/confirmatory/olmo2-32b/manifest.json
+internal-instruction-following,fixed-response controls on sealed holdout,partial artifact awaiting validation,false,artifacts/compute-runs/gap-iif-vu-20260901.watch.log
+political-perspective,equal-budget nested layer and head selection,result artifact awaiting canonical integration,false,confirmatory/study_registry.csv
+beyond-linear-probes,additional Gemma paper-model baseline,active,false,artifacts/compute-runs/experiment-gaps-20260901.watch.log
+verbal-uncertainty,Llama-3.1-8B Table 2 probe baseline,complete and admitted,true,data/results/verbal-uncertainty/table2_replication_metrics.csv

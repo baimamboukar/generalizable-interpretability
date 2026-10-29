@@ -1,0 +1,4 @@
+model,metric,paper_value,source
+QwQ-32B,accuracy,0.954,Table 2
+Qwen3-32B,accuracy,0.951,Table 2
+DeepSeek-R1-Distill-Qwen-32B,accuracy,0.927,Table 2

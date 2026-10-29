@@ -1,0 +1,14 @@
+{
+  "evidence_long.csv": {
+    "sha256": "6794fb90318f45962be4424f0db1f26e1da50b76464dff05c6c36b8bbb91a886",
+    "size_bytes": 63139
+  },
+  "schema_audit.json": {
+    "sha256": "3effc732ab6e3b0d84a101e215c9a3498d6f9f2ff56a85e792548c5a2b619396",
+    "size_bytes": 9642
+  },
+  "study_outcomes.csv": {
+    "sha256": "0a9d8b236daf76faf9f10d6958c2a2942e3a4486c3cdec8e94ab196d7ceaf1a8",
+    "size_bytes": 2456
+  }
+}

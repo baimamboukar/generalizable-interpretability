@@ -1,0 +1,23 @@
+\begin{table*}[t]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.28\textwidth}p{0.23\textwidth}X@{}}
+\toprule
+Study & Audit status & Main limitation \\
+\midrule
+Probing for Arithmetic Errors in Language Models & blocked by paper-code and artifact gaps & Figure 3 probes are disabled and exact samples, activations, checkpoints, results, and environment are absent \\ 
+Caught in the Act: A Mechanistic Approach to Detecting Deception & setup only; release unverified & no verified upstream code and artifact release \\ 
+Sycophancy Is Not One Thing: Causal Separation of Sycophantic Behaviors in LLMs & first attempt blocked by environment mismatch & release has import, steering-file, layer-default, dataset-size, and precision mismatches \\ 
+ICR Probe: Tracking Hidden State Dynamics for Reliable Hallucination Detection in LLMs & blocked by missing outputs and labels & generated answers, hallucination labels, caching pipeline, baseline runner, and checkpoints are absent \\ 
+Neural Chameleons & released demo verified; independent baseline unavailable & pretrained probe artifacts needed for the complete paper baseline were not released \\ 
+Monitoring Latent World States in Language Models with Propositional Probes & blocked by missing evaluation texts & the exact GPT-3.5 paraphrased and Spanish evaluation texts were not released \\ 
+LLM Reasoning as Trajectories: Step-Specific Representation Geometry and Correctness Signals & blocked by release runtime mismatch & generation settings conflict and the released runtime exhausted 141 GB before producing an artifact \\ 
+ReDeEP: Detecting Hallucination in Retrieval-Augmented Generation via Mechanistic Interpretability & blocked by released pipeline defects & Table 1 code has leakage, fatal regressions, and broken Dolly paths \\ 
+Thought Calibration: Efficient and Confident Test-Time Scaling & linear path available; architecture claim artifact-limited & MLP and Transformer implementations and checkpoints are missing \\ 
+When Truthful Representations Flip Under Deceptive Instructions? & blocked by protocol mismatch & prompts, regression settings, deceptive labels, activation paths, and revisions do not match the paper \\ 
+LayerNavigator: Finding Promising Intervention Layers for Efficient Activation Steering & setup only & the central method is activation steering rather than probing \\ 
+\bottomrule
+\end{tabularx}
+\caption{Studies retained as release, protocol, or scope audits. These rows are not empirical replication failures.}
+\label{tab:artifact-audits}
+\end{table*}

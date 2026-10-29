@@ -1,0 +1,28 @@
+model,dataset,method,paper_auroc,paper_accuracy,replication_auroc,replication_accuracy,delta_auroc,delta_accuracy,source
+Llama-3.1-8B-Instruct,TriviaQA,semantic uncertainty,0.7921,0.811,,,,,Table 1
+Llama-3.1-8B-Instruct,TriviaQA,verbal uncertainty,0.7210,0.801,,,,,Table 1
+Llama-3.1-8B-Instruct,TriviaQA,combined,0.7971,0.808,,,,,Table 1
+Mistral-7B-Instruct-v0.3,TriviaQA,semantic uncertainty,0.7151,0.746,,,,,Table 1
+Mistral-7B-Instruct-v0.3,TriviaQA,verbal uncertainty,0.6820,0.724,,,,,Table 1
+Mistral-7B-Instruct-v0.3,TriviaQA,combined,0.7299,0.746,,,,,Table 1
+Qwen2.5-7B-Instruct,TriviaQA,semantic uncertainty,0.7218,0.720,,,,,Table 1
+Qwen2.5-7B-Instruct,TriviaQA,verbal uncertainty,0.7280,0.727,,,,,Table 1
+Qwen2.5-7B-Instruct,TriviaQA,combined,0.7471,0.727,,,,,Table 1
+Llama-3.1-8B-Instruct,NQ-Open,semantic uncertainty,0.6529,0.707,,,,,Table 1
+Llama-3.1-8B-Instruct,NQ-Open,verbal uncertainty,0.5404,0.712,,,,,Table 1
+Llama-3.1-8B-Instruct,NQ-Open,combined,0.6602,0.703,,,,,Table 1
+Mistral-7B-Instruct-v0.3,NQ-Open,semantic uncertainty,0.6447,0.621,,,,,Table 1
+Mistral-7B-Instruct-v0.3,NQ-Open,verbal uncertainty,0.6526,0.625,,,,,Table 1
+Mistral-7B-Instruct-v0.3,NQ-Open,combined,0.6896,0.648,,,,,Table 1
+Qwen2.5-7B-Instruct,NQ-Open,semantic uncertainty,0.5674,0.536,,,,,Table 1
+Qwen2.5-7B-Instruct,NQ-Open,verbal uncertainty,0.6185,0.607,,,,,Table 1
+Qwen2.5-7B-Instruct,NQ-Open,combined,0.6236,0.587,,,,,Table 1
+Llama-3.1-8B-Instruct,PopQA,semantic uncertainty,0.7116,0.812,,,,,Table 1
+Llama-3.1-8B-Instruct,PopQA,verbal uncertainty,0.6230,0.810,,,,,Table 1
+Llama-3.1-8B-Instruct,PopQA,combined,0.7566,0.811,,,,,Table 1
+Mistral-7B-Instruct-v0.3,PopQA,semantic uncertainty,0.6603,0.711,,,,,Table 1
+Mistral-7B-Instruct-v0.3,PopQA,verbal uncertainty,0.7113,0.717,,,,,Table 1
+Mistral-7B-Instruct-v0.3,PopQA,combined,0.7382,0.757,,,,,Table 1
+Qwen2.5-7B-Instruct,PopQA,semantic uncertainty,0.5344,0.717,,,,,Table 1
+Qwen2.5-7B-Instruct,PopQA,verbal uncertainty,0.7566,0.762,,,,,Table 1
+Qwen2.5-7B-Instruct,PopQA,combined,0.7543,0.760,,,,,Table 1

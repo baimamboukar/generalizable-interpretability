@@ -1,0 +1,12 @@
+cohort,category,count,denominator,role,source
+frozen,audited corpus,18,18,primary accounting denominator,confirmatory/protocol.json
+frozen,central empirical matrix,8,18,baseline gate,confirmatory/protocol.json
+frozen,baseline sufficiently recovered,6,8,eligible for primary extension,confirmatory/protocol.json
+frozen,baseline not recovered,2,8,reproducibility only,confirmatory/protocol.json
+frozen,cross-model extension studies,6,8,core portability evidence,data/results/paper-synthesis/schema_audit.json
+frozen,reduced-claim sanity check,1,18,supporting evidence,confirmatory/protocol.json
+frozen,artifact runtime or scope audits,9,18,no empirical failure claim,confirmatory/protocol.json
+expanded,audited corpus,23,23,complete repository inventory,data/results/paper-artifacts/schema_audit.json
+expanded,studies with baseline comparison rows,11,23,includes supporting and post-freeze evidence,data/results/paper-artifacts/schema_audit.json
+expanded,studies with extension rows,10,23,includes diagnostics excluded from headline synthesis,data/results/paper-artifacts/schema_audit.json
+expanded,post-freeze additions,5,23,reported separately,README.md

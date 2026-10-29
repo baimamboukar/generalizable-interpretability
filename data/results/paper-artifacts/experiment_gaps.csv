@@ -1,0 +1,24 @@
+study_id,gap_type,required_action,paid_compute_required,priority,status
+models-under-pressure,completed experiment,sealed OLMo-2 holdout completed with development-only layer selection and full threshold metrics,no,high,complete
+internal-instruction-following,new experiment,run fixed-response controls on sealed holdouts and retain undefined label-support folds,yes,high,open
+political-perspective,new experiment,apply an equal-budget nested head and layer selection rule on sealed holdouts,yes,high,open
+prism,documentation or unavailable artifact,no mandatory new experiment for the current evidence claim,no,low,recorded
+lookback-lens,documentation or unavailable artifact,no mandatory new experiment for the current evidence claim,no,low,recorded
+beyond-linear-probes,new experiment,complete at least one additional paper-model baseline before a broad architecture claim,yes,medium,open
+among-us,documentation or unavailable artifact,no mandatory new experiment for the current evidence claim,no,low,recorded
+sycophancy,documentation or unavailable artifact,no mandatory new experiment for the current evidence claim,no,low,recorded
+implicit-personalization,documentation or unavailable artifact,no mandatory new experiment for the current evidence claim,no,low,recorded
+llms-know,documentation or unavailable artifact,no mandatory new experiment for the current evidence claim,no,low,recorded
+test-awareness-steering,documentation or unavailable artifact,no mandatory new experiment for the current evidence claim,no,low,recorded
+neural-chameleons,documentation or unavailable artifact,no GPU run planned; retain the audit and missing-artifact reason,no,low,recorded
+propositional-probes,documentation or unavailable artifact,no GPU run planned; retain the audit and missing-artifact reason,no,low,recorded
+icr-probe,documentation or unavailable artifact,no GPU run planned; retain the audit and missing-artifact reason,no,low,recorded
+truthful-representation-flip,documentation or unavailable artifact,no GPU run planned; retain the audit and missing-artifact reason,no,low,recorded
+caught-in-the-act,documentation or unavailable artifact,no GPU run planned; retain the audit and missing-artifact reason,no,low,recorded
+reasoning-trajectory,documentation or unavailable artifact,no GPU run planned; retain the audit and missing-artifact reason,no,low,recorded
+disentangle-sycophancy,documentation or unavailable artifact,no GPU run planned; retain the audit and missing-artifact reason,no,low,recorded
+layer-navigator,documentation or unavailable artifact,no GPU run planned; retain the audit and missing-artifact reason,no,low,recorded
+arithmetic-error-probing,documentation or unavailable artifact,no GPU run planned; retain the audit and missing-artifact reason,no,low,recorded
+thought-calibration,documentation or unavailable artifact,no GPU run planned; retain the audit and missing-artifact reason,no,low,recorded
+redeep,documentation or unavailable artifact,no GPU run planned; retain the audit and missing-artifact reason,no,low,recorded
+verbal-uncertainty,completed experiment,Table 2 primary baseline completed with full threshold and row-level metrics,no,low,complete

@@ -1,0 +1,385 @@
+{
+  "core_studies": [
+    "Beyond Linear Probes",
+    "Internal Instruction Following",
+    "Lookback Lens",
+    "Models Under Pressure",
+    "PRISM",
+    "Political Perspective"
+  ],
+  "evidence_rows": 68,
+  "notes": {
+    "political_nonfinite_cv_spearman": {
+      "Qwen/Qwen3-8B": 0,
+      "google/gemma-2-27b-it": 1,
+      "google/gemma-2-9b-it": 0,
+      "microsoft/phi-4": 0,
+      "zai-org/GLM-4-9B-0414": 0
+    }
+  },
+  "post_freeze_studies": [
+    "LLMs Know"
+  ],
+  "sources": {
+    "data/results/among-us/extension_probe_results.csv": {
+      "columns": [
+        "study",
+        "phase",
+        "model",
+        "model_id",
+        "parameters_b",
+        "total_layers",
+        "layer",
+        "relative_depth",
+        "num_tokens",
+        "train_dataset",
+        "eval_dataset",
+        "auroc",
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "rows": 216,
+      "sha256": "8bd74036ebd150784b9de261ddadbc05704a84bae24a2ab7bf6788edfffcfb87",
+      "size_bytes": 40762
+    },
+    "data/results/among-us/figure7_baseline_comparison.csv": {
+      "columns": [
+        "study",
+        "model",
+        "layer",
+        "num_tokens",
+        "train_dataset",
+        "eval_dataset",
+        "paper_auroc",
+        "replication_auroc",
+        "delta",
+        "official_checkpoint_auroc"
+      ],
+      "rows": 20,
+      "sha256": "629ee7b4362a2f3f11189f17238053b024b49571c5f3e0ae14288d3e6559d7a5",
+      "size_bytes": 1469
+    },
+    "data/results/beyond-linear-probes/baseline_and_extensions.csv": {
+      "columns": [
+        "paper",
+        "venue",
+        "dataset",
+        "scope",
+        "series",
+        "model",
+        "layer",
+        "method",
+        "method_label",
+        "split",
+        "metric",
+        "value_pct",
+        "std_pct",
+        "seeds",
+        "source"
+      ],
+      "rows": 25,
+      "sha256": "1ddf078041c6df9b3427728d2c33aa7b853a915fae1f140a1198bddd272f8b34",
+      "size_bytes": 4185
+    },
+    "data/results/beyond-linear-probes/baseline_replication.csv": {
+      "columns": [
+        "paper",
+        "venue",
+        "dataset",
+        "model",
+        "layer",
+        "method",
+        "split",
+        "metric",
+        "paper_value_pct",
+        "replication_value_pct",
+        "delta_pp",
+        "abs_delta_pp",
+        "seeds",
+        "source"
+      ],
+      "rows": 10,
+      "sha256": "a07b071675dceab60544e5facb9b6115033d68e471be98aef6e031ae7e483784",
+      "size_bytes": 1331
+    },
+    "data/results/implicit-personalization/cross_model_extension.csv": {
+      "columns": [
+        "model",
+        "attribute",
+        "layer",
+        "result",
+        "fold",
+        "accuracy_percent"
+      ],
+      "rows": 720,
+      "sha256": "72545114c5f1b661fab723e79f4db9467c09ba4cc828489577677a133f3b3e19",
+      "size_bytes": 32340
+    },
+    "data/results/implicit-personalization/probe_validation_baseline.csv": {
+      "columns": [
+        "paper",
+        "figure",
+        "model",
+        "attribute",
+        "layer",
+        "probe",
+        "metric",
+        "paper_value_approx",
+        "replication_value",
+        "delta_pp",
+        "paper_value_source",
+        "status"
+      ],
+      "rows": 60,
+      "sha256": "9f0b7fb6e78c72db51479e0afd7433364795a3fbcd1b4a2c4507bb083dc9709d",
+      "size_bytes": 9359
+    },
+    "data/results/internal-instruction-following/baseline_comparison.csv": {
+      "columns": [
+        "model",
+        "experiment",
+        "table",
+        "layer_group",
+        "layer",
+        "token_position",
+        "metric",
+        "paper_mean",
+        "paper_std",
+        "replication_mean",
+        "replication_std",
+        "delta",
+        "runs",
+        "status"
+      ],
+      "rows": 48,
+      "sha256": "f97cf21e967163cb6262bf48c13a74b084d189ea5db38f5d5164c8718910b745",
+      "size_bytes": 6696
+    },
+    "data/results/internal-instruction-following/results_long.csv": {
+      "columns": [
+        "scope",
+        "model",
+        "model_key",
+        "experiment",
+        "layer",
+        "token_position",
+        "metric",
+        "mean",
+        "std",
+        "valid_runs",
+        "expected_runs",
+        "coverage",
+        "paper_mean",
+        "delta_to_paper"
+      ],
+      "rows": 168,
+      "sha256": "cbd2383af2a0882d72bc26ae12a555193fe0a7fb10b0930c9ef21365c2260938",
+      "size_bytes": 21689
+    },
+    "data/results/llms-know/table1_cross_model_extensions.csv": {
+      "columns": [
+        "model_key",
+        "model_id",
+        "dataset",
+        "regime",
+        "selected_layer",
+        "n_train",
+        "n_test",
+        "mean",
+        "std"
+      ],
+      "rows": 18,
+      "sha256": "204ca8c1c11fee87ac74062dad588b85ffcd546ee28a2e55271e353d623c1508",
+      "size_bytes": 2115
+    },
+    "data/results/llms-know/table1_mistral_replication.csv": {
+      "columns": [
+        "dataset",
+        "source",
+        "mean",
+        "std"
+      ],
+      "rows": 6,
+      "sha256": "8829fed888b8499aff7cf2bfcecdb15dc92d624df477521fbedb6586fe184720",
+      "size_bytes": 305
+    },
+    "data/results/lookback-lens/cross_model_transfer.csv": {
+      "columns": [
+        "group",
+        "model_key",
+        "model",
+        "value",
+        "setting",
+        "source",
+        "target",
+        "split",
+        "metric"
+      ],
+      "rows": 28,
+      "sha256": "c77810b15aa9295035b33c10a42bae20e5e8cd8a6bdc31a16da7aee366a87989",
+      "size_bytes": 2651
+    },
+    "data/results/lookback-lens/table2_replication.csv": {
+      "columns": [
+        "model",
+        "setting",
+        "source",
+        "target",
+        "split",
+        "metric",
+        "paper",
+        "replication",
+        "delta"
+      ],
+      "rows": 12,
+      "sha256": "67a6681a2bba02861127a9d1e72dfde7b486bc01b429d96a7a1c9462c18342c8",
+      "size_bytes": 1298
+    },
+    "data/results/model-under-pressure/model_layer_sweeps.csv": {
+      "columns": [
+        "model",
+        "probe",
+        "layer",
+        "dataset",
+        "auroc"
+      ],
+      "rows": 140,
+      "sha256": "7b5e8b60ad07f8a42de3b480b2c3680a51b99be6302246a25002eaacdddc2083",
+      "size_bytes": 8092
+    },
+    "data/results/model-under-pressure/qwen3_32b_layer_screen.csv": {
+      "columns": [
+        "model",
+        "probe",
+        "layer",
+        "relative_depth",
+        "sampling_phase",
+        "dataset",
+        "auroc",
+        "passes_085"
+      ],
+      "rows": 98,
+      "sha256": "539f31413b0ab44e6c9c5625e2b3b1ac1ee34efdcd19e8c7a6841b58c6c64a35",
+      "size_bytes": 7746
+    },
+    "data/results/political-perspective/extension_all_heads.csv": {
+      "columns": [
+        "model_key",
+        "model",
+        "layer",
+        "head",
+        "cv_spearman"
+      ],
+      "rows": 6176,
+      "sha256": "d3b46c5ff7923d4961dfd2b50aa345ff8b08680135a78408af469ac8df85eb3d",
+      "size_bytes": 325904
+    },
+    "data/results/political-perspective/independent_baseline.csv": {
+      "columns": [
+        "model",
+        "metric",
+        "paper",
+        "replication",
+        "delta",
+        "paper_layer",
+        "replication_layer",
+        "paper_head",
+        "replication_head"
+      ],
+      "rows": 3,
+      "sha256": "de1842df4693b6a69db01b9fdb4b2f06f5f21f6f09f44eb20ae224ddcf8d474c",
+      "size_bytes": 420
+    },
+    "data/results/political-perspective/mega_summary.csv": {
+      "columns": [
+        "group",
+        "family",
+        "model",
+        "parameters_b",
+        "paper_peak",
+        "observed_peak",
+        "delta_from_paper",
+        "peak_layer",
+        "peak_head",
+        "num_layers",
+        "num_attention_heads",
+        "num_probes"
+      ],
+      "rows": 8,
+      "sha256": "6370b9929b02d0785b6da35866d5b7affa2901c3661877494a8110d9649ad3ce",
+      "size_bytes": 867
+    },
+    "data/results/prism/cross_model_summary.csv": {
+      "columns": [
+        "study",
+        "dataset",
+        "model",
+        "method",
+        "representation",
+        "test_domain",
+        "metric",
+        "paper_value",
+        "replication_value",
+        "delta",
+        "status"
+      ],
+      "rows": 48,
+      "sha256": "73d0d1b11e83e63bfd5fd844b87ea5fb58da768683e278370a8d248c8cceb729",
+      "size_bytes": 4800
+    },
+    "data/results/sycophancy/mega_table.csv": {
+      "columns": [
+        "paper",
+        "figure",
+        "model",
+        "component",
+        "metric",
+        "paper_value",
+        "replication_mean",
+        "replication_sd",
+        "delta",
+        "paper_peak_layer",
+        "replication_peak_layer",
+        "seeds",
+        "verdict"
+      ],
+      "rows": 2,
+      "sha256": "3eabdb4573112cf7cea99886229f9a165ef6ce061f2ba3d4dcdf141753bfd67a",
+      "size_bytes": 528
+    },
+    "data/results/sycophancy/probe_accuracies_long.csv": {
+      "columns": [
+        "model",
+        "seed",
+        "activation",
+        "layer",
+        "head",
+        "accuracy"
+      ],
+      "rows": 2184,
+      "sha256": "6c564599c2f9cb364ee8fe468f1b7bdfcf0761457ddd8e27552ede6efcc2cfdd",
+      "size_bytes": 145107
+    },
+    "reports/model-under-pressure.md": {
+      "sha256": "02d1d1523676ea7750b00434371a388eed865e01837a75147971a8c3771965b5",
+      "size_bytes": 47478
+    }
+  },
+  "supporting_studies": [
+    "Among Us",
+    "Implicit Personalization",
+    "Sycophancy"
+  ],
+  "validation": {
+    "duplicate_output_rows": 0,
+    "exactly_six_core_studies": true,
+    "invalid_retention_values_emitted": 0,
+    "post_freeze_studies_labelled": true,
+    "required_columns_present": true,
+    "source_hashes_recorded": true,
+    "stored_aggregates_recomputed": true,
+    "supporting_studies_labelled": true
+  }
+}

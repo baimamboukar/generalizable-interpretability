@@ -1,0 +1,7 @@
+dataset,source,mean,std
+triviaqa,Original paper,0.85,0.004
+triviaqa,Replication,0.8447367280438949,0.007240340114878053
+winobias,Original paper,0.92,0.005
+winobias,Replication,0.9100133365137602,0.003380788185207746
+math,Original paper,0.92,0.008
+math,Replication,0.9723814642706783,0.0032598247757272833

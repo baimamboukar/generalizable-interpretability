@@ -1,0 +1,41 @@
+paper_location,target,train_model,eval_model,metric,value,std,layer,notes
+Table 1,step_2,llama-instruct,r1-distill,accuracy,0.99,,18,best layer
+Table 1,step_3,llama-instruct,r1-distill,accuracy,0.93,,19,best layer
+Table 1,step_4,llama-instruct,r1-distill,accuracy,0.87,,12,best layer
+Table 1,step_5,llama-instruct,r1-distill,accuracy,0.91,,18,best layer
+Table 1,answer_marker,llama-instruct,r1-distill,accuracy,0.87,,23,best layer
+Table 1,step_2,llama-instruct,llama-base,accuracy,1.00,,12,best layer
+Table 1,step_3,llama-instruct,llama-base,accuracy,0.97,,8,best layer
+Table 1,step_4,llama-instruct,llama-base,accuracy,0.95,,8,best layer
+Table 1,step_5,llama-instruct,llama-base,accuracy,0.93,,18,best layer
+Table 1,answer_marker,llama-instruct,llama-base,accuracy,0.97,,21,best layer
+Table 1,step_2,r1-distill,llama-instruct,accuracy,1.00,,3,best layer
+Table 1,step_3,r1-distill,llama-instruct,accuracy,0.92,,8,best layer
+Table 1,step_4,r1-distill,llama-instruct,accuracy,0.88,,7,best layer
+Table 1,step_5,r1-distill,llama-instruct,accuracy,0.93,,27,best layer
+Table 1,answer_marker,r1-distill,llama-instruct,accuracy,0.98,,19,best layer
+Table 1,step_2,r1-distill,llama-base,accuracy,1.00,,6,best layer
+Table 1,step_3,r1-distill,llama-base,accuracy,0.94,,4,best layer
+Table 1,step_4,r1-distill,llama-base,accuracy,0.89,,30,best layer
+Table 1,step_5,r1-distill,llama-base,accuracy,0.91,,8,best layer
+Table 1,answer_marker,r1-distill,llama-base,accuracy,0.96,,19,best layer
+Table 1,step_2,llama-base,llama-instruct,accuracy,1.00,,21,best layer
+Table 1,step_3,llama-base,llama-instruct,accuracy,0.98,,18,best layer
+Table 1,step_4,llama-base,llama-instruct,accuracy,0.97,,18,best layer
+Table 1,step_5,llama-base,llama-instruct,accuracy,0.97,,23,best layer
+Table 1,answer_marker,llama-base,llama-instruct,accuracy,1.00,,31,best layer
+Table 1,step_2,llama-base,r1-distill,accuracy,0.99,,12,best layer
+Table 1,step_3,llama-base,r1-distill,accuracy,0.91,,18,best layer
+Table 1,step_4,llama-base,r1-distill,accuracy,0.90,,18,best layer
+Table 1,step_5,llama-base,r1-distill,accuracy,0.92,,17,best layer
+Table 1,answer_marker,llama-base,r1-distill,accuracy,0.94,,2,best layer
+Figure 2b,late_trajectory,llama-instruct,llama-instruct,roc_auc,0.87,,29,single-seed peak
+Figure 2b,late_trajectory,llama-instruct,llama-instruct,roc_auc,0.83,,,single-seed mean across layers
+Figure 2b,early_trajectory,llama-instruct,llama-instruct,roc_auc,0.63,,,single-seed mean across layers
+Figure 2b,final_state,llama-instruct,llama-instruct,roc_auc,0.81,,,single-seed mean across layers
+Table 3,step_count,llama-instruct,llama-instruct,roc_auc,0.649,0.021,,best layer averaged over three seeds
+Table 3,logit_lens,llama-instruct,llama-instruct,roc_auc,0.765,0.027,,best configuration averaged over three seeds
+Table 3,late_trajectory,llama-instruct,llama-instruct,roc_auc,0.852,0.039,,best layer averaged over three seeds
+Table 8,final_state,llama-instruct,llama-instruct,roc_auc,0.837,0.016,29,three seeds
+Table 8,final_state_pca,llama-instruct,llama-instruct,roc_auc,0.859,0.023,19,three seeds
+Table 8,late_trajectory_pca,llama-instruct,llama-instruct,roc_auc,0.853,0.038,21,three seeds

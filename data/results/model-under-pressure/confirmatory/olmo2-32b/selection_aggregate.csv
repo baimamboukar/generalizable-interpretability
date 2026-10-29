@@ -1,0 +1,9 @@
+model_key,probe,strategy,diagnostic_only,selected_layers,n_seeds,test_macro_auroc_mean,test_macro_auroc_standard_deviation,test_macro_auroc_min,test_macro_auroc_max,uncertainty_note
+olmo2-32b,attention,dev_selected,False,38;38;38,3,0.8911343027510448,0.0,0.8911343027510448,0.8911343027510448,raw three-seed SD and range; no three-point percentile CI
+olmo2-32b,attention,oracle_test,True,46;46;46,3,0.9065961261173291,0.0,0.9065961261173291,0.9065961261173291,raw three-seed SD and range; no three-point percentile CI
+olmo2-32b,attention,relative_depth,False,25;25;25,3,0.8687144625903022,0.0,0.8687144625903022,0.8687144625903022,raw three-seed SD and range; no three-point percentile CI
+olmo2-32b,attention,sparse_grid,False,38;38;38,3,0.8911343027510448,0.0,0.8911343027510448,0.8911343027510448,raw three-seed SD and range; no three-point percentile CI
+olmo2-32b,softmax,dev_selected,False,38;38;38,3,0.9045272169401158,0.0,0.9045272169401158,0.9045272169401158,raw three-seed SD and range; no three-point percentile CI
+olmo2-32b,softmax,oracle_test,True,38;38;38,3,0.9045272169401158,0.0,0.9045272169401158,0.9045272169401158,raw three-seed SD and range; no three-point percentile CI
+olmo2-32b,softmax,relative_depth,False,25;25;25,3,0.8690075096944091,0.0,0.8690075096944091,0.8690075096944091,raw three-seed SD and range; no three-point percentile CI
+olmo2-32b,softmax,sparse_grid,False,38;38;38,3,0.9045272169401158,0.0,0.9045272169401158,0.9045272169401158,raw three-seed SD and range; no three-point percentile CI

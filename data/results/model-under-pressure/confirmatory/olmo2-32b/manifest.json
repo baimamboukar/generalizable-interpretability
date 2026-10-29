@@ -1,0 +1,94 @@
+{
+  "analysis_id": "mup-prospective-holdout-v1",
+  "cluster_definition": {
+    "anthropic_hh_balanced": "index",
+    "aya_redteaming_balanced": "ids",
+    "mental_health_balanced": "ids",
+    "mt_balanced": "sample_name",
+    "mts_balanced": "original_id",
+    "toolace_balanced": "sha256(original_system_prompts)"
+  },
+  "coverage": {
+    "complete": true,
+    "expected_records": 360,
+    "missing_record_count": 0,
+    "missing_records_preview": [],
+    "missing_seed_files": [],
+    "observed_records": 360,
+    "unexpected_records": []
+  },
+  "model": {
+    "activation_site": "decoder block input (pre-block residual stream; closest structural analogue in post-normalization OLMo 2)",
+    "architecture_adapter": "olmo2_decoder_block_input",
+    "candidate_layers": [
+      22,
+      25,
+      30,
+      38,
+      46,
+      54
+    ],
+    "model_config": "llama-70b",
+    "model_id": "allenai/OLMo-2-0325-32B-Instruct",
+    "num_hidden_layers": 64,
+    "revision": "b96024342a77a69aa0dda815c3454a671f477463",
+    "sparse_grid_layers": [
+      22,
+      30,
+      38,
+      46,
+      54
+    ]
+  },
+  "model_key": "olmo2-32b",
+  "outputs": {
+    "full_pipeline_aggregate.csv": "6c3e61fe476e671f8d2f7ee1c92494fda6576e2c2f12358b9cde23f778ac10d9",
+    "full_pipeline_layer_selection.csv": "65577562f5dfc4445a4106a1bddc362d52b5436604a7810f8fa79e0c43e489fe",
+    "full_pipeline_seed.csv": "b2c54b123cf765c305522df858321ce6d30a5b98788c2f5731e0a7603c257dcd",
+    "metrics.csv": "1c7f606ecf87a473ae817908988b1f4b6b20f91307d18bf7fd07fc8433215b03",
+    "paired_probe_differences.csv": "2e388a5fc870bae04344d446e84e69e82771a566efb3fa6ab085584758b50fdd",
+    "rows.jsonl": "0b9ad7f43c79b1abcda32ce6e0e6008689740a047ff3b49d51457e1ad635a6de",
+    "seed_aggregate.csv": "57383e5fed3f81763430ed8814532a5d06a6cbd8c2fa77d9d7e916232c606b22",
+    "selection_aggregate.csv": "7d19e50e8117f652d394f851fb448d124015b8d457a855d2e54eb506ba085c03",
+    "selections.csv": "4078cd7a6df8c8ed7bd6d8e2cdd5d1f861717ed96e0e8a317e0172ee44e526ec"
+  },
+  "protocol_sha256": "e545f83a2864c138b2701340621d9e01771ec6bc0337df8b9364722c728b60d2",
+  "run_contract": {
+    "activation_provenance_rows": 72,
+    "activation_provenance_sha256": "10ce79fef2b831fbbb0382f770de0e7657dfee79d5e4307d1ae2f5c40be6ff3e",
+    "activation_site": "decoder block input (pre-block residual stream; closest structural analogue in post-normalization OLMo 2)",
+    "dataset_sha256": {
+      "data/evals/dev/anthropic_hh_balanced.jsonl": "2ef2c2dc39a4bfcf09de783f1abf48440acc427218d50dec37ae147b38f7e7f0",
+      "data/evals/dev/mt_balanced.jsonl": "11af6f75872828cf4c8aa1b84b258aba9a09a7b7006e2beafa255a9b00dfaab4",
+      "data/evals/dev/mts_balanced.jsonl": "1198502f19de8d635edd2e7d1810d320590b44c5c65a4f2ed3230d20d4474541",
+      "data/evals/dev/toolace_balanced.jsonl": "a43033a4da0cf80daf59b227f5f0720b05d26c5c54ad1a8ac86feca53d754437",
+      "data/evals/test/anthropic_hh_balanced.jsonl": "9ea4beff6de77023044373f44c67de1dbea09708e2af63d9dfcaa964998daf1d",
+      "data/evals/test/aya_redteaming_balanced.jsonl": "08eeb689e2959f440b5deceb36e8e31f60b0276ced50528b1d461d8751549747",
+      "data/evals/test/mental_health_balanced.jsonl": "259c15a56d49ee79de4ddb8615b10ff914305f96dc714abc7162d0d39183f2ea",
+      "data/evals/test/mt_balanced.jsonl": "130204f3a88f3d566089543ff02a748736dae7a94003ea562078d6727e35b1db",
+      "data/evals/test/mts_balanced.jsonl": "53eb395e2f6641f623ae3bf771e5f6d599ee68cbeb7d39a954544341401be91a",
+      "data/evals/test/toolace_balanced.jsonl": "113cd19cd8d6b17ff6cb26823abb546db2b409afba3325d0639446a6758daae0",
+      "data/training/prompts_4x/test.jsonl": "6af73f76248f46547cfbf346ba15cf0fafb5eac3986faae43de61c5e1660621f",
+      "data/training/prompts_4x/train.jsonl": "04216df3a8b3ebf3ffb617f1a6701b0429964d28a6c6df677896359891fe2f34"
+    },
+    "evaluation_entrypoint_sha256": "323cc89adb0299ab96e86fca2bf194f1ded93ba7d7e01a9164728fa6c90f6986",
+    "model": "allenai/OLMo-2-0325-32B-Instruct",
+    "model_revision": "b96024342a77a69aa0dda815c3454a671f477463",
+    "runtime": {
+      "models_under_pressure": "0.1.0",
+      "python": "3.12.14",
+      "torch": "2.7.0",
+      "torchvision": "0.22.0",
+      "transformers": "4.56.2"
+    },
+    "upstream_source_tree": {
+      "file_count": 112,
+      "sha256": "c3a8b8d6f49b8d9d8ade9040233ae78a33185f16737b75fabf4ed81c4fbca1ee"
+    },
+    "wrapper_sha256": "c4ed11f21f1377054961c74559c9198d2609c512726ceb3181e5537f500178ae"
+  },
+  "run_sha256": "5104c3235bcffc21823528db06d8b8c33d37eae23e9f6d1441cad7b106b0655d",
+  "schema_version": 1,
+  "selection_note": "oracle_test is a diagnostic upper bound and is excluded from confirmatory claims",
+  "source_artifact": "/Users/baimamboukar/Desktop/RESEARCH/neuroscience/JinesisLab/generalizable-interpretability/artifacts/models-under-pressure/mup-prospective-holdout-v1-olmo2-32b"
+}

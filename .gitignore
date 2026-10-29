@@ -25,5 +25,5 @@ __pycache__/
 /tmp/
 /tables_out/
 *.inspect.ndjson
-
+scripts
 /replications/

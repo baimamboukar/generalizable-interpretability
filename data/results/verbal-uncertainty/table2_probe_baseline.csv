@@ -1,0 +1,13 @@
+model,dataset,method,paper_auroc,paper_accuracy,replication_auroc,replication_accuracy,delta_auroc,delta_accuracy,source
+Llama-3.1-8B-Instruct,TriviaQA,SEP,0.6685,0.660,,,,,Table 2
+Llama-3.1-8B-Instruct,TriviaQA,EigenScore,0.6483,0.535,,,,,Table 2
+Llama-3.1-8B-Instruct,TriviaQA,calculated uncertainty,0.7971,0.808,,,,,Table 2
+Llama-3.1-8B-Instruct,TriviaQA,probe-predicted uncertainty,0.7353,0.801,0.772497954731388,0.775,0.037197954731388,-0.026,Table 2
+Llama-3.1-8B-Instruct,NQ-Open,SEP,0.5407,0.539,,,,,Table 2
+Llama-3.1-8B-Instruct,NQ-Open,EigenScore,0.5629,0.493,,,,,Table 2
+Llama-3.1-8B-Instruct,NQ-Open,calculated uncertainty,0.6602,0.703,,,,,Table 2
+Llama-3.1-8B-Instruct,NQ-Open,probe-predicted uncertainty,0.5715,0.713,0.5652173913043478,0.573,-0.0062826086956522,-0.14,Table 2
+Llama-3.1-8B-Instruct,PopQA,SEP,0.7017,0.656,,,,,Table 2
+Llama-3.1-8B-Instruct,PopQA,EigenScore,0.5933,0.449,,,,,Table 2
+Llama-3.1-8B-Instruct,PopQA,calculated uncertainty,0.7566,0.811,,,,,Table 2
+Llama-3.1-8B-Instruct,PopQA,probe-predicted uncertainty,0.7476,0.810,0.8164099728470986,0.723,0.0688099728470986,-0.087,Table 2

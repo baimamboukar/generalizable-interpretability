@@ -1,0 +1,46 @@
+{
+  "baseline_comparison_rows": 259,
+  "baseline_statuses": {
+    "Qwen3 selected-model baseline reproduced": 1,
+    "Table 2 primary baseline regenerated with mixed fidelity": 1,
+    "blocked by missing evaluation texts": 1,
+    "blocked by missing outputs and labels": 1,
+    "blocked by paper-code and artifact gaps": 1,
+    "blocked by protocol mismatch": 1,
+    "blocked by release runtime mismatch": 1,
+    "blocked by released pipeline defects": 1,
+    "first attempt blocked by environment mismatch": 1,
+    "headline reproduced with activation-site mismatch": 1,
+    "linear path available; architecture claim artifact-limited": 1,
+    "not reproduced": 2,
+    "principal exact-answer claim reproduced": 1,
+    "qualitative and aggregate baseline reproduced; exact table partial": 1,
+    "reduced selected-layer replication successful": 1,
+    "released demo verified; independent baseline unavailable": 1,
+    "selected Llama condition reproduced": 1,
+    "setup only": 1,
+    "setup only; release unverified": 1,
+    "successful": 3
+  },
+  "baseline_studies": 12,
+  "evaluation_contract_rows": 12,
+  "extension_rows": 68,
+  "extension_studies": 10,
+  "inventory_rows": 23,
+  "notes": [
+    "Blank fields mean unavailable, not zero.",
+    "Metrics in baseline_fidelity.csv are normalized to fractions.",
+    "Oracle-selected extension rows remain diagnostics and are not converted into generalization claims.",
+    "Legacy studies without row-level predictions are marked explicitly in artifact_coverage.csv."
+  ],
+  "roles": {
+    "artifact audit": 10,
+    "baseline failure": 2,
+    "out of scope": 1,
+    "positive control": 3,
+    "post-freeze positive control": 1,
+    "primary anchor": 3,
+    "supporting evidence": 3
+  },
+  "schema_version": "1.0.0"
+}
