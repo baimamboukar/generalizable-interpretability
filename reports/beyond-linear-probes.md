@@ -6,16 +6,15 @@ evaluated higher-order neuron interactions. The headline claim is that a
 single fifth-order, symmetric-CP polynomial can trade inference compute for
 safety-monitoring F1 and can run as an adaptive cascade.
 
-## Baseline target
+## Baseline Target
 
 Reproduce Figure 2 and Table 1 on WildGuardMix for Gemma-3-27B-it,
 Qwen3-30B-A3B-Base, GPT-OSS-20B, and Llama-3.2-3B. The paper uses mean-pooled
 residual-stream activations, fifth-order TPCs with rank 64, matched linear,
 bilinear, MLP, and early-exit MLP baselines, five seeds, and the released
-validation-selected layers. Paper values are frozen in
-`data/results/beyond-linear-probes/baseline_targets.csv`.
+validation-selected layers.
 
-## Release audit
+## Release Audit
 
 | Item | State |
 | :--- | :--- |
@@ -28,14 +27,16 @@ validation-selected layers. Paper values are frozen in
 | Qwen3 WildGuard filenames | Extractor and monitor disagree (`wildguard_train/test` vs `train/test`) |
 | Author hardware | NVIDIA A100 40GB |
 | Replication extraction runtime | Eager PyTorch execution after the released `torch.compile` path stalled; source and activation operations were unchanged |
-| Retained baseline metrics | Released outputs contain aggregate F1; extension sidecars will add thresholds, confusion matrices, and row-level predictions |
+| Retained baseline metrics | Released outputs contain aggregate F1; this summary does not establish complete threshold or row-level coverage |
 
-## Baseline replication
+## Baseline Replication
 
 We reproduced the selected Llama-3.2-3B layer-16 WildGuardMix condition with
 the released extraction and training scripts. The comparison uses the paper's
-five seeds, validation split, hyperparameter sweeps, progressive fifth-order
-rank-64 TPC, and matched probe baselines.
+validation split, hyperparameter sweeps, progressive fifth-order rank-64 TPC
+and matched probe families. Nonlinear results aggregate five fits; the retained
+linear result comes from one fit. This imbalance limits comparisons of fitting
+variability and does not support a significance claim.
 
 | Probe | Paper test F1 | Replication test F1 | Delta |
 | :--- | ---: | ---: | ---: |
@@ -52,15 +53,27 @@ not every model and layer reported in Table 1.
 
 ![Paper versus replication](../figures/beyond-linear-probes/llama3-l16/paper_vs_replication.png)
 
-The plotting-ready validation and test results are stored in
-`data/results/beyond-linear-probes/baseline_replication.csv`; hashes and raw
-five-seed outputs are retained under `artifacts/beyond-linear-probes`.
-
 ## Extension
 
-The next experiment tests method generalization: retrain the same five probe
-architectures and paper settings on held-out model families, then compare their
-relative F1 and compute–performance curves with the replicated Llama baseline.
-This is cross-model evaluation of the method, not direct transport of one
-frozen probe between incompatible hidden-state spaces. Extension sidecars will
-also retain thresholds, confusion matrices, and row-level predictions.
+We retrained the same five probe architectures on WildGuardMix activations from
+GLM-4-9B-0414, Mistral-Small-24B-Instruct-2501, and Phi-4-14B. This evaluates
+cross-model generalization of the training method, not transfer of one frozen
+probe between incompatible hidden-state spaces.
+
+| Model | Mean F1 | Best probe | TPC gain over linear |
+| :--- | ---: | :--- | ---: |
+| Llama-3.2-3B replication | 84.00% | TPC, 84.81% | +1.55 pp |
+| GLM-4-9B-0414 | 86.80% | Bilinear, 87.17% | +0.66 pp |
+| Mistral-Small-24B-Instruct-2501 | 87.17% | Early-exit MLP, 87.75% | +0.80 pp |
+| Phi-4-14B | 87.62% | MLP, 88.17% | +0.60 pp |
+
+![Baseline replication and cross-model extension](../figures/beyond-linear-probes/baseline_vs_extensions.png)
+
+All three extension models exceeded the replicated Llama baseline in absolute
+F1, and TPC outperformed the linear probe on every model. However, TPC was not
+consistently the best architecture: bilinear, early-exit MLP, and MLP probes
+ranked first on GLM, Mistral, and Phi respectively, with small numerical differences and unequal fitting repetitions. We therefore classify the extension as a
+**generalization success**, while the stronger claim of universal TPC dominance
+is not supported. The comparison covers one dataset and one selected layer per
+extension model; larger extension models may also contribute to their higher
+absolute scores.

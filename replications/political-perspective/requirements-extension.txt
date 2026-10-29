@@ -1,8 +1,0 @@
-accelerate==1.9.0
-numpy==2.2.6
-pandas==2.3.1
-scikit-learn==1.7.1
-scipy==1.15.3
-torch>=2.7,<2.8
-tqdm==4.67.1
-transformers==4.53.3

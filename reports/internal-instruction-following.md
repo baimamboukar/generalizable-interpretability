@@ -2,9 +2,6 @@
 
 [Paper](https://arxiv.org/abs/2410.14516) · ICLR 2025 · [Released code](https://github.com/apple/ml-internal-llms-instruction-following)
 
-See also: [Generalization analysis](generalization.md) — taxonomy of why
-instruction-type transfer fails across model families.
-
 This ICLR 2025 paper tests whether an instruction-tuned model's hidden state
 predicts whether its eventual answer will follow an instruction. It trains a
 bias-free linear sigmoid probe on first-, middle-, and last-response-token
@@ -25,8 +22,8 @@ large opposing shifts that cancel in the aggregate. Unseen-instruction-type
 aggregates remain close to the paper for all four models. The extension supports
 the central distinction: probes transfer across unseen tasks, while
 instruction-type generalization is not robust across model families, layers, or
-the on-policy label distribution. Controlled GLM ablations identify response
-policy and its induced label distribution as the strongest observed driver.
+the on-policy label distribution. Controlled GLM comparisons show sensitivity to the response-and-label
+distribution, without separately identifying the effects of responses and labels.
 
 This report covers the probe results in Tables 1–2. The Table 4
 representation-engineering intervention is outside the completed scope.
@@ -47,7 +44,7 @@ accuracy, precision, recall, specificity, FPR, FNR, F1, and row-level scores.
 The extension deliberately preserves the release's hard-coded Llama-2 prompt
 template for every model. Controlled ablations below test that choice directly.
 
-## Baseline replication
+## Baseline Replication
 
 | Model | Unseen tasks: paper | Replication | MAE | Unseen types: paper | Replication | MAE |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -65,7 +62,7 @@ than five.
 
 ![Paper versus baseline replication](../figures/internal-instruction-following/paper_vs_replication_completed.png)
 
-## Cross-model extension
+## Cross-model Extension
 
 | Model | Layers | Answer success | Unseen tasks | Best task cell | Unseen types, early layer | Best type cell | Valid type folds |
 | :--- | :--- | ---: | ---: | :--- | ---: | :--- | :--- |
@@ -85,7 +82,7 @@ on-policy answers, and the tables retain the resulting coverage.
 
 ![Extension layer profiles](../figures/internal-instruction-following/extension_layer_profiles.png)
 
-## Generalization failure analysis
+## Generalization Failure Analysis
 
 The failure is concentrated in unseen instruction types, not unseen tasks.
 Qwen, GLM, and Gemma retain 0.8971, 0.6867, and 0.6975 mean unseen-task AUROC,
@@ -95,16 +92,15 @@ on this test, so the extension does not show a new universal failure. It shows
 that the paper's main limitation persists across model families and becomes
 less stable.
 
-The clearest observed mechanism is model-dependent on-policy label shift. Each
+Model-dependent label distributions are an observed limitation. Each
 model generates its own answers and therefore changes both the activations and
 the IFEval success distribution. Qwen produces two all-positive instruction
 types, Gemma produces one all-negative type, and those held-out AUROCs become
-undefined. The probe therefore appears to learn instruction-specific behavioral
-correlates rather than a model-invariant instruction-following direction. Layer
+undefined. These results limit conclusions about an instruction-invariant signal. Layer
 sensitivity is a second factor: later GLM and Gemma cells outperform the
 paper-aligned early layer.
 
-### Normalization control
+### Normalization Control
 
 | Model | Evaluation | Released split-wise | Train-fitted | Difference |
 | :--- | :--- | ---: | ---: | ---: |
@@ -119,7 +115,7 @@ only on training data leaves the qualitative result unchanged. The release's
 split-wise normalization is therefore a specification weakness, but it does
 not explain the cross-instruction-type result.
 
-### GLM causal follow-up
+### GLM Controlled Follow-up
 
 | Condition at L47 | Responses | Prompt template | Unseen tasks | Unseen instruction types |
 | :--- | :--- | :--- | ---: | ---: |
@@ -129,27 +125,22 @@ not explain the cross-instruction-type result.
 | Response-policy control | Llama-2-13B answers | Released Llama-2 | 70.65% | 55.02% |
 
 A nested selector that excluded each outer test type chose L47 in all five
-folds, yet achieved only 48.37% unseen-type AUROC. Layer choice therefore does
-not explain the failure. Teacher-forcing the original GLM answers reproduced
+folds, yet achieved only 48.37% unseen-type AUROC. This selection procedure did not resolve the low unseen-type score. Teacher-forcing the original GLM answers reproduced
 the generated-response result within 1.24 points, validating the control.
 
 Changing only the prompt template reduced unseen-type AUROC by 4.22 points.
 Holding the GLM architecture and released template fixed while substituting
 Llama-2-13B answers increased it by 5.40 points to 55.02%, close to the Llama
-baseline's 54.15%. The strongest measured explanation is thus model-dependent
-on-policy response and label shift, not the sampled layer or prompt format. This
-does not establish architecture independence; it shows that the same GLM model
-yields more transferable representations on a different response distribution.
+baseline's 54.15%. Responses and labels change together in this condition, so
+their separate effects are not identified. The result shows sensitivity to the
+evaluated response distribution while the GLM model is held fixed.
 
-![GLM causal controls](../figures/internal-instruction-following/glm_causal_controls.png)
+![GLM controlled comparisons](../figures/internal-instruction-following/glm_causal_controls.png)
 
-The same factorial response-policy and prompt-template controls are frozen for
-Qwen3-14B and Gemma-4-12B-IT. They also compare the released per-split
-normalization with normalization fitted on training data only. These conditions
-are pending and the cross-family mechanism claim remains provisional until
-they are complete.
+The completed response-policy comparison is limited to GLM. It does not
+establish that the same effect holds across other model families.
 
-## Reproducibility boundaries
+## Reproducibility Boundaries
 
 | Item | Paper or release | Replication decision |
 | :--- | :--- | :--- |
@@ -164,13 +155,3 @@ they are complete.
 The upstream Apple checkout remains unchanged at `7ed7558`. The wrapper fixes
 only execution boundaries, calls the released activation script, and uses a
 pinned Google IFEval evaluator.
-
-## Artifacts
-
-- Paper-aligned baseline table: `data/results/internal-instruction-following/baseline_comparison.csv`
-- Plotting-ready AUROC table: `data/results/internal-instruction-following/results_long.csv`
-- Full available diagnostics: `data/results/internal-instruction-following/metrics_long.csv`
-- Per-run results: `data/results/internal-instruction-following/run_metrics.csv`; legacy baseline rows explicitly mark unavailable confusion matrices
-- GLM causal controls: `data/results/internal-instruction-following/glm_causal_controls.csv`
-- Leakage-free GLM layer selection: `data/results/internal-instruction-following/glm_layer_selection.csv`
-- Row-level scores, predictions, and directions from the diagnostic runs: public Hugging Face artifact bucket

@@ -1,18 +1,16 @@
 # Among Us Probe Replication
 
-See also: [Generalization analysis](generalization.md) — taxonomy of why this method failed to transfer.
-
 **Paper** | [Among Us: A Sandbox for Measuring and Detecting Agentic Deception](https://arxiv.org/abs/2504.04072)
 **Code** | [Official repository](https://github.com/7vik/AmongUs)
 **Scope** | Phi-4 linear-probe baseline plus cross-model and layer extensions.
 
-## Baseline verdict
+## Baseline Verdict
 
 **Not replicated.** We ran the released Phi-4@L20 Figure 7 path with its public
 data, unchanged dataset and preprocessing classes, literal model loader, and
 unchanged probe trainer. The reconstructed probes learned strong in-domain
 classifiers, but the reported cross-dataset generalization matrix did not
-reappear, not even close. Mean AUROC across the 20 Figure 7 cells fell from **0.8468** to
+reappear at the reported magnitude. Mean AUROC across the 20 Figure 7 cells fell from **0.8468** to
 **0.7339**. The authors' released checkpoints scored **0.5462** on the same
 reconstructed cache.
 
@@ -20,10 +18,10 @@ reconstructed cache.
 | :---- | ----: | -----: | :--------------- | :-------------------------------------------------- | :------------------------------ |
 | Phi-4 | 20/40 |      5 | Bias-free linear | Adam, LR`0.001`, WD `0.001`, 4 epochs, batch 32 | First 80% train / last 20% test |
 
-> NB: The paper and config also states 10 tokens, but the released Figure 7 script
-> hard-codes 5. The comparison below follows the released Figure 7 path.
+The paper and configuration specify 10 tokens, while the released Figure 7 script
+hard-codes 5. The comparison below follows the released Figure 7 path.
 
-## Paper vs replication
+## Paper Vs Replication
 
 Here, one row is one train and evaluation cell. `Delta = replication - paper`.
 
@@ -51,7 +49,7 @@ Here, one row is one train and evaluation cell. `Delta = replication - paper`.
 | Phi-4               |    20 |      5 | RepEng        | Deception         |           0.9956 |            0.6479 |           -0.3478 |                    0.5392 |
 | **Cell mean** |    — |     — | —            | —                | **0.8468** |  **0.7339** | **-0.1129** |          **0.5462** |
 
-## Cross-model extension
+## Cross-model Extension
 
 The extension keeps the released five-token probe, four training datasets,
 ordered splits, optimizer, and evaluation protocol. Means use the same 20 cells
@@ -92,12 +90,7 @@ Both remain just below the reconstructed Phi-4 baseline (`-0.0062` and
 `0.8647` at L16 to `0.9815` at L48, while cross-dataset AUROC plateaus near
 `0.665`, again separating probe fitting from transfer.
 
-Plot-ready files:
-
-- `data/results/among-us/probe_results_summary.csv` — paper, baseline, and one row per extension layer.
-- `data/results/among-us/extension_probe_results.csv` — all 216 Llama, Gemma, and Qwen cells with AUROC, accuracy, precision, recall, and F1, including role prediction.
-
-## Failure taxonomy
+## Failure Taxonomy
 
 | Class                             | Finding                 | Evidence                                                                                                                                                    |
 | :-------------------------------- | :---------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |

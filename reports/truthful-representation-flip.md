@@ -5,12 +5,12 @@ when an instruction asks a model to answer deceptively. It trains layer-wise
 linear and TTPD probes on the final pre-generation residual-stream state of
 Llama-3.1-8B-Instruct and Gemma-2-9B-Instruct.
 
-## Baseline target
+## Baseline Target
 
 Reproduce Figures 2 and 3: truth-value probe accuracy across layers under
 truthful, neutral, and deceptive instructions, including cross-topic transfer.
 
-## Release audit
+## Release Audit
 
 | Item | State |
 | :--- | :--- |
@@ -25,7 +25,7 @@ truthful, neutral, and deceptive instructions, including cross-topic transfer.
 The affirmative and negated Figure 2 dataset counts match the paper. Minor
 count discrepancies remain for CounterFact and one logical dataset.
 
-## Current verdict
+## Current Verdict
 
 **Standby: the baseline is recoverable, but the public release is not directly
 paper-faithful.** Reproduction would require a documented reconstruction from

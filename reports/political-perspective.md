@@ -1,6 +1,4 @@
-# Linear Representations of Political Perspective Emerge in LLMs
-
-See also: [Generalization analysis](generalization.md) — taxonomy of why this method transfers unevenly.
+# Linear Representations Of Political Perspective Emerge In LLMs
 
 The paper asks whether American liberal–conservative perspective is encoded as
 a linear direction inside LLM attention heads. It fits ridge regressions from
@@ -10,7 +8,7 @@ Spearman correlations of 0.846–0.861 across three 7B chat/instruction models;
 top-head ensembles transfer to independently labelled news outlets, and the
 learned directions are also used for steering.
 
-## Baseline contract
+## Evaluation Protocol
 
 | Item | Released specification |
 | :--- | :--- |
@@ -24,7 +22,7 @@ learned directions are also used for steering.
 | Regularization | `lambda=1`, selected from seven values |
 | Primary targets | Figure 2; Table A3; Figure 3 |
 
-## Initial audit
+## Release Audit
 
 The official repository and OSF release contain the notebooks, custom Llama
 attention hook, both source datasets, all three models' politician/news
@@ -45,7 +43,7 @@ the notebook's unpinned `accelerate` install and `pyvene`'s exact Hub pin. The
 reconstruction therefore uses `accelerate==0.27.2` with
 `huggingface-hub==0.20.3`; this remains an environment specification gap.
 
-## Released-artifact diagnostic
+## Released-artifact Diagnostic
 
 The three released performance matrices reproduce the paper's peak
 single-head values and locations exactly to the reported precision. This
@@ -58,7 +56,7 @@ replication.
 | Mistral-7B-Instruct-v0.1 | 0.8463 | 0.846261 | 16 | 3 |
 | Vicuna-7B-v1.5 | 0.8612 | 0.861170 | 24 | 8 |
 
-## Replication status
+## Replication Status
 
 The released notebook independently reproduces the Figure 2 peak single-head
 probe correlations and the exact peak layer/head locations.
@@ -90,7 +88,13 @@ experiment and is outside the probe-only scope.
 
 ![Remaining baseline claims](../figures/political-perspective/remaining_baseline_claims.png)
 
-## Cross-model extension
+## Cross-model Extension
+
+The results below are exploratory peak searches. Architectures expose unequal
+numbers of heads and layers, so these maxima receive unequal search budgets and
+cannot by themselves establish an architecture effect. A frozen nested
+reanalysis now gives every model 512 candidate heads per seed and selects them
+inside the training folds; the test fold is not used for selection.
 
 The extension preserves the 552 politicians, raw prompt, final-token
 pre-projection head activations, ridge configuration, and two-fold split. It
@@ -108,6 +112,7 @@ fits a separate probe for every attention head in every layer.
 failing universally. Gemma and Phi match or exceed the paper-model range,
 whereas Qwen and GLM fall by approximately 0.029 and 0.047 relative to the
 original-paper mean. Within Gemma, scaling from 9B to 27B does not improve the
-peak result.
+peak result. This is an exploratory verdict pending the equal-budget nested
+analysis.
 
 ![Baseline replications versus cross-model extensions](../figures/political-perspective/baseline_vs_extensions.png)

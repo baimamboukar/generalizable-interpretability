@@ -1,19 +1,17 @@
-
-# Monitoring Latent World States with Propositional Probes
+# Monitoring Latent World States With Propositional Probes
 
 The paper introduces compositional probes that decode propositions from
 Tulu-2-13B activations. Layer-20 domain probes identify names, countries,
 occupations, and foods; a Hessian-derived binding subspace at layer 15 binds
 the detected values into propositions.
 
-## Baseline target
+## Baseline Target
 
 Reproduce the standard columns of Table 1 using the released probes and
 Hessian: `synth`, paraphrased English `para`, and Spanish `trans`, evaluated
-with exact match and Jaccard. Paper targets are frozen in
-`data/results/propositional-probes/baseline_targets.csv`.
+with exact match and Jaccard.
 
-## Release audit
+## Release Audit
 
 | Item                              | State                                                                   |
 | :-------------------------------- | :---------------------------------------------------------------------- |
@@ -26,9 +24,9 @@ with exact match and Jaccard. Paper targets are frozen in
 | Environment                       | Torch 2.1.0, Transformers 4.35.2, custom bundled TransformerLens        |
 | Paper compute                     | At most four A100 80GB; Hessian about five hours                        |
 
-## Current verdict
+## Current Verdict
 
-**Closed: exact baseline not reproducible from the public release.** We checked
+**Exact baseline blocked by missing evaluation texts.** We checked
 all remote refs, the complete Git history, the authors' public repositories,
 the arXiv source bundle, Hugging Face, and the official Drive archive. The
 labels can be regenerated exactly, but the GPT-3.5-generated `para` and

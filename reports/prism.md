@@ -11,20 +11,17 @@ complete Llama-2-7B/13B baseline closely. More importantly, the prompt-guided
 gain held for Llama-3.1, GLM-4, Qwen2.5, and Moonlight, supporting the paper’s
 central claim across every tested extension family.
 
-## Summary
-
-## Replication status
+## Replication Status
 
 The complete Llama-2-7B/13B baseline is reproduced. All 88 paper-target cells
-are complete. The official code and raw data are pinned at `b0953654`; paper
-targets remain frozen in `data/results/prism/baseline_targets.csv`.
+are complete. The official code and raw data are pinned at `b0953654`.
 
 The release contains no activations, checkpoints, or result artifacts. It also
 hardcodes Llama-2-7B and output paths in generation scripts. For 13B, our
 wrapper enables the release-provided commented model/path switches inside a
 verified artifact worktree. The pinned checkout remains unchanged.
 
-## Baseline results
+## Baseline Results
 
 | Model | Dataset | Probe | State | Paper | Replication | Delta |
 | :--- | :--- | :--- | :--- | ---: | ---: | ---: |
@@ -50,7 +47,7 @@ central result. Thirteen of sixteen aggregate cells are within 0.0064 accuracy
 of the paper. The largest difference remains 7B prompted LogicStruct SAPLMA
 at +0.0531.
 
-## Cross-model extension
+## Cross-model Extension
 
 The released probes were extended to four instruction-tuned model families.
 Prompt guidance improves all 16 model-dataset-probe comparisons.
@@ -68,7 +65,7 @@ Prompt guidance improves all 16 model-dataset-probe comparisons.
 
 ![PRISM cross-model generalization](../figures/prism/cross_model_generalization.png)
 
-## Configuration blockers
+## Implementation Constraints
 
 | Item | Release state |
 | :--- | :--- |
@@ -79,11 +76,3 @@ Prompt guidance improves all 16 model-dataset-probe comparisons.
 | Model revision | Not pinned |
 | Llama-2-13B | Release-provided switches enabled in a verified artifact worktree |
 | LogicStruct seeds | Paper specifies three seeds; no seed driver is released |
-
-## Artifacts
-
-- Plotting-ready full table: `data/results/prism/mega_table.csv`
-- Aggregate table: `data/results/prism/baseline_summary.csv`
-- Extension aggregates: `data/results/prism/extension_summary.csv`
-- Cross-model aggregates: `data/results/prism/cross_model_summary.csv`
-- Run log: `runs/prism/llama2-7b-a100-45916575.log` in the public artifact bucket

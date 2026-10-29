@@ -2,26 +2,26 @@
 
 **Paper:** [Neural Chameleons: Language Models Can Learn to Hide Their Thoughts from Activation Monitors](https://arxiv.org/abs/2512.11949)
 **Code:** [Official repository](https://github.com/mgm52/neural-chameleons)
-**Status:** Released demo verified; official paper targets frozen; independent
-baseline paused because required pretrained probes are missing from the release.
+**Status:** Released demonstration verified. The independent paper-level
+baseline is blocked by missing pretrained probes.
 
-## Replication scope
+## Replication Scope
 
-We will first test the paper's main Gemma-2-9B layer-12 model organism against
-the released concept, harmfulness, and deception probes. The initial runnable
-stage uses the authors' linked minimal reproduction unchanged. It is a release
-integrity check; the paper-level baseline will remain separate.
+The completed experiment evaluates the released Gemma-2-9B layer-12 model
+organism with the authors' minimal demonstration and thirteen probes. It tests
+the behaviour of the released artifacts. It does not independently reconstruct
+the training procedure or the paper-level evaluation.
 
 | Artifact                                    | Release status | Replication treatment         |
 | :------------------------------------------ | :------------- | :---------------------------- |
 | Full training/evaluation code               | Available      | Pinned unchanged              |
 | Rated synthetic and UltraChat-derived data  | Available      | Pinned unchanged              |
-| Pretrained probes required by full pipeline | Missing        | Do not substitute silently    |
-| Finetuned Gemma-2-9B checkpoint             | Available      | Run author-linked demo first  |
-| Thirteen logistic probe weights             | Available      | Run author-linked demo first  |
+| Pretrained probes required by full pipeline | Missing        | Independent baseline blocked    |
+| Finetuned Gemma-2-9B checkpoint             | Available      | Evaluated in released demonstration  |
+| Thirteen logistic probe weights             | Available      | Evaluated in released demonstration  |
 | Official result CSVs and plot code          | Available      | Regenerate as a release check |
 
-## Result table
+## Result Table
 
 | Phase          | Model                       | Layer | Probe set                         | Metric                             |              Paper | Replication |   Delta |
 | :------------- | :-------------------------- | ----: | :-------------------------------- | :--------------------------------- | -----------------: | ----------: | ------: |
@@ -40,20 +40,11 @@ FPR, the 11 training concepts fell from mean TPR `0.9483` to `0.1583`; the four
 unseen safety probes fell from `0.7683` to `0.1243`. These are targets recovered
 from released result files, not an independent replication result.
 
-Plot-ready artifacts:
-
-- `data/results/neural-chameleons/baseline_comparison.csv` — 27 paper-target
-  rows, including confidence intervals and empty replication/delta columns.
-- `data/results/neural-chameleons/released_demo_results.csv` — released demo
-  smoke test.
-
-The raw upstream stdout and regenerated PDFs remain unchanged on the Modal volume.
-
-## Setup finding
+## Release Limitations
 
 The clean official checkout cannot execute its advertised full-pipeline command:
 the selected pretrained probe directories are not released. In addition, the
 shipped `model_config_21preset.json` specifies one epoch, LR `8e-6`, and batch
 size 1/2, whereas the paper appendix reports three epochs, LR `2e-5`, and batch
-size 16. We therefore freeze these as specification/release gaps before choosing
-the paper-faithful training reconstruction.
+size 16. These specification and artifact gaps limit independent reconstruction
+of the paper-level experiment.

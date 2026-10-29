@@ -1,8 +1,0 @@
-accelerate==1.6.0
-baukit @ git+https://github.com/davidbau/baukit@9d51abd51ebf29769aecc38c4cbef459b731a36e
-numpy==1.26.4
-pandas==2.2.3
-scikit-learn==1.6.1
-torch==2.7.0
-tqdm==4.67.1
-transformers==4.49.0

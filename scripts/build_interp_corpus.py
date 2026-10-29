@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Build a unified interpretability corpus from the conference dumps in papers-base/.
+"""Build a unified interpretability corpus from the conference dumps in data/papers-base/.
 
-Scans every paper in papers-base/*.json (~52k across 9 venues), keeps the ones
+Scans every paper in data/papers-base/*.json (~52k across 9 venues), keeps the ones
 relevant to our reoriented direction — probing, steering / representation
 engineering, SAEs / dictionary learning, and mechanistic interpretability more
 broadly — and writes a single de-duplicated corpus that we filter down later.
@@ -25,7 +25,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC_DIR = ROOT / "papers-base"
+SRC_DIR = ROOT / "data" / "papers-base"
 DATA = ROOT / "data"
 DOCS = ROOT / "docs"
 DATA.mkdir(exist_ok=True)
@@ -249,7 +249,7 @@ def main():
     by_venue = Counter(r["venue"] for r in accepted)
     with_code = sum(1 for r in accepted if r["github"])
     L = ["# Unified Interpretability Corpus\n",
-         f"Harvested from {len(files)} conference dumps in `papers-base/` "
+         f"Harvested from {len(files)} conference dumps in `data/papers-base/` "
          f"({seen:,} papers scanned). Topic match on probing, steering, SAEs, and "
          "mechanistic interpretability (title + abstract + keywords).\n",
          f"\n**{len(accepted)} accepted** matched papers (de-duplicated), "

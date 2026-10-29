@@ -1,29 +1,29 @@
+# Local settings and credentials
 .claude/
+.env
+.env.*
+!.env.example
 
-# Python
+# Python and local caches
 __pycache__/
 *.py[cod]
 *.egg-info/
+.venv/
 .ipynb_checkpoints/
-
-# OS
-.DS_Store
-papers-base/
-
-# Folder that houses cloned repos for works to be replicated
-external/
-
-# Generated inspection and scratch artifacts
-tmp/
-tables_out/
-*.inspect.ndjson
+.pytest_cache/
+.ruff_cache/
 .cache/
-artifacts/
-.env
-writeup/
-write\ up/
-figures/model-under-pressure/qwen25_32b_*.pdf
-figures/model-under-pressure/qwen25_32b_*.svg
-figures/model-under-pressure/gemma4_31b_*.pdf
-figures/model-under-pressure/gemma4_31b_*.svg
-figures/beyond-linear-probes/paper_vs_replication.png
+.DS_Store
+
+# Local source checkouts and execution
+/external/
+/infra/
+/artifacts/
+/data/papers-base/
+/papers-base/
+/assets/
+/tmp/
+/tables_out/
+*.inspect.ndjson
+
+/replications/

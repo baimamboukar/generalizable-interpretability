@@ -7,7 +7,7 @@ then concatenates all heads and layers. The primary claim is that this compact
 feature transfers across Natural Questions and CNN/DailyMail as well as richer
 hidden-state and NLI detectors.
 
-## Baseline contract
+## Evaluation Protocol
 
 | Item | Specification |
 | :--- | :--- |
@@ -20,7 +20,7 @@ hidden-state and NLI detectors.
 | Evaluation | Two-fold validation and cross-task AUROC |
 | Primary target | Table 2, predefined spans and sliding window 8 |
 
-## Initial audit
+## Release Audit
 
 The official repository includes the full extraction and probing code, a
 vendored Transformers 4.32.0 checkout, four trained 7B classifiers, source
@@ -63,7 +63,7 @@ Table 4.
 
 ![Paper versus replication](../figures/lookback-lens/paper_vs_replication.png)
 
-## Cross-model extension
+## Cross-model Extension
 
 The released Llama-2 generations and GPT-4o labels were held fixed and
 teacher-forced through five instruction-tuned models. We recomputed every

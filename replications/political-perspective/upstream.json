@@ -1,8 +1,0 @@
-{
-  "repository": "https://github.com/JunsolKim/RepresentationPoliticalLLM",
-  "commit": "e746dd1e3838ee6966818fef5a9b2d4e107f1656",
-  "paper": "https://proceedings.iclr.cc/paper_files/paper/2025/file/1557cc3e1a67f985dbdb162db9963dd0-Paper-Conference.pdf",
-  "venue": "ICLR 2025",
-  "osf": "https://osf.io/d9y47/",
-  "python": "3.10.13"
-}

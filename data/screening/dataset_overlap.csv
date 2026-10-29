@@ -1,0 +1,15 @@
+left,right,relation,shared_unique,feature_reuse,evidence,caveat
+prism:true-false:facts,neural-chameleons:repe:true-false-facts,exact_statement_overlap,527,none established,external/PRISM/raw_data/true/facts.json | external/neural-chameleons/data/apollo_repe_deception/true_false_facts.csv,
+prism:logicstruct:affirmative-facts,neural-chameleons:repe:true-false-facts,exact_statement_overlap,543,none established,external/PRISM/raw_data/logic/facts.json | external/neural-chameleons/data/apollo_repe_deception/true_false_facts.csv,
+prism:true-false:facts,prism:logicstruct:affirmative-facts,exact_statement_overlap,480,Input condition and cached model revision need checking,external/PRISM/raw_data/true/facts.json | external/PRISM/raw_data/logic/facts.json,
+among-us:truthfulqa,among-us:dishonestqa,same_source_file,,No: different instruction/response conditions,external/AmongUs/linear-probes/probe_datasets.py,
+among-us:repeng,neural-chameleons:repe,source_lineage_candidate_unverified,,none established,external/AmongUs/linear-probes/probe_datasets.py | reports/among-us.md,Loader filename and recorded612 rows match; AmongUs CSV absent from local author checkout.
+llms-know:triviaqa-unfiltered-web,icr-probe:triviaqa-rc.nocontext,parent_dataset_family,,No: inputs/responses/labels/hook differ,external/llms-know/README.md | reports/icr-probe.md,
+llms-know:triviaqa-unfiltered-web,verbal-uncertainty:triviaqa-rc,parent_dataset_family,,No: different generation/judging/feature sites,external/llms-know/README.md | external/verbal-uncertainty/datasets/download_dataset.py,
+lookback-lens:contextual-nq,llms-know:nq-with-context,parent_dataset_family,,No: attention span factuality versus MLP answer correctness,reports/lookback-lens.md | external/llms-know/README.md,
+lookback-lens:contextual-nq,verbal-uncertainty:nq-open,parent_dataset_family,,No: contextual responses versus pre-answer uncertainty,reports/lookback-lens.md | replications/verbal-uncertainty/upstream.json,
+llms-know:hotpotqa,icr-probe:hotpotqa,parent_dataset_family,,none established,external/llms-know/src/generate_model_answers.py | reports/icr-probe.md,
+arithmetic-error-probing:structured-gsm8k,reasoning-trajectory:gsm8k,parent_dataset_family,,"No: transformed templates, traces, sample-selection and features differ",replications/arithmetic-error-probing/upstream.json | replications/reasoning-trajectory/upstream.json,
+thought-calibration:math500,reasoning-trajectory:math500,same_named_source_unjoined,,none established,reports/thought-calibration.md | reports/reasoning-trajectory.md,
+beyond-linear-probes:wildguard,models-under-pressure:high-stakes,related_safety_concepts_only,,No: task label and inputs differ,external/tpc/extract/extract_features_llama_base.py | reports/model-under-pressure.md,
+prism:logicstruct,disentangle-sycophancy:factorial-cities-spen,factual_family_related_unjoined,,No: changed conditions/labels,external/PRISM/README.md | external/disentangle-sycophancy/data/factorial/cities_pos_factorial.json | reports/disentangle-sycophancy.md,

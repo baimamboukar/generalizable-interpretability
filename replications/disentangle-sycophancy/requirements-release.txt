@@ -1,8 +1,0 @@
-# Compatibility fallback; the upstream uv.lock is authoritative.
-torch==2.8.0+cu126
-accelerate==1.10.1
-matplotlib==3.10.6
-numpy==2.3.3
-pandas==2.3.2
-scikit-learn==1.7.2
-transformers==4.56.2

@@ -1,7 +1,0 @@
-{
-  "repository": "https://github.com/fujie-math/PRISM",
-  "commit": "b0953654e3181cc3e4a158f0c4313b85c000d290",
-  "paper": "https://arxiv.org/abs/2411.04847",
-  "venue": "ACL 2025",
-  "python": "3.9.19"
-}
