@@ -1,0 +1,25 @@
+study,condition,group,metric,value,unit,source
+LLMs Know,Raw Agent,scientific,Mean Test AUROC,0.909928829524038,AUROC,llms-know-generalization/claude-raw-002/workspace/output/benchmark_submission.json
+LLMs Know,MCP-Assisted Agent,scientific,Mean Test AUROC,0.9099288263726398,AUROC,llms-know-generalization/claude-mcp-002/workspace/output/llms-know-b1c6683a/benchmark_submission.json
+LLMs Know,Raw Agent,scientific,Matched Outputs,36,count,llms-know-generalization/claude-raw-002/workspace/output/benchmark_submission.json
+LLMs Know,MCP-Assisted Agent,scientific,Matched Outputs,36,count,llms-know-generalization/claude-mcp-002/workspace/output/llms-know-b1c6683a/benchmark_submission.json
+Instruction Following,Raw Agent,scientific,Held-Out Tasks,0.8849466966465036,AUROC,internal-instruction-following/claude-raw-001/workspace/output/metrics.json
+Instruction Following,MCP-Assisted Agent,scientific,Held-Out Tasks,0.8849466966465034,AUROC,internal-instruction-following/claude-mcp-001/workspace/output/instruction-following-8aaa2n_0/summary.csv
+Instruction Following,Raw Agent,scientific,Held-Out Instruction Types,0.5611380567337455,AUROC,internal-instruction-following/claude-raw-001/workspace/output/metrics.json
+Instruction Following,MCP-Assisted Agent,scientific,Held-Out Instruction Types,0.5611380567337455,AUROC,internal-instruction-following/claude-mcp-001/workspace/output/instruction-following-8aaa2n_0/summary.csv
+Political Perspective,Raw Agent,scientific,Peak Spearman,0.8252048958903362,Spearman,political-perspective/claude-raw-001/workspace/output/metrics_summary.json
+Political Perspective,MCP-Assisted Agent,scientific,Peak Spearman,0.8252048958903362,Spearman,political-perspective/claude-mcp-001/workspace/output/political-perspective-zop44_6o/summary.json
+LLMs Know,Raw Agent,efficiency,Cost,1.0233602,USD,llms-know-generalization/claude-raw-002/session.json
+LLMs Know,MCP-Assisted Agent,efficiency,Cost,0.4227496,USD,llms-know-generalization/claude-mcp-002/session.json
+LLMs Know,Raw Agent,efficiency,API Time,171.132,seconds,llms-know-generalization/claude-raw-002/session.json
+LLMs Know,MCP-Assisted Agent,efficiency,API Time,54.237,seconds,llms-know-generalization/claude-mcp-002/session.json
+LLMs Know,Raw Agent,efficiency,Wall Time,36.511,seconds,llms-know-generalization/claude-raw-002/session.json
+LLMs Know,MCP-Assisted Agent,efficiency,Wall Time,1357.013,seconds,llms-know-generalization/claude-mcp-002/session.json
+Instruction Following,Raw Agent,efficiency,Cost,1.0772424000000003,USD,internal-instruction-following/claude-raw-001/session.json
+Instruction Following,MCP-Assisted Agent,efficiency,Cost,0.2087592,USD,internal-instruction-following/claude-mcp-001/session.json
+Instruction Following,Raw Agent,efficiency,API Time,178.454,seconds,internal-instruction-following/claude-raw-001/session.json
+Instruction Following,MCP-Assisted Agent,efficiency,API Time,20.363,seconds,internal-instruction-following/claude-mcp-001/session.json
+Political Perspective,Raw Agent,efficiency,Cost,0.7398014,USD,political-perspective/claude-raw-001/session.json
+Political Perspective,MCP-Assisted Agent,efficiency,Cost,0.23713400000000007,USD,political-perspective/claude-mcp-001/session.json
+Political Perspective,Raw Agent,efficiency,API Time,109.752,seconds,political-perspective/claude-raw-001/session.json
+Political Perspective,MCP-Assisted Agent,efficiency,API Time,31.241,seconds,political-perspective/claude-mcp-001/session.json
