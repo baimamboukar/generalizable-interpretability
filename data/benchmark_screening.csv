@@ -1,0 +1,24 @@
+study_id,decision,task_type,reason,report
+lookback-lens,selected,reproduce and generalize,Complete released-feature baseline and cross-dataset extension,reports/lookback-lens.md
+internal-instruction-following,selected,reproduce audit and generalize,Completed pilot with reproducible discrepancies and transfer tests,reports/internal-instruction-following.md
+political-perspective,selected,reproduce and generalize,Successful baseline and completed held-out Qwen3 task,reports/political-perspective.md
+prism,selected,reproduce and generalize,Complete Llama baseline and four-model extension,reports/prism.md
+models-under-pressure,selected,reproduce audit and generalize,Recovered baseline and completed sealed OLMo holdout,reports/model-under-pressure.md
+beyond-linear-probes,selected,reproduce and generalize,Recovered selected baseline and three-model extension,reports/beyond-linear-probes.md
+llms-know,selected,reproduce and generalize,Recovered baseline with cross-model and response-regime controls,reports/llms-know.md
+test-awareness-steering,selected,reproduce and audit,Recovered Qwen3 baseline with a documented peak-layer instability,reports/test-awareness-steering.md
+among-us,reserve,audit,Documented baseline failure suitable for a failure-detection task,reports/among-us.md
+implicit-personalization,reserve,reproduce and generalize,Reduced baseline is successful but the main stereotype claim remains untested,reports/implicit-personalization.md
+neural-chameleons,reserve,audit,Released demonstration works but the full baseline probes are unavailable,reports/neural-chameleons.md
+thought-calibration,reserve,audit,Linear assets are available but nonlinear implementations are missing,reports/thought-calibration.md
+verbal-uncertainty,reserve,reproduce and audit,Protocol replication is complete but generated artifacts are stochastic,reports/verbal-uncertainty.md
+sycophancy,blocked,audit,Checkpoints activations and exact result artifacts are missing,reports/sycophancy.md
+propositional-probes,blocked,reproduce,Required evaluation texts are missing,reports/propositional-probes.md
+icr-probe,blocked,reproduce,Outputs labels caching pipeline and checkpoints are missing,reports/icr-probe.md
+truthful-representation-flip,blocked,audit,Paper and released protocol do not match,reports/truthful-representation-flip.md
+disentangle-sycophancy,blocked,reproduce,Release and environment mismatches block a stable baseline,reports/disentangle-sycophancy.md
+caught-in-the-act,blocked,reproduce,Matching upstream code and artifacts remain unverified,reports/caught-in-the-act.md
+reasoning-trajectory,blocked,reproduce,Released runtime fails before producing the required artifacts,reports/reasoning-trajectory.md
+arithmetic-error-probing,blocked,reproduce,Generated samples activations checkpoints and baseline components are missing,reports/arithmetic-error-probing.md
+redeep,blocked,audit,The released evaluation path contains leakage and execution failures,reports/redeep.md
+layer-navigator,excluded,out of scope,The central task is activation steering rather than probe evaluation,reports/layer-navigator.md

@@ -1,0 +1,694 @@
+{
+  "name": "Agent-assisted probe reproduction benchmark",
+  "version": "0.3",
+  "tasks": [
+    {
+      "id": "lookback-lens-table2",
+      "title": "Lookback Lens Table 2",
+      "type": "reproduce",
+      "status": "development",
+      "split": "development",
+      "public": {
+        "paper": "https://aclanthology.org/2024.emnlp-main.84/",
+        "repository": "https://github.com/voidism/Lookback-Lens",
+        "commit": "e0a1fa3a898fbf6512af7be5567dea8ffe7a6620",
+        "target": "Reproduce the 12 Table 2 AUROC values from the released 7B annotations and lookback-ratio features.",
+        "inputs": [
+          "paper",
+          "pinned repository",
+          "two annotation files",
+          "two lookback-ratio feature files",
+          "Llama-2-7B tokenizer"
+        ],
+        "instruction": "Run the released probe workflow, record the 12 AUROC values, compare them with the paper, audit the protocol, and preserve the evidence.",
+        "expected_counts": {
+          "fitted_probes": 4
+        }
+      },
+      "evaluation": {
+        "result_tolerance": 0.01,
+        "results": [
+          {
+            "id": "predefined_nq_to_cnndm_train",
+            "target": 0.983,
+            "reproduced": 0.9870001496
+          },
+          {
+            "id": "predefined_nq_to_cnndm_test",
+            "target": 0.912,
+            "reproduced": 0.9141999181
+          },
+          {
+            "id": "predefined_nq_to_cnndm_transfer",
+            "target": 0.853,
+            "reproduced": 0.8530798695
+          },
+          {
+            "id": "predefined_cnndm_to_nq_train",
+            "target": 0.977,
+            "reproduced": 0.9844187839
+          },
+          {
+            "id": "predefined_cnndm_to_nq_test",
+            "target": 0.888,
+            "reproduced": 0.8720421485
+          },
+          {
+            "id": "predefined_cnndm_to_nq_transfer",
+            "target": 0.82,
+            "reproduced": 0.8200067879
+          },
+          {
+            "id": "window8_nq_to_cnndm_train",
+            "target": 0.883,
+            "reproduced": 0.8854488022
+          },
+          {
+            "id": "window8_nq_to_cnndm_test",
+            "target": 0.871,
+            "reproduced": 0.866076392
+          },
+          {
+            "id": "window8_nq_to_cnndm_transfer",
+            "target": 0.661,
+            "reproduced": 0.6582732417
+          },
+          {
+            "id": "window8_cnndm_to_nq_train",
+            "target": 0.862,
+            "reproduced": 0.8643794612
+          },
+          {
+            "id": "window8_cnndm_to_nq_test",
+            "target": 0.853,
+            "reproduced": 0.8470316076
+          },
+          {
+            "id": "window8_cnndm_to_nq_transfer",
+            "target": 0.66,
+            "reproduced": 0.6606275567
+          }
+        ],
+        "audit_items": []
+      }
+    },
+    {
+      "id": "internal-instruction-following-phi3",
+      "title": "Internal Instruction Following Phi-3",
+      "type": "reproduce",
+      "status": "development",
+      "split": "development",
+      "public": {
+        "paper": "https://arxiv.org/abs/2410.14516",
+        "repository": "https://github.com/apple/ml-internal-llms-instruction-following",
+        "target": "Reproduce the 12 unique Phi-3 probe cells from Tables 1 and 2 using the released activations and labels.",
+        "inputs": [
+          "number-blinded paper",
+          "pinned repository",
+          "Phi-3 activations",
+          "IFEval responses and labels"
+        ],
+        "instruction": "Reproduce and record the 12 AUROC values before opening the published values, then compare the results, audit the protocol, and preserve the evidence.",
+        "minimum_counts": {
+          "candidate_probe_fits": 57
+        }
+      },
+      "evaluation": {
+        "result_tolerance": 0.03,
+        "results": [
+          {
+            "id": "task_l14_first",
+            "target": 0.88,
+            "reproduced": 0.8853
+          },
+          {
+            "id": "task_l14_middle",
+            "target": 0.56,
+            "reproduced": 0.5456
+          },
+          {
+            "id": "task_l14_last",
+            "target": 0.86,
+            "reproduced": 0.6859
+          },
+          {
+            "id": "task_l26_first",
+            "target": 0.85,
+            "reproduced": 0.8694
+          },
+          {
+            "id": "task_l26_middle",
+            "target": 0.56,
+            "reproduced": 0.5677
+          },
+          {
+            "id": "task_l26_last",
+            "target": 0.83,
+            "reproduced": 0.6651
+          },
+          {
+            "id": "task_l32_first",
+            "target": 0.65,
+            "reproduced": 0.8304
+          },
+          {
+            "id": "task_l32_middle",
+            "target": 0.53,
+            "reproduced": 0.5022
+          },
+          {
+            "id": "task_l32_last",
+            "target": 0.63,
+            "reproduced": 0.6227
+          },
+          {
+            "id": "instruction_l14_first",
+            "target": 0.55,
+            "reproduced": 0.5611
+          },
+          {
+            "id": "instruction_l14_middle",
+            "target": 0.48,
+            "reproduced": 0.4765
+          },
+          {
+            "id": "instruction_l14_last",
+            "target": 0.5,
+            "reproduced": 0.5093
+          }
+        ],
+        "audit_items": [
+          {
+            "id": "published_cell_discrepancies",
+            "description": "Three task-generalization cells differ from the paper by 0.16 to 0.18 AUROC."
+          },
+          {
+            "id": "instruction_type_base_rate",
+            "description": "Instruction type alone predicts success better than the best pooled probe cell."
+          },
+          {
+            "id": "split_and_seed_mismatch",
+            "description": "The released notebook uses an 80/20 split and unseeded runs while the paper states 70/30."
+          },
+          {
+            "id": "non_native_phi3_prompt",
+            "description": "The released extraction code applies the Llama-2 prompt format to Phi-3."
+          },
+          {
+            "id": "splitwise_normalization",
+            "description": "Each split is standardized using its own statistics."
+          },
+          {
+            "id": "instruction_fold_support",
+            "description": "Only four instruction-type folds are valid because one type always succeeds."
+          },
+          {
+            "id": "token_indexing",
+            "description": "The reported last-token state is off by one in the released extraction code."
+          },
+          {
+            "id": "task_count",
+            "description": "The released data contain 102 tasks rather than the reported 100."
+          }
+        ],
+        "audit_f1_min": 0.5
+      }
+    },
+    {
+      "id": "political-perspective-qwen3-generalization",
+      "title": "Political Perspective Qwen3-8B Generalization",
+      "type": "generalize",
+      "status": "held_out",
+      "split": "held_out",
+      "public": {
+        "paper": "https://arxiv.org/abs/2503.02080",
+        "repository": "https://github.com/JunsolKim/RepresentationPoliticalLLM",
+        "commit": "e746dd1e3838ee6966818fef5a9b2d4e107f1656",
+        "target": "Apply the paper's single-head ridge-probe protocol to cached Qwen3-8B activations and identify the strongest head.",
+        "inputs": [
+          "paper",
+          "pinned repository",
+          "Qwen3-8B activation tensor and labels"
+        ],
+        "input_sha256": "8bddd2883586031913b95d534ca1dc5f530c773ededc03350ccec30398f9dee6",
+        "instruction": "Evaluate all 1,152 layer-head probes using the locked two-fold protocol and report the peak mean Spearman correlation, layer and head.",
+        "expected_counts": {
+          "evaluation_cells": 1152
+        }
+      },
+      "evaluation": {
+        "result_tolerance": 0.0001,
+        "results": [
+          {
+            "id": "peak_spearman",
+            "target": 0.8252048958903362
+          },
+          {
+            "id": "peak_layer",
+            "target": 17
+          },
+          {
+            "id": "peak_head",
+            "target": 8
+          },
+          {
+            "id": "num_probes",
+            "target": 1152
+          }
+        ],
+        "audit_items": []
+      }
+    },
+    {
+      "id": "prism-prompt-guidance-generalization",
+      "title": "PRISM Prompt-Guidance Generalization",
+      "type": "generalize",
+      "status": "candidate",
+      "split": "candidate",
+      "public": {
+        "paper": "https://arxiv.org/abs/2411.04847",
+        "repository": "https://github.com/fujie-math/PRISM",
+        "commit": "b0953654e3181cc3e4a158f0c4313b85c000d290",
+        "target": "Measure whether prompt guidance improves accuracy across every paired model, dataset and probe result.",
+        "inputs": [
+          "paper",
+          "pinned repository",
+          "48 raw and prompt-guided summary tables from six models spanning four model families"
+        ],
+        "instruction": "Pair the raw and prompt-guided average accuracies, compute each gain, and report the number and range of improvements."
+      },
+      "evaluation": {
+        "result_tolerance": 1e-08,
+        "results": [
+          {
+            "id": "pair_count",
+            "target": 24
+          },
+          {
+            "id": "positive_gain_count",
+            "target": 24
+          },
+          {
+            "id": "mean_gain",
+            "target": 0.19692107829822436
+          },
+          {
+            "id": "minimum_gain",
+            "target": 0.10824684439308851
+          },
+          {
+            "id": "maximum_gain",
+            "target": 0.30954374970174636
+          }
+        ],
+        "audit_items": []
+      }
+    },
+    {
+      "id": "models-under-pressure-olmo2-generalization",
+      "title": "Models Under Pressure OLMo-2 Generalization",
+      "type": "generalize",
+      "status": "candidate",
+      "split": "candidate",
+      "public": {
+        "paper": "https://arxiv.org/abs/2506.10805",
+        "target": "Validate the sealed OLMo-2 holdout and recover the development-selected layers and test performance.",
+        "inputs": [
+          "paper",
+          "sealed holdout manifest",
+          "selection and metric tables from 360 evaluation records"
+        ],
+        "instruction": "Verify the holdout artifact, recover the development-selected layer for each probe, and compare it with the relative-depth baseline."
+      },
+      "evaluation": {
+        "result_tolerance": 1e-08,
+        "results": [
+          {
+            "id": "record_count",
+            "target": 360
+          },
+          {
+            "id": "attention_selected_layer",
+            "target": 38
+          },
+          {
+            "id": "attention_test_macro_auroc",
+            "target": 0.8911343027510448
+          },
+          {
+            "id": "attention_gain_over_relative",
+            "target": 0.02241984016074261
+          },
+          {
+            "id": "softmax_selected_layer",
+            "target": 38
+          },
+          {
+            "id": "softmax_test_macro_auroc",
+            "target": 0.9045272169401158
+          },
+          {
+            "id": "softmax_gain_over_relative",
+            "target": 0.035519707245706744
+          }
+        ],
+        "audit_items": [
+          {
+            "id": "activation_site_adapter",
+            "description": "The OLMo activation site is an architecture-mapped analogue of the paper's pre-normalization site."
+          },
+          {
+            "id": "zero_seed_dispersion",
+            "description": "The three retained seed entries are identical and do not establish independent refitting variability."
+          }
+        ]
+      }
+    },
+    {
+      "id": "beyond-linear-probes-cross-model-generalization",
+      "title": "Beyond Linear Probes Cross-Model Generalization",
+      "type": "generalize",
+      "status": "candidate",
+      "split": "candidate",
+      "public": {
+        "paper": "https://arxiv.org/abs/2509.26238",
+        "repository": "https://github.com/james-oldfield/tpc",
+        "commit": "e50d3c4f1bd01c90c08e571c1500d8b4aa62bd13",
+        "target": "Compare five probe families across the replicated Llama condition and three extension models.",
+        "inputs": [
+          "paper",
+          "pinned repository",
+          "matched WildGuardMix probe results for four model families"
+        ],
+        "instruction": "Identify the best probe for each model and measure the fifth-order TPC gain over the linear probe."
+      },
+      "evaluation": {
+        "result_tolerance": 1e-08,
+        "results": [
+          {
+            "id": "model_count",
+            "target": 4
+          },
+          {
+            "id": "tpc_beats_linear_count",
+            "target": 4
+          },
+          {
+            "id": "tpc_best_count",
+            "target": 1
+          },
+          {
+            "id": "mean_tpc_gain_pp",
+            "target": 0.903136134147644
+          },
+          {
+            "id": "minimum_tpc_gain_pp",
+            "target": 0.6015384197235107
+          },
+          {
+            "id": "maximum_tpc_gain_pp",
+            "target": 1.5511000156402588
+          }
+        ],
+        "audit_items": [
+          {
+            "id": "unequal_fit_repetitions",
+            "description": "The retained linear result uses one fit while nonlinear probes use five fits."
+          },
+          {
+            "id": "tpc_not_universally_best",
+            "description": "TPC beats the linear probe on every model but is best on only one of four models."
+          }
+        ]
+      }
+    },
+    {
+      "id": "llms-know-response-regime-generalization",
+      "title": "LLMs Know Response-Regime Generalization",
+      "type": "generalize",
+      "status": "development",
+      "split": "development",
+      "public": {
+        "paper": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/a712d461e57201efe35d429a6f1731c1-Abstract-Conference.html",
+        "repository": "https://github.com/technion-cs-nlp/LLMsKnow",
+        "commit": "bee3ec5787e72f09ec1603e50e9b64c41fbc6f23",
+        "target": "Reproduce exact-answer probe performance across three extension models, three datasets and two response regimes.",
+        "inputs": [
+          "paper",
+          "pinned repository",
+          "36 cached activation files with labels and source indices",
+          "five candidate layers per model"
+        ],
+        "input_sha256": "2198797c908dfdf938962ddd775b01234db324c22009746d44882b7754f8d208",
+        "instruction": "Fit logistic probes from the cached activations, select one layer per model, response regime and dataset using the released validation procedure, and report the selected layer and test AUROC for all 18 cells.",
+        "expected_counts": {
+          "selection_cells": 90,
+          "evaluation_cells": 18
+        }
+      },
+      "evaluation": {
+        "result_tolerance": 0.01,
+        "audit_required": false,
+        "results": [
+          {
+            "id": "qwen3_14b_on_policy_triviaqa_auroc",
+            "target": 0.8280154374676542
+          },
+          {
+            "id": "qwen3_14b_on_policy_triviaqa_selected_layer",
+            "target": 20,
+            "tolerance": 0
+          },
+          {
+            "id": "qwen3_14b_on_policy_winobias_auroc",
+            "target": 0.9338566633610261
+          },
+          {
+            "id": "qwen3_14b_on_policy_winobias_selected_layer",
+            "target": 26,
+            "tolerance": 0
+          },
+          {
+            "id": "qwen3_14b_on_policy_math_auroc",
+            "target": 0.9571042664158199
+          },
+          {
+            "id": "qwen3_14b_on_policy_math_selected_layer",
+            "target": 38,
+            "tolerance": 0
+          },
+          {
+            "id": "qwen3_14b_fixed_mistral_triviaqa_auroc",
+            "target": 0.8101757561476081
+          },
+          {
+            "id": "qwen3_14b_fixed_mistral_triviaqa_selected_layer",
+            "target": 26,
+            "tolerance": 0
+          },
+          {
+            "id": "qwen3_14b_fixed_mistral_winobias_auroc",
+            "target": 0.9256980198646122
+          },
+          {
+            "id": "qwen3_14b_fixed_mistral_winobias_selected_layer",
+            "target": 26,
+            "tolerance": 0
+          },
+          {
+            "id": "qwen3_14b_fixed_mistral_math_auroc",
+            "target": 0.9769071221480845
+          },
+          {
+            "id": "qwen3_14b_fixed_mistral_math_selected_layer",
+            "target": 32,
+            "tolerance": 0
+          },
+          {
+            "id": "gemma4_12b_on_policy_triviaqa_auroc",
+            "target": 0.8737131643156232
+          },
+          {
+            "id": "gemma4_12b_on_policy_triviaqa_selected_layer",
+            "target": 24,
+            "tolerance": 0
+          },
+          {
+            "id": "gemma4_12b_on_policy_winobias_auroc",
+            "target": 0.9576907509676446
+          },
+          {
+            "id": "gemma4_12b_on_policy_winobias_selected_layer",
+            "target": 31,
+            "tolerance": 0
+          },
+          {
+            "id": "gemma4_12b_on_policy_math_auroc",
+            "target": 0.99011712491381
+          },
+          {
+            "id": "gemma4_12b_on_policy_math_selected_layer",
+            "target": 31,
+            "tolerance": 0
+          },
+          {
+            "id": "gemma4_12b_fixed_mistral_triviaqa_auroc",
+            "target": 0.7938881831050069
+          },
+          {
+            "id": "gemma4_12b_fixed_mistral_triviaqa_selected_layer",
+            "target": 46,
+            "tolerance": 0
+          },
+          {
+            "id": "gemma4_12b_fixed_mistral_winobias_auroc",
+            "target": 0.9463948105618145
+          },
+          {
+            "id": "gemma4_12b_fixed_mistral_winobias_selected_layer",
+            "target": 31,
+            "tolerance": 0
+          },
+          {
+            "id": "gemma4_12b_fixed_mistral_math_auroc",
+            "target": 0.9769961880858162
+          },
+          {
+            "id": "gemma4_12b_fixed_mistral_math_selected_layer",
+            "target": 31,
+            "tolerance": 0
+          },
+          {
+            "id": "glm4_7_flash_on_policy_triviaqa_auroc",
+            "target": 0.8066411474778029
+          },
+          {
+            "id": "glm4_7_flash_on_policy_triviaqa_selected_layer",
+            "target": 45,
+            "tolerance": 0
+          },
+          {
+            "id": "glm4_7_flash_on_policy_winobias_auroc",
+            "target": 0.8973246687379838
+          },
+          {
+            "id": "glm4_7_flash_on_policy_winobias_selected_layer",
+            "target": 31,
+            "tolerance": 0
+          },
+          {
+            "id": "glm4_7_flash_on_policy_math_auroc",
+            "target": 0.9743184496742421
+          },
+          {
+            "id": "glm4_7_flash_on_policy_math_selected_layer",
+            "target": 31,
+            "tolerance": 0
+          },
+          {
+            "id": "glm4_7_flash_fixed_mistral_triviaqa_auroc",
+            "target": 0.8321164985176328
+          },
+          {
+            "id": "glm4_7_flash_fixed_mistral_triviaqa_selected_layer",
+            "target": 24,
+            "tolerance": 0
+          },
+          {
+            "id": "glm4_7_flash_fixed_mistral_winobias_auroc",
+            "target": 0.9249057771652689
+          },
+          {
+            "id": "glm4_7_flash_fixed_mistral_winobias_selected_layer",
+            "target": 24,
+            "tolerance": 0
+          },
+          {
+            "id": "glm4_7_flash_fixed_mistral_math_auroc",
+            "target": 0.9710811472024288
+          },
+          {
+            "id": "glm4_7_flash_fixed_mistral_math_selected_layer",
+            "target": 24,
+            "tolerance": 0
+          }
+        ],
+        "audit_items": [
+          {
+            "id": "model_dependent_responses_and_labels",
+            "description": "On-policy comparisons change both model representations and the response-label distribution."
+          },
+          {
+            "id": "target_model_site_selection",
+            "description": "The selected activation layer remains target-model and regime dependent."
+          }
+        ]
+      }
+    },
+    {
+      "id": "test-awareness-qwen3-layer-stability",
+      "title": "Test Awareness Qwen3 Layer Stability",
+      "type": "reproduce",
+      "status": "candidate",
+      "split": "candidate",
+      "public": {
+        "paper": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/cf42f133f355e0e07a8957b508b26a1b-Abstract-Conference.html",
+        "repository": "https://github.com/microsoft/Test_Awareness_Steering",
+        "target": "Reproduce the Qwen3 probe magnitude and assess the stability of its peak layer.",
+        "inputs": [
+          "paper",
+          "pinned repository",
+          "released and independently trained accuracy curves across 64 hidden-state indices"
+        ],
+        "instruction": "Compare the two layer sweeps, recover each peak, and quantify their curve and peak-location agreement."
+      },
+      "evaluation": {
+        "result_tolerance": 1e-08,
+        "results": [
+          {
+            "id": "layer_count",
+            "target": 64
+          },
+          {
+            "id": "released_peak_layer",
+            "target": 19
+          },
+          {
+            "id": "released_peak_accuracy",
+            "target": 0.9518413597733711
+          },
+          {
+            "id": "independent_peak_layer",
+            "target": 55
+          },
+          {
+            "id": "independent_peak_accuracy",
+            "target": 0.9518413597733711
+          },
+          {
+            "id": "peak_layer_distance",
+            "target": 36
+          },
+          {
+            "id": "mean_absolute_curve_difference_excluding_embedding",
+            "target": 0.004001978506227798
+          },
+          {
+            "id": "layers_within_one_pp",
+            "target": 61
+          }
+        ],
+        "audit_items": [
+          {
+            "id": "peak_location_instability",
+            "description": "The peak accuracy is reproduced while the peak hidden-state index moves from 19 to 55."
+          },
+          {
+            "id": "trainer_mismatch",
+            "description": "The paper specifies momentum and up to 300 epochs while the released trainer and logs differ."
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -8,11 +8,14 @@
 | `interp_initial_selection.json` and `interp_final_selection.json` | Earlier paper selections |
 | `probe_replication_queue.csv` | Study queue |
 | `vendored_repos.json` | Upstream repository locations and revisions |
+| `benchmark.json` | Evaluator source containing tasks and private references; public tasks are exported with `geninterp benchmark show` |
+| `benchmark_screening.csv` | Eight-study benchmark cohort and reserve decisions |
 | `screening/papers.csv` | Final screening table with paper links, code availability, decisions and evidence levels |
 | `screening/datasets.csv` | Dataset variants, response sources and label definitions |
 | `screening/dataset_overlap.csv` | Exact overlap findings and separately labelled dataset-lineage relationships |
 | `protocols/` | Historical experiment specifications, hypotheses and study registry |
 | `results/<study>/` | Published targets, replication measurements and model-extension results |
+| `results/agent-pilot/current_paired_runs.csv` | Verified scientific and efficiency measurements from completed paired agent runs |
 | `papers-base/` | Downloaded conference metadata, excluded from Git |
 
 ## Result Records
@@ -23,7 +26,7 @@ Nested experiment directories, including `results/model-under-pressure/confirmat
 
 `results/paper-artifacts/` and `results/paper-synthesis/` contain derived cross-study tables for analysis and plotting. Historical manifests retain original file locations and hashes; those records describe the original computation, not the current directory layout.
 
-The specifications in `protocols/` record an earlier analysis plan. Their original freeze dates and model-status fields remain unchanged. They do not constitute a new preregistration for the proposed benchmark. The historical registry includes a later additional study beyond the original protocol corpus.
+The specifications in `protocols/` record an earlier analysis plan. Their original record dates and model-status fields remain unchanged. They do not constitute a new preregistration for the proposed benchmark. The historical registry includes a later additional study beyond the original protocol corpus.
 
 ## Screening Scope
 
