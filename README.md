@@ -10,12 +10,31 @@ This project studies the reproducibility and generalization of activation-probin
 | `figures/` | Figures derived from recorded results | Tracked |
 | `scripts/` | Corpus preparation, result aggregation, metric calculation and plotting | Tracked |
 | `reports/` | Formal study reports | Tracked |
+| `src/reprobe/` | Sandboxed agent harness, study tasks and container image | Tracked |
 | `replications/` | Local experiment wrappers, environments and execution helpers | Code excluded |
 | `external/` | Original author repositories | Local only |
 | `infra/` | Compute-provider and artifact-storage helpers | Local only |
 | `artifacts/` | Local run outputs, caches and larger intermediate files | Local only |
 
 The [data guide](data/README.md) describes the saved collections. Experiment settings and provenance remain with the data because they are required to interpret or regenerate results. Manuscripts, submissions, slides and planning drafts are maintained outside this repository.
+
+## Agent Runs
+
+`src/reprobe/` runs one study with one model in a sealed Docker container, using Inspect AI. The agent's tools have no network and see only the study inputs, mounted read-only. The answer key stays on the host, and `geninterp.py` grades each submission.
+
+Install Docker and `uv`, then add `OPENROUTER_API_KEY` and `INSPECT_EVAL_MAX_SANDBOXES=1` to `.env`. Download and verify a study's inputs once:
+
+```bash
+uv run --extra reprobe python src/reprobe/pull.py lookback-lens
+```
+
+Run one arm with one model:
+
+```bash
+uv run --extra reprobe inspect eval src/reprobe/reprobe.py -T study=lookback-lens -T arm=raw -T model=grok-4.5
+```
+
+The arm is `raw` or `mcp`. Models are listed in `src/reprobe/models.yaml` and studies in `src/reprobe/studies.yaml`. Add `--epochs 3` to repeat a run. Each run saves its outputs, scores and manifest under `artifacts/reprobe/runs/`. Open the transcripts with `inspect view`.
 
 ## Study Reports
 
