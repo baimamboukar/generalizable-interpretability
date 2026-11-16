@@ -1,0 +1,13 @@
+# Raw arm, shared by every study. Inspect sets SAMPLE_METADATA_* from each sample's metadata.
+services:
+  default:
+    image: ghcr.io/baimamboukar/reprobe-base:v1
+    init: true
+    command: tail -f /dev/null
+    network_mode: none
+    cpus: 4
+    mem_limit: ${SAMPLE_METADATA_MEMORY:-4g}
+    environment:
+      SEED: ${SAMPLE_METADATA_SEED:-0}
+    volumes:
+      - ${SAMPLE_METADATA_TASK_DIR:-/task_dir-missing-from-sample-metadata}:/work/task:ro

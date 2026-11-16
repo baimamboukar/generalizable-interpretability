@@ -1,0 +1,11 @@
+# One entry per study. Budgets are dollars per run, for each arm; override with -T budget=<dollars>.
+
+lookback-lens:
+  task_id: lookback-lens-table2
+  memory: 6g
+  time_limit: 3600
+  seed: 42
+  mcp_server: tasks/lookback-lens/server.py
+  budget:
+    raw: 5.0
+    mcp: 1.0

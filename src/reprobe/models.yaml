@@ -1,0 +1,16 @@
+# OpenRouter models, with only the settings each one accepts.
+# Claude takes no temperature or seed. GPT takes no temperature.
+
+claude-opus-5.5:
+  id: anthropic/claude-opus-5.5
+  reasoning_effort: high
+
+gpt-6.1-sol:
+  id: openai/gpt-6.1-sol
+  reasoning_effort: high
+  seed: 42
+
+grok-4.5:
+  id: x-ai/grok-4.5
+  reasoning_effort: high
+  seed: 42

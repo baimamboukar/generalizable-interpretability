@@ -1,0 +1,14 @@
+# MCP-Assisted arm: the Raw arm plus the study's MCP server, which only this arm can see.
+services:
+  default:
+    image: ghcr.io/baimamboukar/reprobe-base:v1
+    init: true
+    command: tail -f /dev/null
+    network_mode: none
+    cpus: 4
+    mem_limit: ${SAMPLE_METADATA_MEMORY:-4g}
+    environment:
+      SEED: ${SAMPLE_METADATA_SEED:-0}
+    volumes:
+      - ${SAMPLE_METADATA_TASK_DIR:-/task_dir-missing-from-sample-metadata}:/work/task:ro
+      - ${SAMPLE_METADATA_MCP_SERVER:-/mcp_server-missing-from-sample-metadata}:/work/mcp/server.py:ro

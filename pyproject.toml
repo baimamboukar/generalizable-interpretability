@@ -10,7 +10,15 @@ dependencies = [
   "wandb>=0.19,<1",
 ]
 
+[project.scripts]
+geninterp = "geninterp:main"
+
 [project.optional-dependencies]
+reprobe = [
+  "inspect-ai>=0.3.290,<0.4",
+  "mcp>=2.3,<3",
+  "openai>=3.51,<4",
+]
 test = [
   "numpy>=1.26,<3",
   "pandas>=2.2,<3",
