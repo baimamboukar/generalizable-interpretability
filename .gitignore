@@ -26,4 +26,6 @@ __pycache__/
 /tables_out/
 *.inspect.ndjson
 scripts
+skills
 /replications/
+/logs/
